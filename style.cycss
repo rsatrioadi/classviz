@@ -1,0 +1,107 @@
+node {
+  height: label;
+  width: label;
+  padding: 4px;
+  border-color: black;
+  background-color: silver;
+  border-width: 1;
+  shape: rectangle;
+  label: data(label);
+  text-valign: center;
+}
+
+node[role_stereotype = "Controller"] {
+  border-color: #984ea3;
+  background-color: #decbe4;
+}
+
+node[role_stereotype = "Coordinator"] {
+  border-color: #4daf4a;
+  background-color: #ccebc5;
+}
+
+node[role_stereotype = "Information Holder"] {
+  border-color: #e41a1c;
+  background-color: #fbb4ae;
+}
+
+node[role_stereotype = "Interfacer"] {
+  border-color: #ff7f00;
+  background-color: #fed9a6;
+}
+
+node[role_stereotype = "Service Provider"] {
+  border-color: #377eb8;
+  background-color: #b3cde3;
+}
+
+node[role_stereotype = "Structurer"] {
+  border-color: #f781bf;
+  background-color: #fddaec;
+}
+
+edge {
+  width: 1;
+  line-color: black;
+  target-arrow-color: black;
+  source-arrow-color: black;
+  curve-style: bezier;
+}
+
+edge[conn_type = "inherits"] {
+  target-arrow-shape: triangle;
+  target-arrow-fill: hollow;
+  curve-style: taxi;
+}
+
+edge[conn_type = "realizes"] {
+  target-arrow-shape: triangle;
+  target-arrow-fill: hollow;
+  line-style: dashed;
+  curve-style: taxi;
+}
+
+edge[conn_type = "aggregates"] {
+  source-arrow-shape: diamond;
+  arrow-scale: 1.1;
+}
+
+edge[conn_type = "composites"] {
+  source-arrow-shape: diamond;
+  source-arrow-fill: hollow;
+  arrow-scale: 1.1;
+}
+
+edge[conn_type = "depends"] {
+  target-arrow-shape: triangle;
+}
+
+edge[conn_type = "calls"] {
+  target-arrow-shape: vee;
+  line-style: dashed;
+  label: calls;
+}
+
+edge[conn_type = "creates"] {
+  source-arrow-shape: diamond;
+  arrow-scale: 1.1;
+  label: creates;
+}
+
+edge[conn_type = "uses"] {
+  target-arrow-shape: vee;
+  line-style: dashed;
+  label: uses;
+}
+
+edge[conn_type = "has"] {
+  source-arrow-shape: diamond;
+  source-arrow-fill: hollow;
+  arrow-scale: 1.1;
+  label: has;
+}
+
+edge[conn_type = "references"] {
+  target-arrow-shape: vee;
+  label: references;
+}

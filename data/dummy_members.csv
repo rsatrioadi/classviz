@@ -1,0 +1,5 @@
+id,abstraction,role_stereotype
+geom.Point<T>,interface,Structurer
+geom.Point2D,,Information Holder
+geom.shape.Rectangle,,Service Provider
+geom.shape.Shape,abstract,Interfacer
