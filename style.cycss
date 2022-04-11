@@ -8,6 +8,7 @@ node {
   shape: rectangle;
   label: data(label);
   text-valign: center;
+  text-wrap: wrap;
 }
 
 node[role_stereotype = "Controller"] {
@@ -46,6 +47,7 @@ edge {
   target-arrow-color: black;
   source-arrow-color: black;
   curve-style: bezier;
+  edge-text-rotation: autorotate;
 }
 
 edge[conn_type = "inherits"] {
