@@ -1,12 +1,38 @@
 body { 
-  font: 20px sans-serif;
-  background-color: beige;
+  font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+  font-size: 14px;
+}
+
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 240px;
+  background-color: whitesmoke;
 }
 
 #cy {
-  height: 100%;
-  width: 100%;
   position: absolute;
-  left: 0;
+  left: 240px;
   top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  background-color: beige;
+}
+
+h1 {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.menu {
+  background-color: white;
+  border-radius: 4px;
 }

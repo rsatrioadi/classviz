@@ -1,0 +1,160 @@
+id,abstraction,role_stereotype,parent
+DrawApplet,,Interfacer,CH.ifa.draw.applet
+DrawApplication,,Information Holder,CH.ifa.draw.application
+ChopPolygonConnector,,Service Provider,CH.ifa.draw.contrib
+DiamondFigure,,Service Provider,CH.ifa.draw.contrib
+PolygonFigure,,Service Provider,CH.ifa.draw.contrib
+PolygonHandle,,Service Provider,CH.ifa.draw.contrib
+PolygonScaleHandle,,Service Provider,CH.ifa.draw.contrib
+PolygonTool,,Service Provider,CH.ifa.draw.contrib
+TriangleFigure,,Service Provider,CH.ifa.draw.contrib
+TriangleRotationHandle,,Service Provider,CH.ifa.draw.contrib
+ArrowTip,,Service Provider,CH.ifa.draw.figures
+AttributeFigure,abstract,Structurer,CH.ifa.draw.figures
+BorderDecorator,,Service Provider,CH.ifa.draw.figures
+BorderTool,,Service Provider,CH.ifa.draw.figures
+ChopEllipseConnector,,Service Provider,CH.ifa.draw.figures
+ConnectedTextTool,,Service Provider,CH.ifa.draw.figures
+ElbowConnection,,Service Provider,CH.ifa.draw.figures
+ElbowHandle,,Service Provider,CH.ifa.draw.figures
+EllipseFigure,,Service Provider,CH.ifa.draw.figures
+FigureAttributes,,Service Provider,CH.ifa.draw.figures
+FontSizeHandle,,Service Provider,CH.ifa.draw.figures
+GroupCommand,,Service Provider,CH.ifa.draw.figures
+GroupFigure,,Service Provider,CH.ifa.draw.figures
+GroupHandle,,Service Provider,CH.ifa.draw.figures
+ImageFigure,,Service Provider,CH.ifa.draw.figures
+InsertImageCommand,,Information Holder,CH.ifa.draw.figures
+LineConnection,,Service Provider,CH.ifa.draw.figures
+LineDecoration,interface,Service Provider,CH.ifa.draw.figures
+LineFigure,,Information Holder,CH.ifa.draw.figures
+NumberTextFigure,,Information Holder,CH.ifa.draw.figures
+PolyLineConnector,,Service Provider,CH.ifa.draw.figures
+PolyLineFigure,,Information Holder,CH.ifa.draw.figures
+PolyLineHandle,,Service Provider,CH.ifa.draw.figures
+PolyLineLocator,,Service Provider,CH.ifa.draw.figures
+RadiusHandle,,Service Provider,CH.ifa.draw.figures
+RectangleFigure,,Service Provider,CH.ifa.draw.figures
+RoundRectangleFigure,,Information Holder,CH.ifa.draw.figures
+ScribbleTool,,Service Provider,CH.ifa.draw.figures
+ShortestDistanceConnector,,Service Provider,CH.ifa.draw.figures
+TextFigure,,Information Holder,CH.ifa.draw.figures
+TextTool,,Service Provider,CH.ifa.draw.figures
+UngroupCommand,,Information Holder,CH.ifa.draw.figures
+ConnectionFigure,interface,Service Provider,CH.ifa.draw.framework
+Connector,interface,Service Provider,CH.ifa.draw.framework
+Drawing,interface,Service Provider,CH.ifa.draw.framework
+DrawingChangeEvent,,Information Holder,CH.ifa.draw.framework
+DrawingChangeListener,interface,Service Provider,CH.ifa.draw.framework
+DrawingEditor,interface,Service Provider,CH.ifa.draw.framework
+DrawingView,interface,Service Provider,CH.ifa.draw.framework
+Figure,interface,Service Provider,CH.ifa.draw.framework
+FigureChangeEvent,,Information Holder,CH.ifa.draw.framework
+FigureChangeListener,interface,Service Provider,CH.ifa.draw.framework
+FigureEnumeration,interface,Service Provider,CH.ifa.draw.framework
+FigureSelection,,Information Holder,CH.ifa.draw.framework
+HJDError,,Information Holder,CH.ifa.draw.framework
+Handle,interface,Information Holder,CH.ifa.draw.framework
+Locator,interface,Service Provider,CH.ifa.draw.framework
+Painter,interface,Service Provider,CH.ifa.draw.framework
+PointConstrainer,interface,Service Provider,CH.ifa.draw.framework
+Tool,interface,Service Provider,CH.ifa.draw.framework
+AnimationDecorator,,Service Provider,CH.ifa.draw.samples.javadraw
+Animator,,Service Provider,CH.ifa.draw.samples.javadraw
+BouncingDrawing,,Service Provider,CH.ifa.draw.samples.javadraw
+FollowURLTool,,Service Provider,CH.ifa.draw.samples.javadraw
+JavaDrawApp,,Interfacer,CH.ifa.draw.samples.javadraw
+JavaDrawApplet,,Interfacer,CH.ifa.draw.samples.javadraw
+JavaDrawViewer,,Service Provider,CH.ifa.draw.samples.javadraw
+MySelectionTool,,Service Provider,CH.ifa.draw.samples.javadraw
+PatternPainter,,Service Provider,CH.ifa.draw.samples.javadraw
+URLTool,,Service Provider,CH.ifa.draw.samples.javadraw
+NetApp,,Service Provider,CH.ifa.draw.samples.net
+NodeFigure,,Service Provider,CH.ifa.draw.samples.net
+NothingApp,,Service Provider,CH.ifa.draw.samples.nothing
+NothingApplet,,Interfacer,CH.ifa.draw.samples.nothing
+PertApplet,,Service Provider,CH.ifa.draw.samples.pert
+PertApplication,,Service Provider,CH.ifa.draw.samples.pert
+PertDependency,,Service Provider,CH.ifa.draw.samples.pert
+PertFigure,,Service Provider,CH.ifa.draw.samples.pert
+PertFigureCreationTool,,Service Provider,CH.ifa.draw.samples.pert
+AbstractConnector,abstract,Service Provider,CH.ifa.draw.standard
+AbstractFigure,abstract,Structurer,CH.ifa.draw.standard
+AbstractHandle,abstract,Service Provider,CH.ifa.draw.standard
+AbstractLocator,abstract,Service Provider,CH.ifa.draw.standard
+AbstractTool,,Service Provider,CH.ifa.draw.standard
+ActionTool,abstract,Service Provider,CH.ifa.draw.standard
+AlignCommand,,Information Holder,CH.ifa.draw.standard
+BoxHandleKit,,Service Provider,CH.ifa.draw.standard
+BringToFrontCommand,,Information Holder,CH.ifa.draw.standard
+BufferedUpdateStrategy,,Service Provider,CH.ifa.draw.standard
+ChangeAttributeCommand,,Information Holder,CH.ifa.draw.standard
+ChangeConnectionEndHandle,,Service Provider,CH.ifa.draw.standard
+ChangeConnectionHandle,abstract,Service Provider,CH.ifa.draw.standard
+ChangeConnectionStartHandle,,Service Provider,CH.ifa.draw.standard
+ChopBoxConnector,,Service Provider,CH.ifa.draw.standard
+CompositeFigure,abstract,Service Provider,CH.ifa.draw.standard
+ConnectionHandle,,Service Provider,CH.ifa.draw.standard
+ConnectionTool,,Service Provider,CH.ifa.draw.standard
+CopyCommand,,Service Provider,CH.ifa.draw.standard
+CreationTool,,Service Provider,CH.ifa.draw.standard
+CutCommand,,Service Provider,CH.ifa.draw.standard
+DecoratorFigure,abstract,Information Holder,CH.ifa.draw.standard
+DeleteCommand,,Service Provider,CH.ifa.draw.standard
+DragTracker,,Service Provider,CH.ifa.draw.standard
+DuplicateCommand,,Service Provider,CH.ifa.draw.standard
+FigureChangeEventMulticaster,,Service Provider,CH.ifa.draw.standard
+FigureEnumerator,,Service Provider,CH.ifa.draw.standard
+FigureTransferCommand,abstract,Service Provider,CH.ifa.draw.standard
+GridConstrainer,,Information Holder,CH.ifa.draw.standard
+HandleTracker,,Service Provider,CH.ifa.draw.standard
+LocatorConnector,,Service Provider,CH.ifa.draw.standard
+LocatorHandle,,Information Holder,CH.ifa.draw.standard
+NullHandle,,Service Provider,CH.ifa.draw.standard
+OffsetLocator,,Service Provider,CH.ifa.draw.standard
+PasteCommand,,Service Provider,CH.ifa.draw.standard
+RelativeLocator,,Service Provider,CH.ifa.draw.standard
+ReverseFigureEnumerator,,Service Provider,CH.ifa.draw.standard
+SelectAreaTracker,,Service Provider,CH.ifa.draw.standard
+SelectionTool,,Service Provider,CH.ifa.draw.standard
+SendToBackCommand,,Information Holder,CH.ifa.draw.standard
+SimpleUpdateStrategy,,Service Provider,CH.ifa.draw.standard
+StandardDrawing,,Service Provider,CH.ifa.draw.standard
+StandardDrawingView,,Information Holder,CH.ifa.draw.standard
+TextHolder,interface,Service Provider,CH.ifa.draw.standard
+ToggleGridCommand,,Information Holder,CH.ifa.draw.standard
+ToolButton,,Information Holder,CH.ifa.draw.standard
+Animatable,interface,Service Provider,CH.ifa.draw.util
+Clipboard,,Information Holder,CH.ifa.draw.util
+ColorMap,,Information Holder,CH.ifa.draw.util
+Command,abstract,Information Holder,CH.ifa.draw.util
+CommandButton,,Service Provider,CH.ifa.draw.util
+CommandChoice,,Service Provider,CH.ifa.draw.util
+CommandMenu,,Service Provider,CH.ifa.draw.util
+Filler,,Information Holder,CH.ifa.draw.util
+FloatingTextField,,Information Holder,CH.ifa.draw.util
+Geom,,Information Holder,CH.ifa.draw.util
+Iconkit,,Information Holder,CH.ifa.draw.util
+PaletteButton,abstract,Information Holder,CH.ifa.draw.util
+PaletteIcon,,Information Holder,CH.ifa.draw.util
+PaletteLayout,,Service Provider,CH.ifa.draw.util
+PaletteListener,interface,Service Provider,CH.ifa.draw.util
+ReverseVectorEnumerator,,Information Holder,CH.ifa.draw.util
+Storable,interface,Service Provider,CH.ifa.draw.util
+StorableInput,,Service Provider,CH.ifa.draw.util
+StorableOutput,,Service Provider,CH.ifa.draw.util
+CH.ifa.draw.applet,package,,
+CH.ifa.draw.application,package,,
+CH.ifa.draw.contrib,package,,
+CH.ifa.draw.figures,package,,
+CH.ifa.draw.framework,package,,
+CH.ifa.draw.samples.javadraw,package,,
+CH.ifa.draw.samples.net,package,,
+CH.ifa.draw.samples.nothing,package,,
+CH.ifa.draw.samples.pert,package,,
+CH.ifa.draw.samples,package,,
+CH.ifa.draw.standard,package,,
+CH.ifa.draw.util,package,,
+CH.ifa.draw,package,,
+CH.ifa,package,,
+CH,package,,
