@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
     });
 
     function transformData(es,fn) {
-        var f = es.data.map((e) => { return { data: e } });
+        const f = es.data.map((e) => { return { data: e } });
         if (fn) {
             return fn(f);
         }
@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
 
     function prepNodes(nodes) {
         nodes.forEach((node) => {
-            var annot = node.data.abstraction ? node.data.abstraction !== "concrete" ? `«${node.data.abstraction}»\n` : '' : '';
-            // var names = node.data.id.split(".");
-            var name = node.data.id;
+            const annot = node.data.abstraction ? node.data.abstraction !== "concrete" ? `«${node.data.abstraction}»\n` : '' : '';
+            // const names = node.data.id.split(".");
+            const name = node.data.id;
             // node.data.label = `${annot}${names[names.length - 1]}`;
             node.data.label = `${annot}${name}`;
         });
@@ -31,13 +31,10 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
     
     function prepEdges(edges) {
         return edges;
-        // return edges.filter((edge) => /*edge.data.conn_type === 'has'
-        //     ||*/ edge.data.conn_type === 'inherits'
-        //     || edge.data.conn_type === 'subpackage');
     }
     
-    var toText = function(obj){ return obj.text(); };
-    var style = fetch('style.cycss').then(toText);
+    const toText = function(obj){ return obj.text(); };
+    const style = fetch('style.cycss').then(toText);
 
     Promise.all([ nodes, edges, style ]).then(initCy);
 
@@ -71,9 +68,9 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
         });
 
         const checkboxes = document.querySelectorAll('input[name="showrels"]');
-            checkboxes.forEach((checkbox) => {
-                setVisible(checkbox);
-            });
+        checkboxes.forEach((checkbox) => {
+            setVisible(checkbox);
+        });
 
         constraints = [];
 
@@ -135,7 +132,19 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
     
     function bindRouters() {
 
+        cy.on('cxttap', 'node,edge', evt => evt.target.style("opacity", .1));
+
         cy.on('tap', 'node', evt => {
+
+            const conn_types = Array.from(document.querySelectorAll('input[name="showrels"]')).filter(cb => cb.checked).map(cb => cb.value);
+            const ed = evt.target.connectedEdges().filter(function (e) {
+                return conn_types.includes(e.data('conn_type'));
+            });
+            console.log(ed);
+            ed.style("opacity", 1);
+            console.log(ed.connectedNodes());
+            ed.connectedNodes().style("opacity", 1);
+
         
             // cy.nodes().forEach(node => {
             //     node.lock();
@@ -177,31 +186,31 @@ document.addEventListener('DOMContentLoaded', function(){ // on dom ready
 }); // on dom ready
 
 
-var saveAsSvg = function (filename) {
-    var svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
-    var blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+const saveAsSvg = function (filename) {
+    const svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
+    const blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
     saveAs(blob, "class-diagram.svg");
 };
 
-var getSvgUrl = function () {
-    var svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
-    var blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
-    var url = URL.createObjectURL(blob);
+const getSvgUrl = function () {
+    const svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
+    const blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
     return url;
 };
 
-var setVisible = function (ele) {
+const setVisible = function (ele) {
     cy.edges('[conn_type = "' + ele.value + '"]').style("display", ele.checked ? "element" : "none");
 };
 
-var setLineBends = function (ele) {
+const setLineBends = function (ele) {
     console.log(ele.name);
     if (ele.checked) {
         cy.edges('[conn_type = "' + ele.name + '"]').style("curve-style", ele.value);
     }
 };
 
-var relayout = function (layout) {
+const relayout = function (layout) {
     console.log(layout);
     cy.layout({ 
         name: layout, animate: true, 
@@ -212,3 +221,22 @@ var relayout = function (layout) {
         gapInequalities: constraints
     }).run();
 };
+
+var highlight = function (text) {
+    if (text) {
+        var classes = text.split(/[,\s]+/);
+        // console.log(classes);
+        cy.elements().style("opacity", .1);
+
+        var cy_classes = cy.nodes().filter(function (e) {
+            return classes.includes(e.data('id'));
+        });
+        // console.log(cy_classes);
+        var cy_edges = cy_classes.edgesWith(cy_classes);
+        cy_classes.style("opacity", 1);
+        cy_edges.style("opacity", 1);
+        cy.nodes('[abstraction = "package"]').style("opacity", 1);
+    } else {
+        cy.elements().style("opacity", 1);
+    }
+}

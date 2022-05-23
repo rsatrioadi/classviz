@@ -111,7 +111,7 @@
     </div>
     
     <div class="menu">
-      <h2>Layout</h2>
+      <h2>Layout algorithm</h2>
       <label for="layout">Select layout
         <select id="selectlayout" size="1"> 
           <option selected value="cola">cola</option> 
@@ -123,6 +123,16 @@
       <button onclick="relayout(document.getElementById('selectlayout').options[document.getElementById('selectlayout').selectedIndex].value)">Relayout</button>
       <!-- <button onclick="relayout()">Relayout</button> -->
     </div>
+      
+    <div class="menu">
+      <h2>Highlight classes</h2>
+      <label for="highlight">Separate classes by comma, whitespace, or new line</label>
+
+      <textarea id="highlight" name="highlight" rows="3" cols="30"></textarea>
+      <button onclick="highlight(document.getElementById('highlight').value
+      )">Highlight</button>
+    </div>
+    
   </div>
   
   <div id="cy"></div>
