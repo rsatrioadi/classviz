@@ -1,13 +1,15 @@
-document.addEventListener('DOMContentLoaded', function(){ // on dom ready
+document.addEventListener('DOMContentLoaded', function() { // on dom ready
     
     var nodes = new Promise((resolve, reject) => {
         Papa.parse('/data/jhotdraw-stereotypes.csv', {
-            download: true, header: true, skipEmptyLines: true, complete: (res)=>resolve(transformData(res,prepNodes))});
+            download: true, header: true, skipEmptyLines: true, 
+            complete: (res)=>resolve(transformData(res,prepNodes))});
     });
     
     var edges = new Promise((resolve, reject) => {
         Papa.parse('/data/jhotdraw-connections.csv', {
-            download: true, header: true, skipEmptyLines: true, complete: (res)=>resolve(transformData(res,prepEdges))});
+            download: true, header: true, skipEmptyLines: true, 
+            complete: (res)=>resolve(transformData(res,prepEdges))});
     });
 
     function transformData(es,fn) {

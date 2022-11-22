@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <link rel="stylesheet" href="style.css">
+  
+  <script type="text/javascript" src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js"></script>
+</head>
+<body onload="brython()">
+  <div id="sidebar">
+    <div class="menu">
+      <h2>Create an object</h2>
+      <label for="vname">Name</label>
+      <textarea id="vname" rows="1" cols="28"></textarea>
+      <label for="ctor">Creation code</label>
+      <textarea id="ctor" rows="3" cols="28"></textarea>
+      <button id="create_btn">Create</button>
+    </div>
+  </div>
+  <div id="cy"></div>
+  
+  <script type="text/python" src="bry.py"></script>
+</body>
+</html>

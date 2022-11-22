@@ -10,6 +10,8 @@ body {
   bottom: 0;
   width: 240px;
   background-color: whitesmoke;
+  border-right: 1px solid gainsboro;
+  z-index: 9999;
 }
 
 #cy {
@@ -19,7 +21,7 @@ body {
   bottom: 0;
   right: 0;
   z-index: 999;
-  background-color: beige;
+  background-color: ivory;
 }
 
 h1 {
@@ -30,9 +32,21 @@ h1 {
 h2 {
   font-size: 1.1em;
   font-weight: bold;
+  margin-top: 0px;
 }
 
 .menu {
   background-color: white;
   border-radius: 4px;
+  margin: 0 2px 2px 2px;
+  padding: 4px;
+  border: 1px solid gainsboro;
+}
+
+h1.titlebar {
+  margin: 0px;
+}
+
+.titlebar {
+  padding: 4px;
 }
