@@ -1,89 +1,67 @@
 document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
-  const nodes = new Promise((resolve, reject) => {
-    console.log("load nodes");
-    Papa.parse('/data/jhotdraw-nodes.csv', {
-      download: true, header: true, skipEmptyLines: true,
-      complete: (res) => resolve(transformData(res, prepNodes))
-    });
-  });
+  function prepEles(eles) {
 
-  const edges = new Promise((resolve, reject) => {
-    Papa.parse('/data/jhotdraw-edges.csv', {
-      download: true, header: true, skipEmptyLines: true,
-      complete: (res) => resolve(transformData(res, prepEdges))
-    });
-  });
-
-  function transformData(es, fn) {
-    const f = es.data.map((e) => {
-      return {data: e}
-    });
-    if (fn) {
-      return fn(f);
-    }
-    return f;
-  }
-
-  function prepNodes(nodes) {
-    nodes.forEach((node) => {
-      const annot = node.data.abstraction
-          ? node.data.abstraction !== "concrete"
-              ? `«${node.data.abstraction}»\n`
-              : ''
+    eles.nodes.forEach((node) => {
+      const annot = node.data.properties.kind !== "class"
+          ? `«${node.data.properties.kind}»\n`
           : '';
-      // const names = node.data.id.split(".");
-      const name = node.data.name;
-      // node.data.label = `${annot}${names[names.length - 1]}`;
+      
+      const name = node.data.properties.simpleName;
       node.data.label = `${annot}${name}`;
+      // node.data.parent = node.data.properties.package;
     });
-    return nodes;
-  }
 
-  function prepEdges(edges) {
-    edges.forEach((edge) => {
+    eles.edges.forEach((edge) => {
+      edge.data.interaction = edge.data.labels.join();
       edge.data.conn_type = edge.data.interaction;
+      delete edge.data.id;
     });
-    return edges;
+
+    return eles;
   }
 
-  const toText = function (obj) {
-    return obj.text();
-  };
-  const style = fetch('style.cycss').then(toText);
+  const eles = fetch('data/input.json')
+      .then(res => res.json())
+      .then(json => json.elements)
+      .then(eles => prepEles(eles))
 
-  Promise.all([nodes, edges, style]).then(initCy);
+  const style = fetch('style.cycss')
+      .then(res => res.text());
+
+  Promise.all([eles, style]).then(initCy);
 
   function initCy(payload) {
 
-    // console.log(payload[0]); // nodes
-    // console.log(payload[1]); // edges
+    console.log(payload[0]); // eles
+    console.log(payload[1]); // style
 
     const cy = window.cy = cytoscape({
+
       container: document.getElementById('cy'),
 
-      style: payload[2],
-
       elements: {
-        nodes: payload[0],
-        edges: payload[1]
+        nodes: payload[0].nodes,
+        edges: payload[0].edges
       },
 
-      layout: {
-        name: 'cola',
-        directed: true,
-        nodeSpacing: function (node) {
-          return 32;
-        },
-        flow: {axis: 'y', minSeparation: -32},
-        edgeSymDiffLength: 8,
+      style: payload[1],
 
-        /* for 'klay'
-        direction: 'DOWN',
-        // fixedAlignment: 'LEFTUP',
-        inLayerSpacingFactor: 0.5, */
-      },
-      
+      // layout: {
+      //   name: 'cola',
+      //   directed: true,
+      //   nodeSpacing: function (node) {
+      //     return 32;
+      //   },
+      //   flow: { axis: 'y', minSeparation: -32 },
+      //   edgeSymDiffLength: 8,
+
+      //   /* for 'klay'
+      //   direction: 'DOWN',
+      //   // fixedAlignment: 'LEFTUP',
+      //   inLayerSpacingFactor: 0.5, */
+      // },
+
       wheelSensitivity: 0.25,
     });
 
@@ -96,43 +74,43 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     // place subpackages below their parent packages
     payload[1]
-        .filter((e) => ["subpackage"].includes(e.data.conn_type))
-        .forEach((e) => {
-          c = {
-            "axis": "y",
-            "left": cy.$id(e.data.target),
-            "right": cy.$id(e.data.source),
-            "gap": 128
-          };
-          constraints.push(c);
-        });
+      .filter((e) => ["contains"].includes(e.data.conn_type))
+      .forEach((e) => {
+        c = {
+          "axis": "y",
+          "left": cy.$id(e.data.target),
+          "right": cy.$id(e.data.source),
+          "gap": 128
+        };
+        constraints.push(c);
+      });
 
     // place subclasses below their superclasses
     payload[1]
-        .filter((e) => ["specializes", "realizes"].includes(e.data.conn_type))
-        .forEach((e) => {
-          let c = {
-            "axis": "y",
-            "left": cy.$id(e.data.target),
-            "right": cy.$id(e.data.source),
-            "gap": 128
-          };
-          constraints.push(c);
-        });
+      .filter((e) => ["specializes", "realizes"].includes(e.data.conn_type))
+      .forEach((e) => {
+        let c = {
+          "axis": "y",
+          "left": cy.$id(e.data.target),
+          "right": cy.$id(e.data.source),
+          "gap": 128
+        };
+        constraints.push(c);
+      });
 
     // place dependants to the left of the dependency
     payload[1]
-        .filter((e) => !["specializes", "realizes", "subpackage"]
-            .includes(e.data.conn_type))
-        .forEach((e) => {
-          let c = {
-            "axis": "x",
-            "left": cy.$id(e.data.source),
-            "right": cy.$id(e.data.target),
-            "gap": 128
-          };
-          constraints.push(c);
-        });
+      .filter((e) => !["specializes", "realizes", "subpackage"]
+        .includes(e.data.conn_type))
+      .forEach((e) => {
+        let c = {
+          "axis": "x",
+          "left": cy.$id(e.data.source),
+          "right": cy.$id(e.data.target),
+          "gap": 128
+        };
+        constraints.push(c);
+      });
 
     // console.log(constraints);
 
@@ -142,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       nodeSpacing: function (node) {
         return 32;
       },
-      flow: {axis: 'y', minSeparation: -32},
+      flow: { axis: 'y', minSeparation: -32 },
       edgeSymDiffLength: 8,
       gapInequalities: constraints
     }).run();
@@ -171,24 +149,24 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
   function bindRouters() {
 
     // right click dims the element
-    cy.on('cxttap', 'node,edge', 
-        evt => evt.target.addClass("dimmed"));
+    cy.on('cxttap', 'node,edge',
+      evt => evt.target.addClass("dimmed"));
 
     // left click highlights the node and its connected edges and nodes
     cy.on('tap', 'node', evt => {
 
       // currently visible relationship types
       const conn_types = Array.from(document
-              .querySelectorAll('input[name="showrels"]'))
-          .filter(cb => cb.checked).map(cb => cb.value);
+        .querySelectorAll('input[name="showrels"]'))
+        .filter(cb => cb.checked).map(cb => cb.value);
 
       const edges = evt.target.connectedEdges()
-          .filter(e => conn_types.includes(e.data('conn_type')));
+        .filter(e => conn_types.includes(e.data('conn_type')));
       edges.removeClass("dimmed");
       edges.connectedNodes().removeClass("dimmed");
 
     });
-    
+
     // left click highlights the edge and its connected nodes
     cy.on('tap', 'edge', evt => {
 
@@ -196,36 +174,36 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       evt.target.connectedNodes().removeClass("dimmed");
 
     });
-    
+
   }
 
 }); // on dom ready
 
 
 const saveAsSvg = function (filename) {
-  const svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
+  const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
   const blob = new Blob([svgContent],
-      {type: "image/svg+xml;charset=utf-8"});
+    { type: "image/svg+xml;charset=utf-8" });
   saveAs(blob, filename);
 };
 
 const getSvgUrl = function () {
-  const svgContent = cy.svg({scale: 1, full: true, bg: 'beige'});
+  const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
   const blob = new Blob([svgContent],
-      {type: "image/svg+xml;charset=utf-8"});
+    { type: "image/svg+xml;charset=utf-8" });
   return URL.createObjectURL(blob);
 };
 
 const setVisible = function (ele) {
   cy.edges('[conn_type = "' + ele.value + '"]')
-      .toggleClass("hidden", !ele.checked);
+    .toggleClass("hidden", !ele.checked);
 };
 
 const setLineBends = function (ele) {
   // console.log(ele.name);
   if (ele.checked) {
     cy.edges('[conn_type = "' + ele.name + '"]')
-        .style("curve-style", ele.value);
+      .style("curve-style", ele.value);
   }
 };
 
@@ -237,7 +215,7 @@ const relayout = function (layout) {
     nodeSpacing: function (node) {
       return 32;
     },
-    flow: {axis: 'y', minSeparation: -32},
+    flow: { axis: 'y', minSeparation: -32 },
     edgeSymDiffLength: 8,
     gapInequalities: constraints
   }).run();
@@ -251,7 +229,7 @@ const highlight = function (text) {
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
 
     const cy_classes = cy.nodes()
-        .filter(e => classes.includes(e.data('name')));
+      .filter(e => classes.includes(e.data('name')));
     // console.log(cy_classes);
     const cy_edges = cy_classes.edgesWith(cy_classes);
     cy_classes.removeClass("dimmed");

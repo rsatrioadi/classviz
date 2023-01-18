@@ -49,7 +49,7 @@ node[role_stereotype = "Structurer"] {
   background-color: #fddaec;
 }
 
-node[abstraction = "package"] {
+node[properties.kind = "package"] {
   text-valign: top;
   background-opacity: 0.1;
   border-color: silver;
@@ -64,7 +64,8 @@ edge {
   edge-text-rotation: autorotate;
 }
 
-edge[conn_type = "subpackage"] {
+edge[conn_type = "contains"] {
+  display: none;
   width: 2;
   line-color: red;
   taxi-direction: upward;
@@ -103,10 +104,10 @@ edge[conn_type = "composites"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "depends"] {
+edge[conn_type = "calls"] {
   target-arrow-shape: vee;
   line-style: dashed;
-  label: depends;
+  label: calls;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
