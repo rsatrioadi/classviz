@@ -1,9 +1,17 @@
+.dimmed {
+  opacity: 0.1;
+}
+
+.hidden {
+  display: none;
+}
+
 node {
   height: label;
   width: label;
   padding: 4px;
   border-color: black;
-  background-color: silver;
+  background-color: whitesmoke;
   border-width: 1;
   shape: rectangle;
   label: data(label);
@@ -63,7 +71,7 @@ edge[conn_type = "subpackage"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "inherits"] {
+edge[conn_type = "specializes"] {
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   curve-style: taxi;
@@ -96,47 +104,41 @@ edge[conn_type = "composites"] {
 }
 
 edge[conn_type = "depends"] {
-  target-arrow-shape: triangle;
-  taxi-direction: leftward;
-  taxi-turn: -32px;
-}
-
-edge[conn_type = "calls"] {
   target-arrow-shape: vee;
   line-style: dashed;
-  label: calls;
+  label: depends;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
-edge[conn_type = "creates"] {
+edge[conn_type = "constructs"] {
   source-arrow-shape: diamond;
   arrow-scale: 1.1;
-  label: creates;
+  label: constructs;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
-edge[conn_type = "uses"] {
+edge[conn_type = "returns"] {
   target-arrow-shape: vee;
   line-style: dashed;
-  label: uses;
+  label: returns;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
-edge[conn_type = "has"] {
+edge[conn_type = "holds"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   arrow-scale: 1.1;
-  label: has;
+  label: holds;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
-edge[conn_type = "references"] {
+edge[conn_type = "accepts"] {
   target-arrow-shape: vee;
-  label: references;
+  label: accepts;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
