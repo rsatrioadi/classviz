@@ -3,22 +3,32 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
   function prepEles(eles) {
 
     eles.nodes.forEach((node) => {
-      const annot = node.data.properties.kind !== "class"
-          ? `«${node.data.properties.kind}»\n`
+      const kind = node.data.properties.kind
+      const annot = kind !== "class"
+          ? `«${kind}»\n`
           : '';
-      
-      const name = node.data.properties.simpleName;
-      node.data.label = `${annot}${name}`;
-      // node.data.parent = node.data.properties.package;
+      if (kind === "package") {
+        node.data.name = node.data.id;
+        node.data.label = node.data.name;
+      } else {
+        node.data.name = node.data.properties.simpleName;
+        node.data.label = `${annot}${node.data.name}`;
+      }
     });
 
     eles.edges.forEach((edge) => {
       edge.data.interaction = edge.data.labels.join();
-      edge.data.conn_type = edge.data.interaction;
       delete edge.data.id;
     });
 
     return eles;
+  }
+
+  function setParents(relationship) {
+    cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
+      edge.target().move({ parent: edge.source().id()});
+    });
+    cy.edges(`[interaction = "${relationship}"]`).remove();
   }
 
   const eles = fetch('data/input.json')
@@ -29,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
   const style = fetch('style.cycss')
       .then(res => res.text());
 
-  Promise.all([eles, style]).then(initCy);
+  Promise.all([eles, style])
+      .then(initCy);
 
   function initCy(payload) {
 
@@ -47,23 +58,25 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
       style: payload[1],
 
-      // layout: {
-      //   name: 'cola',
-      //   directed: true,
-      //   nodeSpacing: function (node) {
-      //     return 32;
-      //   },
-      //   flow: { axis: 'y', minSeparation: -32 },
-      //   edgeSymDiffLength: 8,
+      layout: {
+        name: 'klay',
+        directed: true,
+        nodeSpacing: function (node) {
+          return 32;
+        },
+        flow: { axis: 'y', minSeparation: -32 },
+        edgeSymDiffLength: 8,
 
-      //   /* for 'klay'
-      //   direction: 'DOWN',
-      //   // fixedAlignment: 'LEFTUP',
-      //   inLayerSpacingFactor: 0.5, */
-      // },
+        /* for 'klay'
+        direction: 'DOWN',
+        // fixedAlignment: 'LEFTUP',
+        inLayerSpacingFactor: 0.5, */
+      },
 
       wheelSensitivity: 0.25,
     });
+
+    setParents("contains");
 
     const checkboxes = document.querySelectorAll('input[name="showrels"]');
     checkboxes.forEach((checkbox) => {
@@ -73,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     constraints = [];
 
     // place subpackages below their parent packages
-    payload[1]
-      .filter((e) => ["contains"].includes(e.data.conn_type))
+    payload[0].edges
+      .filter((e) => [].includes(e.data.interaction))
       .forEach((e) => {
         c = {
           "axis": "y",
@@ -86,8 +99,8 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       });
 
     // place subclasses below their superclasses
-    payload[1]
-      .filter((e) => ["specializes", "realizes"].includes(e.data.conn_type))
+    payload[0].edges
+      .filter((e) => ["specializes", "realizes"].includes(e.data.interaction))
       .forEach((e) => {
         let c = {
           "axis": "y",
@@ -99,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       });
 
     // place dependants to the left of the dependency
-    payload[1]
-      .filter((e) => !["specializes", "realizes", "subpackage"]
-        .includes(e.data.conn_type))
+    payload[0].edges
+      .filter((e) => !["specializes", "realizes", "contains"]
+        .includes(e.data.interaction))
       .forEach((e) => {
         let c = {
           "axis": "x",
@@ -114,8 +127,10 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     // console.log(constraints);
 
+    bindRouters();
+
     cy.layout({
-      name: 'cola', animate: true,
+      name: 'klay', animate: true,
       directed: true,
       nodeSpacing: function (node) {
         return 32;
@@ -125,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       gapInequalities: constraints
     }).run();
 
-    bindRouters();
+    return cy;
   }
 
   // const layoutConfig = {
@@ -156,12 +171,14 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     cy.on('tap', 'node', evt => {
 
       // currently visible relationship types
-      const conn_types = Array.from(document
+      const interactions = Array.from(document
         .querySelectorAll('input[name="showrels"]'))
         .filter(cb => cb.checked).map(cb => cb.value);
 
       const edges = evt.target.connectedEdges()
-        .filter(e => conn_types.includes(e.data('conn_type')));
+        .filter(e => interactions.includes(e.data('interaction')));
+      console.log(interactions)
+      console.log(edges)
       edges.removeClass("dimmed");
       edges.connectedNodes().removeClass("dimmed");
 
@@ -195,14 +212,14 @@ const getSvgUrl = function () {
 };
 
 const setVisible = function (ele) {
-  cy.edges('[conn_type = "' + ele.value + '"]')
+  cy.edges('[interaction = "' + ele.value + '"]')
     .toggleClass("hidden", !ele.checked);
 };
 
 const setLineBends = function (ele) {
   // console.log(ele.name);
   if (ele.checked) {
-    cy.edges('[conn_type = "' + ele.name + '"]')
+    cy.edges('[interaction = "' + ele.name + '"]')
       .style("curve-style", ele.value);
   }
 };
@@ -229,12 +246,13 @@ const highlight = function (text) {
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
 
     const cy_classes = cy.nodes()
-      .filter(e => classes.includes(e.data('name')));
-    // console.log(cy_classes);
+      .filter(function (node) {
+          return classes.includes(node.data('name'));
+        });
     const cy_edges = cy_classes.edgesWith(cy_classes);
     cy_classes.removeClass("dimmed");
     cy_edges.removeClass("dimmed");
-    cy.nodes('[abstraction = "package"]').removeClass("dimmed");
+    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
   } else {
     cy.elements().removeClass("dimmed");
   }

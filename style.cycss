@@ -64,7 +64,7 @@ edge {
   edge-text-rotation: autorotate;
 }
 
-edge[conn_type = "contains"] {
+edge[interaction = "contains"] {
   display: none;
   width: 2;
   line-color: red;
@@ -72,7 +72,7 @@ edge[conn_type = "contains"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "specializes"] {
+edge[interaction = "specializes"] {
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   curve-style: taxi;
@@ -80,7 +80,7 @@ edge[conn_type = "specializes"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "realizes"] {
+edge[interaction = "realizes"] {
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   line-style: dashed;
@@ -89,14 +89,14 @@ edge[conn_type = "realizes"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "aggregates"] {
+edge[interaction = "aggregates"] {
   source-arrow-shape: diamond;
   arrow-scale: 1.1;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
-edge[conn_type = "composites"] {
+edge[interaction = "composites"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   arrow-scale: 1.1;
@@ -104,7 +104,7 @@ edge[conn_type = "composites"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "calls"] {
+edge[interaction = "calls"] {
   target-arrow-shape: vee;
   line-style: dashed;
   label: calls;
@@ -112,7 +112,7 @@ edge[conn_type = "calls"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "constructs"] {
+edge[interaction = "constructs"] {
   source-arrow-shape: diamond;
   arrow-scale: 1.1;
   label: constructs;
@@ -120,7 +120,7 @@ edge[conn_type = "constructs"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "returns"] {
+edge[interaction = "returns"] {
   target-arrow-shape: vee;
   line-style: dashed;
   label: returns;
@@ -128,7 +128,7 @@ edge[conn_type = "returns"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "holds"] {
+edge[interaction = "holds"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   arrow-scale: 1.1;
@@ -137,7 +137,7 @@ edge[conn_type = "holds"] {
   taxi-turn: -32px;
 }
 
-edge[conn_type = "accepts"] {
+edge[interaction = "accepts"] {
   target-arrow-shape: vee;
   label: accepts;
   taxi-direction: leftward;
