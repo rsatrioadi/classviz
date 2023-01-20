@@ -53,10 +53,30 @@ node[properties.kind = "package"] {
   text-valign: top;
   background-opacity: 0.1;
   border-color: silver;
+  text-background-color: whitesmoke;
+  text-border-color: silver;
+  text-background-shape: rectangle;
+  text-border-width: 1;
 }
 
 node[properties.kind = "field"] {
   shape: ellipse;
+}
+
+node[properties.kind = "parameter"] {
+  shape: ellipse;
+}
+
+node[properties.kind = "method"] {
+  shape: round-rectangle;
+}
+
+node[properties.kind = "ctor"] {
+  shape: round-rectangle;
+}
+
+node[properties.kind = "script"] {
+  shape: round-rectangle;
 }
 
 edge {
@@ -66,9 +86,13 @@ edge {
   source-arrow-color: black;
   curve-style: bezier;
   edge-text-rotation: autorotate;
+  target-arrow-shape: vee;
+  label: data(interaction);
 }
 
 edge[interaction = "contains"] {
+  source-arrow-shape: none;
+  target-arrow-shape: none;
   display: none;
   width: 2;
   line-color: grey;
@@ -79,6 +103,7 @@ edge[interaction = "contains"] {
 edge[interaction = "specializes"] {
   target-arrow-color: #ffd92f;
   line-color: #ffd92f;
+  source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   curve-style: taxi;
@@ -89,6 +114,7 @@ edge[interaction = "specializes"] {
 edge[interaction = "realizes"] {
   target-arrow-color: #ffd92f;
   line-color: #ffd92f;
+  source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   line-style: dashed;
@@ -101,6 +127,7 @@ edge[interaction = "aggregates"] {
   source-arrow-color: #e78ac3;
   line-color: #e78ac3;
   source-arrow-shape: diamond;
+  target-arrow-shape: none;
   arrow-scale: 1.1;
   taxi-direction: leftward;
   taxi-turn: -32px;
@@ -111,6 +138,7 @@ edge[interaction = "composites"] {
   line-color: #e78ac3;
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
+  target-arrow-shape: none;
   arrow-scale: 1.1;
   taxi-direction: leftward;
   taxi-turn: -32px;
@@ -121,6 +149,7 @@ edge[interaction = "holds"] {
   line-color: #e78ac3;
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
+  target-arrow-shape: none;
   arrow-scale: 1.1;
   label: holds;
   taxi-direction: leftward;
@@ -130,6 +159,7 @@ edge[interaction = "holds"] {
 edge[interaction = "calls"] {
   target-arrow-color: #8da0cb;
   line-color: #8da0cb;
+  source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
   label: calls;
@@ -140,6 +170,7 @@ edge[interaction = "calls"] {
 edge[interaction = "accesses"] {
   target-arrow-color: #e5c494;
   line-color: #e5c494;
+  source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
   label: accesses;
@@ -151,6 +182,7 @@ edge[interaction = "constructs"] {
   source-arrow-color: #fc8d62;
   line-color: #fc8d62;
   source-arrow-shape: diamond;
+  target-arrow-shape: none;
   arrow-scale: 1.1;
   label: constructs;
   taxi-direction: leftward;
@@ -160,6 +192,7 @@ edge[interaction = "constructs"] {
 edge[interaction = "returns"] {
   target-arrow-color: #a6d854;
   line-color: #a6d854;
+  source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
   label: returns;
@@ -170,6 +203,7 @@ edge[interaction = "returns"] {
 edge[interaction = "accepts"] {
   target-arrow-color: #66c2a5;
   line-color: #66c2a5;
+  source-arrow-shape: none;
   target-arrow-shape: vee;
   label: accepts;
   taxi-direction: leftward;
