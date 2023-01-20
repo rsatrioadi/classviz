@@ -52,38 +52,6 @@
       <button onclick="window.location=getSvgUrl()">View SVG</button>
     </div>
 
-    <!-- <div class="menu">
-        <h2>Show/hide relationships</h2>
-        <label for="subpackage">
-            <input type="checkbox" id="subpackage" name="showrels"
-                   onchange="setVisible(this)" value="subpackage" checked="true">Subpackage</input>
-        </label><br/>
-        <label for="specializes">
-            <input type="checkbox" id="specializes" name="showrels"
-                   onchange="setVisible(this)" value="specializes" checked="true">Specializes</input>
-        </label><br/>
-        <label for="depends">
-            <input type="checkbox" id="depends" name="showrels"
-                   onchange="setVisible(this)" value="depends">Depends</input>
-        </label><br/>
-        <label for="constructs">
-            <input type="checkbox" id="constructs" name="showrels"
-                   onchange="setVisible(this)" value="constructs">Constructs</input>
-        </label><br/>
-        <label for="accepts">
-            <input type="checkbox" id="accepts" name="showrels"
-                   onchange="setVisible(this)" value="accepts">Accepts</input>
-        </label><br/>
-        <label for="holds">
-            <input type="checkbox" id="holds" name="showrels"
-                   onchange="setVisible(this)" value="holds">Holds</input>
-        </label><br/>
-        <label for="returns">
-            <input type="checkbox" id="returns" name="showrels"
-                   onchange="setVisible(this)" value="returns">Returns</input>
-        </label><br/>
-    </div> -->
-
     <div class="menu">
       <h2>Relationships</h2>
       <table style="width: 100%; text-align: left">
@@ -113,12 +81,42 @@
           </td>
         </tr>
         <tr>
-          <td><label for="depends">
-              <input type="checkbox" id="depends" name="showrels" onchange="setVisible(this)"
-                value="depends">Depends</input>
+          <td><label for="holds">
+              <input type="checkbox" id="holds" name="showrels" onchange="setVisible(this)" value="holds">Holds</input>
             </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="depends-ort" name="depends" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="depends-bez" name="depends" value="bezier"
+          <td><input type="radio" onchange="setLineBends(this)" id="holds-ort" name="holds" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="holds-bez" name="holds" value="bezier" checked="true"></td>
+        </tr>
+        <tr>
+          <td><label for="returns">
+              <input type="checkbox" id="returns" name="showrels" onchange="setVisible(this)" value="returns">Returns</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="returns-ort" name="returns" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="returns-bez" name="returns" value="bezier" checked="true">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="accepts">
+              <input type="checkbox" id="accepts" name="showrels" onchange="setVisible(this)" value="accepts">Accepts</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="accepts-ort" name="accepts" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="accepts-bez" name="accepts" value="bezier" checked="true">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="accesses">
+              <input type="checkbox" id="accesses" name="showrels" onchange="setVisible(this)" value="accesses">Accesses</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="accesses-ort" name="accesses" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="accesses-bez" name="accesses" value="bezier" checked="true">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="calls">
+              <input type="checkbox" id="calls" name="showrels" onchange="setVisible(this)" value="calls">Calls</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="calls-ort" name="calls" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="calls-bez" name="calls" value="bezier"
               checked="true"></td>
         </tr>
         <tr>
@@ -130,32 +128,6 @@
           <td><input type="radio" onchange="setLineBends(this)" id="constructs-bez" name="constructs" value="bezier"
               checked="true"></td>
         </tr>
-        <tr>
-          <td><label for="accepts">
-              <input type="checkbox" id="accepts" name="showrels" onchange="setVisible(this)"
-                value="accepts">Accepts</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accepts-ort" name="accepts" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accepts-bez" name="accepts" value="bezier"
-              checked="true"></td>
-        </tr>
-        <tr>
-          <td><label for="holds">
-              <input type="checkbox" id="holds" name="showrels" onchange="setVisible(this)" value="holds">Holds</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="holds-ort" name="holds" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="holds-bez" name="holds" value="bezier"
-              checked="true"></td>
-        </tr>
-        <tr>
-          <td><label for="returns">
-              <input type="checkbox" id="returns" name="showrels" onchange="setVisible(this)"
-                value="returns">Returns</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="returns-ort" name="returns" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="returns-bez" name="returns" value="bezier"
-              checked="true"></td>
-        </tr>
       </table>
     </div>
 
@@ -163,8 +135,8 @@
       <h2>Layout algorithm</h2>
       <label for="layout">Select layout
         <select id="selectlayout" size="1">
-          <option selected value="cola">cola</option>
-          <option value="klay">klay</option>
+          <option value="cola">cola</option>
+          <option selected value="klay">klay</option>
           <option value="fcose">fcose</option>
           <option value="cose-bilkent">cose-bilkent</option>
           <option value="euler">euler</option>
@@ -182,13 +154,13 @@
     <div class="menu">
       <h2>Highlight classes</h2>
 
-      <label for="highlight">Separate classes by comma, whitespace, or new line</label>
-      <textarea id="highlight" name="highlight" rows="3" cols="25"></textarea>
-      
-      <button onclick="highlight(document.getElementById('highlight').value
-      )">Highlight
+      <label for="highlight">Separate classes by comma, whitespace, or new line.</label>
+      <textarea id="highlight" name="highlight" rows="3" cols="30"></textarea>
+      <button onclick="highlight('')">Reset
       </button>
-      <p/>
+      <button onclick="highlight(document.getElementById('highlight').value)">Highlight
+      </button>
+      <p />
       <button onclick="toggleVisibility()">Toggle visibility
       </button>
     </div>

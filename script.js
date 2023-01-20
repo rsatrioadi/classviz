@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
-  function prepEles(eles) {
+  function prepareEles(eles) {
 
     eles.nodes.forEach((node) => {
       const kind = node.data.properties.kind
-      const annot = kind !== "class"
+      const annot = ["interface","abstract","enum"].includes(kind)
           ? `«${kind}»\n`
           : '';
       if (kind === "package") {
@@ -24,17 +24,24 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     return eles;
   }
 
-  function setParents(relationship) {
+  function setParents(relationship, inverted) {
+    if (inverted) {
+      cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
+        edge.source().move({ parent: edge.target().id() });
+      });
+    } else {
     cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
-      edge.target().move({ parent: edge.source().id()});
-    });
-    cy.edges(`[interaction = "${relationship}"]`).remove();
+        edge.target().move({ parent: edge.source().id()});
+      });
+    }
+    cy.edges(`[interaction = "${relationship}"]`).style({ display: "none" });
   }
 
-  const eles = fetch('data/input.json')
+  const filePrefix = (new URLSearchParams(window.location.search)).get('prefix')
+  const eles = fetch('data/'+(filePrefix?filePrefix:'')+'input.json')
       .then(res => res.json())
       .then(json => json.elements)
-      .then(eles => prepEles(eles))
+      .then(eles => prepareEles(eles))
 
   const style = fetch('style.cycss')
       .then(res => res.text());
@@ -43,9 +50,6 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       .then(initCy);
 
   function initCy(payload) {
-
-    console.log(payload[0]); // eles
-    console.log(payload[1]); // style
 
     const cy = window.cy = cytoscape({
 
@@ -76,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       wheelSensitivity: 0.25,
     });
 
-    setParents("contains");
+    setParents("contains", false);
 
     const checkboxes = document.querySelectorAll('input[name="showrels"]');
     checkboxes.forEach((checkbox) => {
