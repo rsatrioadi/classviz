@@ -169,10 +169,22 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     // right click dims the element
     cy.on('cxttap', 'node,edge',
-      evt => evt.target.addClass("dimmed"));
+      evt => {
+        evt.target.addClass("dimmed")
+        const interactions = Array.from(document
+          .querySelectorAll('input[name="showrels"]'))
+          .filter(cb => cb.checked).map(cb => cb.value);
+
+        const edges = evt.target.connectedEdges()
+          .filter(e => interactions.includes(e.data('interaction')));
+        console.log(interactions)
+        console.log(edges)
+        edges.addClass("dimmed");
+      });
 
     // left click highlights the node and its connected edges and nodes
     cy.on('tap', 'node', evt => {
+      evt.target.removeClass("dimmed")
 
       // currently visible relationship types
       const interactions = Array.from(document
