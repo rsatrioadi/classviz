@@ -80,7 +80,7 @@ node[properties.kind = "script"] {
 }
 
 edge {
-  width: 1;
+  width: 2;
   line-color: black;
   target-arrow-color: black;
   source-arrow-color: black;

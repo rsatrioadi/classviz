@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     cy.edges(`[interaction = "${relationship}"]`).style({ display: "none" });
   }
 
-  const filePrefix = (new URLSearchParams(window.location.search)).get('prefix')
+  const filePrefix = (new URLSearchParams(window.location.search)).get('p')
   const eles = fetch('data/'+(filePrefix?filePrefix:'')+'input.json')
       .then(res => res.json())
       .then(json => json.elements)
@@ -62,21 +62,6 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
       style: payload[1],
 
-      layout: {
-        name: 'klay',
-        directed: true,
-        nodeSpacing: function (node) {
-          return 32;
-        },
-        flow: { axis: 'y', minSeparation: -32 },
-        edgeSymDiffLength: 8,
-
-        /* for 'klay'
-        direction: 'DOWN',
-        // fixedAlignment: 'LEFTUP',
-        inLayerSpacingFactor: 0.5, */
-      },
-
       wheelSensitivity: 0.25,
     });
 
@@ -90,17 +75,17 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     constraints = [];
 
     // place subpackages below their parent packages
-    payload[0].edges
-      .filter((e) => [].includes(e.data.interaction))
-      .forEach((e) => {
-        c = {
-          "axis": "y",
-          "left": cy.$id(e.data.target),
-          "right": cy.$id(e.data.source),
-          "gap": 128
-        };
-        constraints.push(c);
-      });
+    // payload[0].edges
+    //   .filter((e) => ["contains"].includes(e.data.interaction))
+    //   .forEach((e) => {
+    //     c = {
+    //       "axis": "y",
+    //       "left": cy.$id(e.data.target),
+    //       "right": cy.$id(e.data.source),
+    //       "gap": 128
+    //     };
+    //     constraints.push(c);
+    //   });
 
     // place subclasses below their superclasses
     payload[0].edges
@@ -135,13 +120,14 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     cy.layout({
       name: 'klay', animate: true,
-      directed: true,
-      nodeSpacing: function (node) {
-        return 32;
-      },
-      flow: { axis: 'y', minSeparation: -32 },
-      edgeSymDiffLength: 8,
-      gapInequalities: constraints
+      nodeDimensionsIncludeLabels: true,
+      klay: {
+        direction: 'DOWN',
+        edgeRouting: 'ORTHOGONAL',
+        routeSelfLoopInside: true,
+        thoroughness: 4,
+        spacing: 32
+      }
     }).run();
 
     return cy;
@@ -244,13 +230,14 @@ const relayout = function (layout) {
   // console.log(layout);
   cy.layout({
     name: layout, animate: true,
-    directed: true,
-    nodeSpacing: function (node) {
-      return 32;
-    },
-    flow: { axis: 'y', minSeparation: -32 },
-    edgeSymDiffLength: 8,
-    gapInequalities: constraints
+    nodeDimensionsIncludeLabels: true,
+    klay: {
+      direction: 'DOWN',
+      edgeRouting: 'ORTHOGONAL',
+      routeSelfLoopInside: true,
+      thoroughness: 4,
+      spacing: 32
+    }
   }).run();
 };
 

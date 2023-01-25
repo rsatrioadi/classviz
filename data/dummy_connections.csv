@@ -1,4 +1,0 @@
-conn_type,source,target
-realizes,geom.Point2D,geom.Point<T>
-composites,geom.shape.Rectangle,geom.Point<T>
-inherits,geom.shape.Rectangle,geom.shape.Shape
