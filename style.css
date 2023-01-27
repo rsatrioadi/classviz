@@ -42,7 +42,13 @@ h2 {
   padding: 4px;
   border: 1px solid gainsboro;
 }
-
+.notice {
+  background-color: whitesmoke;
+  border-radius: 4px;
+  margin: 0 2px 2px 2px;
+  padding: 4px;
+  border: 1px solid gainsboro;
+}
 h1.titlebar {
   margin: 0px;
 }

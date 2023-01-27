@@ -213,6 +213,16 @@ const getSvgUrl = function () {
   return URL.createObjectURL(blob);
 };
 
+const showPrimitives = function (ele) {
+  cy.nodes().filter((n) => n.data("labels").includes("Primitive"))
+    .style({display: ele.checked?"element":"none"});
+};
+
+const showPackages = function (ele) {
+  cy.nodes().filter((n) => n.data("labels").includes("Container") && n.data("labels").length == 1)
+    .toggleClass("pkghidden", !ele.checked);
+};
+
 const setVisible = function (ele) {
   cy.edges('[interaction = "' + ele.value + '"]')
     .toggleClass("hidden", !ele.checked);

@@ -209,3 +209,9 @@ edge[interaction = "accepts"] {
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
+
+.pkghidden {
+  background-opacity: 0;
+  border-opacity: 0;
+  text-opacity: 0;
+}

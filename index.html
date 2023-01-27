@@ -52,6 +52,19 @@
       <button onclick="window.open(getSvgUrl(), '_blank')">View SVG</button>
     </div>
 
+    <div class="notice">
+      <strong>Tip:</strong> try (right-)clicking on nodes and edges!
+    </div>
+<div class="menu">
+  <h2>Nodes</h2>
+  <label for="showPrimitives">
+    <input type="checkbox" id="showPrimitives" name="showPrimitives" onchange="showPrimitives(this)" value="showPrimitives"
+      checked="true">Show primitives</input>
+  </label><br/><label for="showPackages">
+    <input type="checkbox" id="showPackages" name="showPackages" onchange="showPackages(this)"
+      value="showPackages" checked="true">Show packages</input>
+  </label>
+  </div>
     <div class="menu">
       <h2>Relationships</h2>
       <table style="width: 100%; text-align: left">
@@ -85,30 +98,37 @@
               <input type="checkbox" id="holds" name="showrels" onchange="setVisible(this)" value="holds">Holds</input>
             </label></td>
           <td><input type="radio" onchange="setLineBends(this)" id="holds-ort" name="holds" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="holds-bez" name="holds" value="bezier" checked="true"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="holds-bez" name="holds" value="bezier"
+              checked="true"></td>
         </tr>
         <tr>
           <td><label for="returns">
-              <input type="checkbox" id="returns" name="showrels" onchange="setVisible(this)" value="returns">Returns</input>
+              <input type="checkbox" id="returns" name="showrels" onchange="setVisible(this)"
+                value="returns">Returns</input>
             </label></td>
           <td><input type="radio" onchange="setLineBends(this)" id="returns-ort" name="returns" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="returns-bez" name="returns" value="bezier" checked="true">
+          <td><input type="radio" onchange="setLineBends(this)" id="returns-bez" name="returns" value="bezier"
+              checked="true">
           </td>
         </tr>
         <tr>
           <td><label for="accepts">
-              <input type="checkbox" id="accepts" name="showrels" onchange="setVisible(this)" value="accepts">Accepts</input>
+              <input type="checkbox" id="accepts" name="showrels" onchange="setVisible(this)"
+                value="accepts">Accepts</input>
             </label></td>
           <td><input type="radio" onchange="setLineBends(this)" id="accepts-ort" name="accepts" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accepts-bez" name="accepts" value="bezier" checked="true">
+          <td><input type="radio" onchange="setLineBends(this)" id="accepts-bez" name="accepts" value="bezier"
+              checked="true">
           </td>
         </tr>
         <tr>
           <td><label for="accesses">
-              <input type="checkbox" id="accesses" name="showrels" onchange="setVisible(this)" value="accesses">Accesses</input>
+              <input type="checkbox" id="accesses" name="showrels" onchange="setVisible(this)"
+                value="accesses">Accesses</input>
             </label></td>
           <td><input type="radio" onchange="setLineBends(this)" id="accesses-ort" name="accesses" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accesses-bez" name="accesses" value="bezier" checked="true">
+          <td><input type="radio" onchange="setLineBends(this)" id="accesses-bez" name="accesses" value="bezier"
+              checked="true">
           </td>
         </tr>
         <tr>
