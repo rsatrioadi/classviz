@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
 
   <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
-  <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
+  <!-- <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script> -->
   <script src="https://unpkg.com/whatwg-fetch@3.0.0/dist/fetch.umd.js"></script>
 
   <script src="https://unpkg.com/layout-base/layout-base.js"></script>
@@ -175,7 +175,7 @@
       <h2>Highlight classes</h2>
 
       <label for="highlight">Separate classes by comma, whitespace, or new line.</label>
-      <textarea id="highlight" name="highlight" rows="3" cols="30"></textarea>
+      <textarea id="highlight" name="highlight" rows="3"></textarea>
       <button onclick="highlight('')">Reset
       </button>
       <button onclick="highlight(document.getElementById('highlight').value)">Highlight
