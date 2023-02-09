@@ -3,22 +3,12 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
   function prepareEles(eles) {
 
     eles.nodes.forEach((node) => {
-      const kind = node.data.properties.kind
-      const annot = ["interface","abstract","enum"].includes(kind)
-          ? `«${kind}»\n`
-          : '';
-      if (kind === "package") {
-        node.data.name = node.data.id;
-        node.data.label = node.data.name;
-      } else {
-        node.data.name = node.data.properties.simpleName;
-        node.data.label = `${annot}${node.data.name}`;
-      }
+      node.data.name = node.data.properties.shortname ? node.data.properties.shortname : node.data.properties.simpleName;
+      node.data.label = `${node.data.name}`;
     });
 
     eles.edges.forEach((edge) => {
-      edge.data.interaction = edge.data.labels.join();
-      delete edge.data.id;
+      edge.data.interaction = edge.data.label ? edge.data.label : edge.data.labels.join();
     });
 
     return eles;
@@ -67,8 +57,23 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     setParents("contains", false);
 
-    const checkboxes = document.querySelectorAll('input[name="showrels"]');
-    checkboxes.forEach((checkbox) => {
+    cy.edges().map(e => e.data('interaction')).filter((v, i, s) => s.indexOf(v) === i).forEach(l => {
+      document.getElementById("reltab").
+        innerHTML += `
+        <tr>
+          <td><label for="${l}">
+              <input type="checkbox" id="${l}" name="showrels" onchange="setVisible(this)" value="${l}"
+                checked="true">${l}</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="${l}-ort" name="${l}" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="${l}-bez" name="${l}" value="bezier"
+              checked="true">
+          </td>
+        </tr>
+        `;
+    });
+
+    document.querySelectorAll('input[name="showrels"]').forEach((checkbox) => {
       setVisible(checkbox);
     });
 

@@ -106,7 +106,7 @@ edge[interaction = "specializes"] {
   source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
-  curve-style: taxi;
+  curve-style: bezier;
   taxi-direction: upward;
   taxi-turn: -32px;
 }
@@ -118,7 +118,7 @@ edge[interaction = "realizes"] {
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   line-style: dashed;
-  curve-style: taxi;
+  curve-style: bezier;
   taxi-direction: upward;
   taxi-turn: -32px;
 }

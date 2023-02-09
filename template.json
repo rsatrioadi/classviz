@@ -1,0 +1,567 @@
+	
+[
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "start": {
+          "identity": {
+            "low": 3653326,
+            "high": 0
+          },
+          "labels": [
+            "qwe",
+            "uio",
+            "rty"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "type": "abc",
+            "lineNumber": {
+              "low": 252,
+              "high": 0
+            },
+            "shortname": "abc"
+          }
+        },
+        "end": {
+          "identity": {
+            "low": 3204960,
+            "high": 0
+          },
+          "labels": [
+            "nmq",
+            "lzx"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "lineNumber": {
+              "low": 486,
+              "high": 0
+            },
+            "type": "abc",
+            "shortname": "abc"
+          }
+        },
+        "segments": [
+          {
+            "start": {
+              "identity": {
+                "low": 3653326,
+                "high": 0
+              },
+              "labels": [
+                "qwe",
+                "rty",
+                "uio"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "type": "abc",
+                "lineNumber": {
+                  "low": 252,
+                  "high": 0
+                },
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 3950633,
+                "high": 0
+              },
+              "start": {
+                "low": 3801174,
+                "high": 0
+              },
+              "end": {
+                "low": 3653326,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "pas",
+                "dfg",
+                "hjk",
+                "lzx",
+                "cvb"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          },
+          {
+            "start": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "cvb",
+                "lzx",
+                "hjk",
+                "pas",
+                "dfg"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 15240281,
+                "high": 0
+              },
+              "start": {
+                "low": 3204960,
+                "high": 0
+              },
+              "end": {
+                "low": 3801174,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3204960,
+                "high": 0
+              },
+              "labels": [
+                "nmq",
+                "lzx"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "lineNumber": {
+                  "low": 486,
+                  "high": 0
+                },
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          }
+        ],
+        "length": 2
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "start": {
+          "identity": {
+            "low": 3653326,
+            "high": 0
+          },
+          "labels": [
+            "qwe",
+            "uio",
+            "rty"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "type": "abc",
+            "lineNumber": {
+              "low": 252,
+              "high": 0
+            },
+            "shortname": "abc"
+          }
+        },
+        "end": {
+          "identity": {
+            "low": 3204961,
+            "high": 0
+          },
+          "labels": [
+            "nmq",
+            "lzx"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "lineNumber": {
+              "low": 35,
+              "high": 0
+            },
+            "type": "abc",
+            "shortname": "abc"
+          }
+        },
+        "segments": [
+          {
+            "start": {
+              "identity": {
+                "low": 3653326,
+                "high": 0
+              },
+              "labels": [
+                "qwe",
+                "uio",
+                "rty"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "type": "abc",
+                "lineNumber": {
+                  "low": 252,
+                  "high": 0
+                },
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 3950633,
+                "high": 0
+              },
+              "start": {
+                "low": 3801174,
+                "high": 0
+              },
+              "end": {
+                "low": 3653326,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "cvb",
+                "lzx",
+                "hjk",
+                "pas",
+                "dfg"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          },
+          {
+            "start": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "cvb",
+                "lzx",
+                "hjk",
+                "pas",
+                "dfg"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 15240282,
+                "high": 0
+              },
+              "start": {
+                "low": 3204961,
+                "high": 0
+              },
+              "end": {
+                "low": 3801174,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3204961,
+                "high": 0
+              },
+              "labels": [
+                "nmq",
+                "lzx"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "lineNumber": {
+                  "low": 35,
+                  "high": 0
+                },
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          }
+        ],
+        "length": 2
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "start": {
+          "identity": {
+            "low": 3653326,
+            "high": 0
+          },
+          "labels": [
+            "qwe",
+            "uio",
+            "rty"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "type": "abc",
+            "lineNumber": {
+              "low": 252,
+              "high": 0
+            },
+            "shortname": "abc"
+          }
+        },
+        "end": {
+          "identity": {
+            "low": 3204945,
+            "high": 0
+          },
+          "labels": [
+            "nmq",
+            "lzx"
+          ],
+          "properties": {
+            "symbol": "abc",
+            "labelV": "abc",
+            "link": "abc",
+            "name": "abc",
+            "lineNumber": {
+              "low": 87,
+              "high": 0
+            },
+            "type": "abc",
+            "shortname": "abc"
+          }
+        },
+        "segments": [
+          {
+            "start": {
+              "identity": {
+                "low": 3653326,
+                "high": 0
+              },
+              "labels": [
+                "qwe",
+                "uio",
+                "rty"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "type": "abc",
+                "lineNumber": {
+                  "low": 252,
+                  "high": 0
+                },
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 3950633,
+                "high": 0
+              },
+              "start": {
+                "low": 3801174,
+                "high": 0
+              },
+              "end": {
+                "low": 3653326,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "cvb",
+                "lzx",
+                "hjk",
+                "pas",
+                "dfg"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          },
+          {
+            "start": {
+              "identity": {
+                "low": 3801174,
+                "high": 0
+              },
+              "labels": [
+                "cvb",
+                "lzx",
+                "hjk",
+                "pas",
+                "dfg"
+              ],
+              "properties": {
+                "name": "abc",
+                "link": "abc",
+                "labelV": "abc",
+                "type": "abc",
+                "shortname": "abc"
+              }
+            },
+            "relationship": {
+              "identity": {
+                "low": 15240266,
+                "high": 0
+              },
+              "start": {
+                "low": 3204945,
+                "high": 0
+              },
+              "end": {
+                "low": 3801174,
+                "high": 0
+              },
+              "type": "abc",
+              "properties": {
+                "type": "abc",
+                "labelE": "abc"
+              }
+            },
+            "end": {
+              "identity": {
+                "low": 3204945,
+                "high": 0
+              },
+              "labels": [
+                "nmq",
+                "lzx"
+              ],
+              "properties": {
+                "symbol": "abc",
+                "labelV": "abc",
+                "link": "abc",
+                "name": "abc",
+                "lineNumber": {
+                  "low": 87,
+                  "high": 0
+                },
+                "type": "abc",
+                "shortname": "abc"
+              }
+            }
+          }
+        ],
+        "length": 2
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  }
+]
