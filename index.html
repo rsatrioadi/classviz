@@ -42,12 +42,17 @@
 <body>
   <div class="titlebar">
     <h1 id="filename">Software Visualization</h1>
+    <button class="toolbutton" onclick="fileUpload()">
+      <img class="icon icon-download" src="img/upload.png" alt="Upload JSON file"></img>
+       <input type="file" id="file-selector" accept=".json">
+    </button>
     <button class="toolbutton" onclick="saveAsSvg('class-diagram.svg')">
       <img class="icon icon-download" src="img/download.png" alt="Download SVG"></img>
     </button>
     <button class="toolbutton" onclick="window.open(getSvgUrl(), '_blank')">
       <img class="icon icon-download" src="img/open-new.png" alt="Open SVG in new tab"></img>
     </button>
+    
   </div>
 
   <div id="sidebar">

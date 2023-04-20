@@ -4,6 +4,11 @@ body {
   color: rgba(0, 0, 0, 0.85);
 }
 
+
+#file-selector{
+  visibility: hidden;
+}
+
 #sidebar {
   position: fixed;
   left: 0;
