@@ -3,51 +3,44 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
   function prepareEles(eles) {
 
     eles.nodes.forEach((node) => {
-      const kind = node.data.properties.kind
-      const annot = ["interface","abstract","enum"].includes(kind)
-          ? `«${kind}»\n`
-          : '';
-      if (kind === "package") {
-        node.data.name = node.data.id;
-        node.data.label = node.data.name;
-      } else {
-        node.data.name = node.data.properties.simpleName;
-        node.data.label = `${annot}${node.data.name}`;
-      }
+      node.data.name = node.data.properties.shortname ? node.data.properties.shortname : node.data.properties.simpleName;
+      node.data.label = `${node.data.name}`;
     });
 
     eles.edges.forEach((edge) => {
-      edge.data.interaction = edge.data.labels.join();
-      delete edge.data.id;
+      edge.data.interaction = edge.data.label ? edge.data.label : edge.data.labels.join();
     });
 
     return eles;
   }
 
   function setParents(relationship, inverted) {
+    cy.edges("#parentRel").removeClass("parentRel")
     if (inverted) {
       cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
         edge.source().move({ parent: edge.target().id() });
       });
     } else {
-    cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
-        edge.target().move({ parent: edge.source().id()});
+      cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
+        edge.target().move({ parent: edge.source().id() });
       });
     }
-    cy.edges(`[interaction = "${relationship}"]`).style({ display: "none" });
+    cy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
   }
 
   const filePrefix = (new URLSearchParams(window.location.search)).get('p')
-  const eles = fetch('data/'+(filePrefix?filePrefix:'')+'input.json')
-      .then(res => res.json())
-      .then(json => json.elements)
-      .then(eles => prepareEles(eles))
+  const eles = fetch(`data/${filePrefix ? filePrefix : ''}input.json`)
+    .then(res => res.json())
+    .then(json => json.elements)
+    .then(eles => prepareEles(eles))
+
+  document.getElementById("filename").textContent = `Software Visualization: ${filePrefix}`;
 
   const style = fetch('style.cycss')
-      .then(res => res.text());
+    .then(res => res.text());
 
   Promise.all([eles, style])
-      .then(initCy);
+    .then(initCy);
 
   function initCy(payload) {
 
@@ -67,10 +60,28 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     setParents("contains", false);
 
-    const checkboxes = document.querySelectorAll('input[name="showrels"]');
-    checkboxes.forEach((checkbox) => {
-      setVisible(checkbox);
-    });
+    cy.edges().map(e => e.data('interaction'))
+      .filter((v, i, s) => s.indexOf(v) === i)
+      .forEach(l => {
+        document.getElementById("reltab").
+          innerHTML += `
+        <tr>
+          <td><label for="${l}">
+              <input type="checkbox" id="${l}" name="showrels" onchange="setVisible(this)" value="${l}"
+                checked="true">${l}</input>
+            </label></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="${l}-ort" name="${l}" value="taxi"></td>
+          <td><input type="radio" onchange="setLineBends(this)" id="${l}-bez" name="${l}" value="bezier"
+              checked="true">
+          </td>
+        </tr>
+        `;
+      });
+
+    document.querySelectorAll('input[name="showrels"]')
+      .forEach((checkbox) => {
+        setVisible(checkbox);
+      });
 
     constraints = [];
 
@@ -102,8 +113,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
     // place dependants to the left of the dependency
     payload[0].edges
-      .filter((e) => !["specializes", "realizes", "contains"]
-        .includes(e.data.interaction))
+      .filter((e) => !["specializes", "realizes", "contains"].includes(e.data.interaction))
       .forEach((e) => {
         let c = {
           "axis": "x",
@@ -215,7 +225,7 @@ const getSvgUrl = function () {
 
 const showPrimitives = function (ele) {
   cy.nodes().filter((n) => n.data("labels").includes("Primitive"))
-    .style({display: ele.checked?"element":"none"});
+    .style({ display: ele.checked ? "element" : "none" });
 };
 
 const showPackages = function (ele) {
@@ -224,14 +234,14 @@ const showPackages = function (ele) {
 };
 
 const setVisible = function (ele) {
-  cy.edges('[interaction = "' + ele.value + '"]')
+  cy.edges(`[interaction = "${ele.value}"]`)
     .toggleClass("hidden", !ele.checked);
 };
 
 const setLineBends = function (ele) {
   // console.log(ele.name);
   if (ele.checked) {
-    cy.edges('[interaction = "' + ele.name + '"]')
+    cy.edges(`[interaction = "${ele.name}"]`)
       .style("curve-style", ele.value);
   }
 };
@@ -260,8 +270,8 @@ const highlight = function (text) {
 
     const cy_classes = cy.nodes()
       .filter(function (node) {
-          return classes.includes(node.data('name'));
-        });
+        return classes.includes(node.data('name'));
+      });
     const cy_edges = cy_classes.edgesWith(cy_classes);
     cy_classes.removeClass("dimmed");
     cy_edges.removeClass("dimmed");

@@ -40,115 +40,42 @@
 </head>
 
 <body>
+  <div class="titlebar">
+    <h1 id="filename">Software Visualization</h1>
+    <button class="toolbutton" onclick="saveAsSvg('class-diagram.svg')">
+      <img class="icon icon-download" src="img/download.png" alt="Download SVG"></img>
+    </button>
+    <button class="toolbutton" onclick="window.open(getSvgUrl(), '_blank')">
+      <img class="icon icon-download" src="img/open-new.png" alt="Open SVG in new tab"></img>
+    </button>
+  </div>
+
   <div id="sidebar">
 
-    <div class="titlebar">
-      <h1>Class Diagram Visualization</h1>
-    </div>
-
-    <div class="menu">
-      <h2>Save diagram</h2>
-      <button onclick="saveAsSvg('class-diagram.svg')">Save as SVG</button>
-      <button onclick="window.open(getSvgUrl(), '_blank')">View SVG</button>
-    </div>
-
     <div class="notice">
-      <strong>Tip:</strong> try (right-)clicking on nodes and edges!<br/>
+      <strong>Tip:</strong> try (right-)clicking on nodes and edges!<br />
       Watch a screencast <a href="screencast.mp4" target="_blank">here</a>!
     </div>
-<div class="menu">
-  <h2>Nodes</h2>
-  <label for="showPrimitives">
-    <input type="checkbox" id="showPrimitives" name="showPrimitives" onchange="showPrimitives(this)" value="showPrimitives"
-      checked="true">Show primitives</input>
-  </label><br/><label for="showPackages">
-    <input type="checkbox" id="showPackages" name="showPackages" onchange="showPackages(this)"
-      value="showPackages" checked="true">Show packages</input>
-  </label>
-  </div>
+
+    <div class="menu">
+      <h2>Nodes</h2>
+      <label for="showPrimitives">
+        <input type="checkbox" id="showPrimitives" name="showPrimitives" onchange="showPrimitives(this)"
+          value="showPrimitives" checked="true">Show primitives</input>
+      </label><br /><label for="showPackages">
+        <input type="checkbox" id="showPackages" name="showPackages" onchange="showPackages(this)" value="showPackages"
+          checked="true">Show packages</input>
+      </label>
+    </div>
     <div class="menu">
       <h2>Relationships</h2>
-      <table style="width: 100%; text-align: left">
+      <table style="width: 100%; text-align: left" id="reltab">
         <thead>
           <th>Connection</th>
           <th>Ortho</th>
           <th>Bezier</th>
         </thead>
-        <!-- <tr>
-                <td><label for="subpackage">
-                    <input type="checkbox" id="subpackage" name="showrels"
-                           onchange="setVisible(this)" value="subpackage" checked="true">Subpackage</input>
-                </label></td>
-                <td><input type="radio" onchange="setLineBends(this)" id="package-ort" name="subpackage" value="taxi">
-                </td>
-                <td><input type="radio" onchange="setLineBends(this)" id="package-bez" name="subpackage" value="bezier"
-                           checked="true"></td>
-            </tr> -->
-        <tr>
-          <td><label for="specializes">
-              <input type="checkbox" id="specializes" name="showrels" onchange="setVisible(this)" value="specializes"
-                checked="true">Specializes</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="specializes-ort" name="specializes" value="taxi"
-              checked="true"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="specializes-bez" name="specializes" value="bezier">
-          </td>
-        </tr>
-        <tr>
-          <td><label for="holds">
-              <input type="checkbox" id="holds" name="showrels" onchange="setVisible(this)" value="holds">Holds</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="holds-ort" name="holds" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="holds-bez" name="holds" value="bezier"
-              checked="true"></td>
-        </tr>
-        <tr>
-          <td><label for="returns">
-              <input type="checkbox" id="returns" name="showrels" onchange="setVisible(this)"
-                value="returns">Returns</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="returns-ort" name="returns" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="returns-bez" name="returns" value="bezier"
-              checked="true">
-          </td>
-        </tr>
-        <tr>
-          <td><label for="accepts">
-              <input type="checkbox" id="accepts" name="showrels" onchange="setVisible(this)"
-                value="accepts">Accepts</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accepts-ort" name="accepts" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accepts-bez" name="accepts" value="bezier"
-              checked="true">
-          </td>
-        </tr>
-        <tr>
-          <td><label for="accesses">
-              <input type="checkbox" id="accesses" name="showrels" onchange="setVisible(this)"
-                value="accesses">Accesses</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accesses-ort" name="accesses" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="accesses-bez" name="accesses" value="bezier"
-              checked="true">
-          </td>
-        </tr>
-        <tr>
-          <td><label for="calls">
-              <input type="checkbox" id="calls" name="showrels" onchange="setVisible(this)" value="calls">Calls</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="calls-ort" name="calls" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="calls-bez" name="calls" value="bezier"
-              checked="true"></td>
-        </tr>
-        <tr>
-          <td><label for="constructs">
-              <input type="checkbox" id="constructs" name="showrels" onchange="setVisible(this)"
-                value="constructs">Constructs</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="constructs-ort" name="constructs" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="constructs-bez" name="constructs" value="bezier"
-              checked="true"></td>
-        </tr>
+        <!-- relationship types here will be loaded from dataset -->
       </table>
     </div>
 
@@ -173,9 +100,9 @@
     </div>
 
     <div class="menu">
-      <h2>Highlight classes</h2>
+      <h2>Highlight nodes</h2>
 
-      <label for="highlight">Separate classes by comma, whitespace, or new line.</label>
+      <label for="highlight">Separate node names by comma, whitespace, or new line.</label>
       <textarea id="highlight" name="highlight" rows="3"></textarea>
       <button onclick="highlight('')">Reset
       </button>

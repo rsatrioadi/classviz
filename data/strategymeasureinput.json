@@ -1,0 +1,421 @@
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": 759,
+          "labels": [
+            "Pattern"
+          ],
+          "properties": {
+            "shortname": "Strategy"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 728,
+          "labels": [
+            "QualityAttribute"
+          ],
+          "properties": {
+            "shortname": "Maintainability"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 770,
+          "labels": [
+            "Tactic"
+          ],
+          "properties": {
+            "shortname": "Encapsulate"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 740,
+          "labels": [
+            "Measure"
+          ],
+          "properties": {
+            "shortname": "Cohesion"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 762,
+          "labels": [
+            "Measure"
+          ],
+          "properties": {
+            "shortname": "Observ. of State"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 729,
+          "labels": [
+            "Measure"
+          ],
+          "properties": {
+            "shortname": "Coupling"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 767,
+          "labels": [
+            "Measure"
+          ],
+          "properties": {
+            "shortname": "Test Efficiency"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 766,
+          "labels": [
+            "Measure"
+          ],
+          "properties": {
+            "shortname": "Control of State"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 743,
+          "labels": [
+            "Tactic"
+          ],
+          "properties": {
+            "shortname": "Specialized interfaces"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 733,
+          "labels": [
+            "Tactic"
+          ],
+          "properties": {
+            "shortname": "Restrict dependencies"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 741,
+          "labels": [
+            "Tactic"
+          ],
+          "properties": {
+            "shortname": "Defer binding"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": 736,
+          "labels": [
+            "Tactic"
+          ],
+          "properties": {
+            "shortname": "Abstract common services"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": 3367,
+          "source": 759,
+          "target": 770,
+          "label": "EMPLOYS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3399,
+          "source": 770,
+          "target": 740,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3305,
+          "source": 740,
+          "target": 728,
+          "label": "MEASURES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3400,
+          "source": 770,
+          "target": 762,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3379,
+          "source": 762,
+          "target": 728,
+          "label": "MEASURES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3401,
+          "source": 770,
+          "target": 762,
+          "label": "HINDERS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3398,
+          "source": 770,
+          "target": 729,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3247,
+          "source": 729,
+          "target": 728,
+          "label": "MEASURES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3404,
+          "source": 770,
+          "target": 767,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3394,
+          "source": 767,
+          "target": 728,
+          "label": "MEASURES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3402,
+          "source": 770,
+          "target": 766,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3393,
+          "source": 766,
+          "target": 728,
+          "label": "MEASURES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3403,
+          "source": 770,
+          "target": 766,
+          "label": "HINDERS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3366,
+          "source": 759,
+          "target": 743,
+          "label": "EMPLOYS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3313,
+          "source": 743,
+          "target": 766,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3314,
+          "source": 743,
+          "target": 767,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3312,
+          "source": 743,
+          "target": 762,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3363,
+          "source": 759,
+          "target": 733,
+          "label": "EMPLOYS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3270,
+          "source": 733,
+          "target": 767,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3269,
+          "source": 733,
+          "target": 729,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3365,
+          "source": 759,
+          "target": 741,
+          "label": "EMPLOYS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3308,
+          "source": 741,
+          "target": 767,
+          "label": "HINDERS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3307,
+          "source": 741,
+          "target": 729,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3364,
+          "source": 759,
+          "target": 736,
+          "label": "EMPLOYS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3282,
+          "source": 736,
+          "target": 729,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3285,
+          "source": 736,
+          "target": 766,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3283,
+          "source": 736,
+          "target": 762,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3286,
+          "source": 736,
+          "target": 766,
+          "label": "HINDERS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3287,
+          "source": 736,
+          "target": 767,
+          "label": "FACILITATES",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3284,
+          "source": 736,
+          "target": 762,
+          "label": "HINDERS",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": 3288,
+          "source": 736,
+          "target": 767,
+          "label": "HINDERS",
+          "properties": {
+            
+          }
+        }
+      }
+    ]
+  }
+}

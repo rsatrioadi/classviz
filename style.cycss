@@ -19,42 +19,43 @@ node {
   text-wrap: wrap;
 }
 
-node[role_stereotype = "Controller"] {
+node[properties.rs = "Controller"] {
   border-color: #984ea3;
   background-color: #decbe4;
 }
 
-node[role_stereotype = "Coordinator"] {
+node[properties.rs = "Coordinator"] {
   border-color: #4daf4a;
   background-color: #ccebc5;
 }
 
-node[role_stereotype = "Information Holder"] {
-  border-color: #e41a1c;
+node[properties.rs = "Information Holder"] {
+  border-color: #e41.5c;
   background-color: #fbb4ae;
 }
 
-node[role_stereotype = "Interfacer"] {
+node[properties.rs = "Interfacer"] {
   border-color: #ff7f00;
   background-color: #fed9a6;
 }
 
-node[role_stereotype = "Service Provider"] {
+node[properties.rs = "Service Provider"] {
   border-color: #377eb8;
   background-color: #b3cde3;
 }
 
-node[role_stereotype = "Structurer"] {
+node[properties.rs = "Structurer"] {
   border-color: #f781bf;
   background-color: #fddaec;
 }
 
 node[properties.kind = "package"] {
   text-valign: top;
-  background-opacity: 0.1;
-  border-color: silver;
+  background-opacity: 0.3;
+  border-color: grey;
+  background-color: #ececec;
   text-background-color: whitesmoke;
-  text-border-color: silver;
+  text-border-color: grey;
   text-background-shape: rectangle;
   text-border-width: 1;
 }
@@ -88,6 +89,7 @@ edge {
   edge-text-rotation: autorotate;
   target-arrow-shape: vee;
   label: data(interaction);
+  arrow-scale: 1.5;
 }
 
 edge[interaction = "contains"] {
@@ -106,7 +108,7 @@ edge[interaction = "specializes"] {
   source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
-  curve-style: taxi;
+  curve-style: bezier;
   taxi-direction: upward;
   taxi-turn: -32px;
 }
@@ -118,7 +120,7 @@ edge[interaction = "realizes"] {
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
   line-style: dashed;
-  curve-style: taxi;
+  curve-style: bezier;
   taxi-direction: upward;
   taxi-turn: -32px;
 }
@@ -128,7 +130,6 @@ edge[interaction = "aggregates"] {
   line-color: #e78ac3;
   source-arrow-shape: diamond;
   target-arrow-shape: none;
-  arrow-scale: 1.1;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -139,7 +140,6 @@ edge[interaction = "composites"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   target-arrow-shape: none;
-  arrow-scale: 1.1;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -150,7 +150,6 @@ edge[interaction = "holds"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   target-arrow-shape: none;
-  arrow-scale: 1.1;
   label: holds;
   taxi-direction: leftward;
   taxi-turn: -32px;
@@ -183,7 +182,7 @@ edge[interaction = "constructs"] {
   line-color: #fc8d62;
   source-arrow-shape: diamond;
   target-arrow-shape: none;
-  arrow-scale: 1.1;
+  arrow-scale: 1.5;
   label: constructs;
   taxi-direction: leftward;
   taxi-turn: -32px;
@@ -214,4 +213,8 @@ edge[interaction = "accepts"] {
   background-opacity: 0;
   border-opacity: 0;
   text-opacity: 0;
+}
+
+.parentRel {
+  display: none;
 }
