@@ -1,63 +1,133 @@
 body { 
   font-family: Helvetica, 'Liberation Sans', Arial, sans-serif;
-  font-size: 14px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 #sidebar {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 36px;
   bottom: 0;
-  width: 240px;
-  background-color: whitesmoke;
-  border-right: 1px solid gainsboro;
-  z-index: 9999;
+  width: 270px;
+  background-color: #fafafa;
+  /* border-right: 1px solid #cacaca; */
+  box-shadow: 0px 0px 3px rgba(101, 101, 101, 0.5);
+  z-index: 9998;
 }
 
 #highlight {
-  width: 220px;
+  width: 234px;
 }
 
 #cy {
   position: absolute;
-  left: 240px;
-  top: 0;
+  left: 270px;
+  top: 36px;
   bottom: 0;
   right: 0;
   z-index: 999;
-  background-color: ivory;
+  background-color: beige;
 }
 
 h1 {
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: bold;
+  text-align: center;
 }
 
 h2 {
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: bold;
-  margin-top: 0px;
-  margin-bottom: 6px;
+  text-align: center;
+  margin-top: 3px;
+  margin-bottom: 9px;
 }
 
 .menu {
-  background-color: white;
-  border-radius: 4px;
-  margin: 0 2px 2px 2px;
-  padding: 4px;
-  border: 1px solid gainsboro;
+  background-color: #fafafa;
+  padding: 4px 12px 20px 12px;
+  border-top: 1px solid #cacaca;
 }
 .notice {
-  background-color: whitesmoke;
+  background-color: #ffffec;
   border-radius: 4px;
-  margin: 0 2px 2px 2px;
-  padding: 4px;
-  border: 1px solid gainsboro;
-}
-h1.titlebar {
-  margin: 0px;
+  margin: 2px;
+  padding: 2px 6px;
+  border: 1px solid #cacaca;
 }
 
 .titlebar {
-  padding: 4px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  right: 0;
+  /* background-color: #fafafa; */
+  background-image: linear-gradient(to bottom, hsl(0, 0%, 95%), hsl(0, 0%, 87%));
+  box-shadow: inset hsla(0, 0%, 100%, 0.5) 0 1px 1px;
+  border-bottom: 1px solid #cacaca;
+  z-index: 9999;
+  vertical-align: baseline;
+}
+
+#filename {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  right: 0;
+  z-index: -1;
+}
+
+.toolbutton {
+  margin: 8px 0px 4px 4px;
+}
+
+button, select {
+  background-image: linear-gradient(hsl(0, 0%, 99%), hsl(0, 0%, 94%));
+  box-shadow: hsla(0, 0%, 0%, 0.3) 0 1px 1px -1px;
+
+  border-radius: 4px;
+  border: 1px solid hsl(0, 1%, 82%);
+  border-top-color: hsl(0, 0%, 83%);
+  border-bottom-color: hsl(0, 0%, 76%);
+  text-align: center;
+  color: rgb(80, 80, 80);
+}
+
+button:active, select:active {
+  background-image: linear-gradient(hsl(0, 0%, 89%), hsl(0, 0%, 86%));
+  box-shadow: hsla(0, 0%, 0%, 0.5) 0 1px 1px -1px, inset 0 1px 1px -1px white;
+}
+
+button.toolbutton {
+  background-image: linear-gradient(hsl(0, 0%, 97%), hsl(0, 0%, 80%));
+  box-shadow: none;
+  border: 1px solid hsl(0, 0%, 56%);
+  color: hsl(0, 0%, 23%);
+}
+
+button:active.toolbutton {
+  background-image: linear-gradient(hsl(0, 0%, 56%), hsl(0, 0%, 73%));
+  box-shadow: none;
+  border: 1px solid hsl(0, 0%, 56%);
+  color: white;
+}
+
+.download-text {
+  display: none;
+}
+
+.toolbutton {
+  height: 24px;
+  min-height: 24px;
+  max-height: 24px;
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
 }
