@@ -6,7 +6,7 @@ body {
 
 
 #file-selector{
-  visibility: hidden;
+  display: none;
 }
 
 #sidebar {

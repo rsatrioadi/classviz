@@ -218,3 +218,13 @@ edge[interaction = "accepts"] {
 .parentRel {
   display: none;
 }
+
+.feature_shown {
+  color: blue;
+  border-color: blue;
+}
+
+.feature_reset {
+  color: black;
+  border-color: black;
+}
