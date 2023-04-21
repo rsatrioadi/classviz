@@ -100,6 +100,17 @@
     </div>
 
     <div class="menu">
+      <h2>Select feature</h2>
+
+      <label for="feature">Select a specific feature that you want to visualize.</label>
+      <br/>
+      <select id="selectfeature" size="1">
+        <option value="All">All (default)</option>
+      </select>
+      <Button onclick="showTrace(document.getElementById('selectfeature').options[document.getElementById('selectfeature').selectedIndex].value)">Show</Button>
+    </div>
+
+    <div class="menu">
       <h2>Highlight nodes</h2>
 
       <label for="highlight">Separate node names by comma, whitespace, or new line.</label>

@@ -140,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       }
     }).run();
 
+    fillFeatureDropdown();
+
     return cy;
   }
 
@@ -205,6 +207,8 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
     });
 
   }
+
+
 
 }); // on dom ready
 
@@ -289,4 +293,50 @@ const toggleVisibility = function () {
     })
     .update();
   flip = !flip;
+};
+
+const fillFeatureDropdown = function () {
+  let tracesSet = new Set();
+  cy.nodes().forEach((node) => {
+    node._private.data.properties.traces.forEach((trace) => {
+      tracesSet.add(trace);
+    });
+  });
+
+  tracesList = Array.from(tracesSet);
+
+  // Get the dropdown element.
+  const dropdown = document.getElementById('selectfeature');
+  for (var i = 0; i < tracesList.length; i++) {
+    var option = document.createElement("option");
+    option.value = tracesList[i];
+    option.text = tracesList[i];
+    dropdown.appendChild(option);
+  }
+}
+
+const showTrace = function (trace_name) {
+  console.log("showTrace");
+
+  const feature_nodes = cy.nodes().filter(function (node) {
+    return node._private.data.properties.traces.includes(trace_name)
+  });
+
+  const feature_edges = cy.edges().filter(function (edge) {
+    return edge._private.data.properties.traces.includes(trace_name)
+  });
+
+  cy.elements().removeClass("dimmed");
+  cy.elements().removeClass("feature_shown");
+  cy.elements().addClass("feature_reset");
+
+  if(trace_name !== "All") {
+    cy.elements().addClass("dimmed");
+    feature_nodes.removeClass("dimmed");
+    feature_edges.removeClass("dimmed");
+    feature_nodes.removeClass("feature_reset");
+    feature_edges.removeClass("feature_reset");
+    feature_nodes.addClass("feature_shown");
+    feature_edges.addClass("feature_shown");
+  } 
 };

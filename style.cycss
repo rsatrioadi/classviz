@@ -6,6 +6,14 @@
   display: none;
 }
 
+.feature_shown {
+  color: green;
+}
+
+.feature_reset {
+  color: black;
+}
+
 node {
   height: label;
   width: label;

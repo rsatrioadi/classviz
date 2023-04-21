@@ -1,0 +1,247 @@
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.model.HomeApplication",
+          "properties": {
+            "simpleName": "HomeApplication",
+            "kind": "class",
+            "traces": [
+              "Trace1", "TraceX"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.applet.AppletApplication",
+          "properties": {
+            "simpleName": "AppletApplication",
+            "kind": "class",
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.swing.PlanComponent",
+          "properties": {
+            "simpleName": "PlanComponent",
+            "kind": "class",
+            "traces": [
+              "Trace1"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.j3d.Component3DManager$RenderingErrorListenerManager",
+          "properties": {
+            "simpleName": "Component3DManager$RenderingErrorListenerManager",
+            "kind": "class",
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.j3d.Component3DManager",
+          "properties": {
+            "simpleName": "Component3DManager",
+            "kind": "class",
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.applet.SweetHome3DApplet",
+          "properties": {
+            "simpleName": "SweetHome3DApplet",
+            "kind": "class",
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.swing.PlanComponentTEST",
+          "properties": {
+            "simpleName": "PlanComponentTEST",
+            "kind": "class",
+            "traces": [
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "com.eteks.sweethome3d.model.HomeApplicationTEST",
+          "properties": {
+            "simpleName": "HomeApplicationTEST",
+            "kind": "class",
+            "traces": [
+              "Trace2"
+            ]
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "86721de4-bd6a-4fec-8a1d-a71c1d273558",
+          "source": "com.eteks.sweethome3d.j3d.Component3DManager",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.j3d.Component3DManager$RenderingErrorListenerManager",
+          "labels": [
+            "calls"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "7a5a0ac3-41ad-4782-9741-d7f9462eb8b3",
+          "source": "com.eteks.sweethome3d.j3d.Component3DManager$RenderingErrorListenerManager",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.j3d.Component3DManager$RenderingErrorListenerManager",
+          "labels": [
+            "creates"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "4631e9ba-f8d9-4518-91da-57e7598b9b26",
+          "source": "com.eteks.sweethome3d.applet.AppletApplication",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace1",
+              "Trace2"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.j3d.Component3DManager",
+          "labels": [
+            "creates"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "18b18c85-bd55-431b-94eb-a972eed03276",
+          "source": "com.eteks.sweethome3d.model.HomeApplication",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace1"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.swing.PlanComponent",
+          "labels": [
+            "calls"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "608d6491-8af1-4653-82e6-86bb4ab4a142",
+          "source": "com.eteks.sweethome3d.applet.AppletApplication",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace1"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.model.HomeApplication",
+          "labels": [
+            "calls"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "1adea1cd-1dc1-46d3-8851-5eaadae64093",
+          "source": "com.eteks.sweethome3d.applet.AppletApplication",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace2"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.model.HomeApplicationTEST",
+          "labels": [
+            "calls"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "102c0fcd-5610-4298-84c5-016395532fd9",
+          "source": "com.eteks.sweethome3d.model.HomeApplicationTEST",
+          "properties": {
+            "weight": 1,
+            "traces": [
+              "Trace2"
+            ]
+          },
+          "target": "com.eteks.sweethome3d.swing.PlanComponentTEST",
+          "labels": [
+            "calls"
+          ]
+        }
+      }
+    ]
+  }
+}
