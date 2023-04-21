@@ -43,7 +43,16 @@ function initCy(payload) {
     });
 
     setParents("contains", false);
-    document.getElementById("reltab").innerHTML = ""
+
+  document.getElementById("showPrimitives").checked = true;
+  document.getElementById("showPackages").checked = true;
+  document.getElementById("reltab").innerHTML = `
+        <thead>
+          <th>Connection</th>
+          <th>Ortho</th>
+          <th>Bezier</th>
+        </thead>
+        `;
     cy.edges().map(e => e.data('interaction'))
         .filter((v, i, s) => s.indexOf(v) === i)
         .forEach(l => {
