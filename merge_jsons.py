@@ -44,14 +44,24 @@ def construct_final_json(merged_nodes, merged_edges):
 if __name__ == "__main__":
     PROJECT_NAME = "sweethome3d_part1"
 
-    with open("/Users/mboopi/Documents/GitHub/JavaClassClassification/extra_visualization/TEST_JSON.json", "r") as f:
-        file1 = json.load(f)
-    with open("/Users/mboopi/Documents/GitHub/JavaClassClassification/extra_visualization/TEST_JSON2.json", "r") as f:
-        file2 = json.load(f)
+    base_path = f"/Users/mboopi/Documents/GitHub/JavaClassClassification/extra_visualization"
+    file_suffixes = ["ActionBar", "FurnitureCatalog", "GeneralScenario", "HomeFurnitureList", "HomePlan", "HomeView",
+                     "Initialization", "MenuBar"]
+    
+    all_files = []
 
-    files = [file1, file2]
+    for file_suffix in file_suffixes:
+        with open(f"{base_path}/{PROJECT_NAME}_{file_suffix}.json", "r") as f:
+            all_files.append(json.load(f))
 
-    all_nodes, all_edges = get_entries(files)
+    # with open("/Users/mboopi/Documents/GitHub/JavaClassClassification/extra_visualization/TEST_JSON.json", "r") as f:
+    #     file1 = json.load(f)
+    # with open("/Users/mboopi/Documents/GitHub/JavaClassClassification/extra_visualization/TEST_JSON2.json", "r") as f:
+    #     file2 = json.load(f)
+
+    # files = [file1, file2]
+
+    all_nodes, all_edges = get_entries(all_files)
     merged_nodes = merge_entries(all_nodes)
     merged_edges = merge_entries(all_edges)
 
