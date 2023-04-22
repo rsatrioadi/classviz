@@ -61,12 +61,12 @@ def edge_sub_json(edge, current_trace):
         "data": {
             "id": edge_id.hexdigest(),
             "source": edge[0],
+            "label": edge[2],
             "properties": {
                 "weight": 1,
                 "traces": [current_trace]
             },
-            "target": edge[1],
-            "labels": [edge[2]]
+            "target": edge[1]
         }
     }
 
