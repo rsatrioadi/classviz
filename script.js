@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       }
     }).run();
 
-    fillFeatureDropdown();
+    // fillFeatureDropdown();
 
     return cy;
   }
@@ -313,24 +313,45 @@ const fillFeatureDropdown = function () {
     option.text = tracesList[i];
     dropdown.appendChild(option);
   }
-}
+};
 
-const showTrace = function (trace_name) {
-  console.log("showTrace");
+const checkSelectedFeatures = function() {
+  var selectedValues = [];
+  var options = document.getElementById('selectfeature').options;
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].selected) {
+      selectedValues.push(options[i].value);
+    }
+  }
+  return selectedValues;
+};
 
-  const feature_nodes = cy.nodes().filter(function (node) {
-    return node._private.data.properties.traces.includes(trace_name)
+const showTrace = function (trace_names) {
+  const feature_nodes = cy.nodes().filter(function(node) {
+    return trace_names.some(function(trace) {
+      return node._private.data.properties.traces.includes(trace);
+    });
   });
 
-  const feature_edges = cy.edges().filter(function (edge) {
-    return edge._private.data.properties.traces.includes(trace_name)
+  const feature_edges = cy.edges().filter(function(edge) {
+    return trace_names.some(function(trace) {
+      return edge._private.data.properties.traces.includes(trace);
+    });
   });
+
+  // const feature_nodes = cy.nodes().filter(function (node) {
+  //   return node._private.data.properties.traces.includes(trace_name)
+  // });
+
+  // const feature_edges = cy.edges().filter(function (edge) {
+  //   return edge._private.data.properties.traces.includes(trace_name)
+  // });
 
   cy.elements().removeClass("dimmed");
   cy.elements().removeClass("feature_shown");
   cy.elements().addClass("feature_reset");
 
-  if(trace_name !== "All") {
+  if(!trace_names.includes("All")) {
     cy.elements().addClass("dimmed");
     feature_nodes.removeClass("dimmed");
     feature_edges.removeClass("dimmed");

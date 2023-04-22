@@ -102,12 +102,17 @@
     <div class="menu">
       <h2>Select feature</h2>
 
-      <label for="feature">Select a specific feature that you want to visualize.</label>
+      <label for="feature">
+        Select a specific feature that you want to visualize.
+        To select multiple features, hold down the CTRL (or CMD) key.
+      </label>
       <br/>
-      <select id="selectfeature" size="1">
+      <select id="selectfeature" size="5" multiple>
         <option value="All">All (default)</option>
       </select>
-      <Button onclick="showTrace(document.getElementById('selectfeature').options[document.getElementById('selectfeature').selectedIndex].value)">Show</Button>
+      <p />
+      <!-- <Button onclick="showTrace(document.getElementById('selectfeature').options[document.getElementById('selectfeature').selectedIndex].value)">Show</Button> -->
+      <Button onclick="showTrace(checkSelectedFeatures())">Show</Button>
     </div>
 
     <div class="menu">
