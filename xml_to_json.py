@@ -31,7 +31,7 @@ def traverse_call_tree(parent_node, children, firstCall=False):
                 else:
                     edge = (parent_name, child_name, "calls")
                 
-                if "sweethome3d" in parent_name:
+                if "sweethome3d" in parent_name and not parent_name == child_name:
                     edges.add(edge)
 
         traverse_call_tree(child, child.findall("node"))

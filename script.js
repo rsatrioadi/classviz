@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () { // on dom ready
       }
     }).run();
 
-    // fillFeatureDropdown();
+    fillFeatureDropdown();
 
     return cy;
   }
