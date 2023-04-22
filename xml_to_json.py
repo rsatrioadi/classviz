@@ -31,7 +31,7 @@ def traverse_call_tree(parent_node, children, firstCall=False):
                 else:
                     edge = (parent_name, child_name, "calls")
                 
-                if "sweethome3d" in parent_name:
+                if "sweethome3d" in parent_name and not parent_name == child_name:
                     edges.add(edge)
 
         traverse_call_tree(child, child.findall("node"))
@@ -61,12 +61,12 @@ def edge_sub_json(edge, current_trace):
         "data": {
             "id": edge_id.hexdigest(),
             "source": edge[0],
+            "label": edge[2],
             "properties": {
                 "weight": 1,
                 "traces": [current_trace]
             },
-            "target": edge[1],
-            "labels": [edge[2]]
+            "target": edge[1]
         }
     }
 
