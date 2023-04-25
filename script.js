@@ -26,6 +26,8 @@ function setParents(relationship, inverted) {
   cy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
 }
 
+var parentRel = "contains";
+
 function initCy(payload) {
 
   const cy = window.cy = cytoscape({
@@ -42,7 +44,7 @@ function initCy(payload) {
     wheelSensitivity: 0.25,
   });
 
-  setParents("contains", false);
+  setParents(parentRel, false);
 
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
@@ -88,17 +90,17 @@ function initCy(payload) {
   showPrimitives(cbShowPrimitives);
   showPackages(cbShowPackages);
 
-  cy.layout({
-    name: 'klay', animate: true,
-    nodeDimensionsIncludeLabels: true,
-    klay: {
-      direction: 'DOWN',
-      edgeRouting: 'ORTHOGONAL',
-      routeSelfLoopInside: true,
-      thoroughness: 4,
-      spacing: 32
-    }
-  }).run();
+  // cy.layout({
+  //   name: 'klay', animate: true,
+  //   nodeDimensionsIncludeLabels: true,
+  //   klay: {
+  //     direction: 'DOWN',
+  //     edgeRouting: 'ORTHOGONAL',
+  //     routeSelfLoopInside: true,
+  //     thoroughness: 4,
+  //     spacing: 32
+  //   }
+  // }).run();
 
   return cy;
 }
@@ -162,34 +164,6 @@ const relayout = function (layout) {
     }
   }).run();
 };
-
-const highlight = function (text) {
-  if (text) {
-    const classes = text.split(/[,\s]+/);
-    // console.log(classes);
-    cy.elements().addClass("dimmed");
-    cy.elements('.hidden').removeClass('hidden').addClass("hidden");
-
-    const cy_classes = cy.nodes()
-      .filter(function (node) {
-        return classes.includes(node.data('name'));
-      });
-    const cy_edges = cy_classes.edgesWith(cy_classes);
-    cy_classes.removeClass("dimmed");
-    cy_edges.removeClass("dimmed");
-    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
-  } else {
-    cy.elements().removeClass("dimmed");
-  }
-};
-
-let json;
-let filePrefix;
-let eles;
-document.addEventListener('DOMContentLoaded', function () { // on dom ready
-
-}); // on dom ready
-
 
 const saveAsSvg = function (filename) {
   const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
@@ -261,28 +235,82 @@ const toggleVisibility = function () {
 
 const fillRelationshipToggles = function (_cy) {
 
-  document.getElementById("reltab").innerHTML = `
-        <thead>
-          <th>Connection</th>
-          <th>Ortho</th>
-          <th>Bezier</th>
-        </thead>
-        `;
+  const table = document.getElementById("reltab"); // Get the table element
+  table.innerHTML = "";
+
+  // Create the thead element
+  const thead = document.createElement("thead");
+
+  // Create the tr element for the table header row
+  const headerRow = document.createElement("tr");
+
+  // Create the th elements for the table header cells
+  const th1 = document.createElement("th");
+  th1.textContent = "Connection";
+  const th2 = document.createElement("th");
+  th2.textContent = "Ortho";
+  const th3 = document.createElement("th");
+  th3.textContent = "Bezier";
+
+  // Append the th elements to the header row
+  headerRow.appendChild(th1);
+  headerRow.appendChild(th2);
+  headerRow.appendChild(th3);
+
+  // Append the header row to the thead element
+  thead.appendChild(headerRow);
+
+  // Append the thead element to the table element
+  table.appendChild(thead);
+
   _cy.edges().map(e => e.data('interaction'))
     .filter((v, i, s) => s.indexOf(v) === i)
     .forEach(l => {
-      document.getElementById("reltab").innerHTML += `
-        <tr>
-          <td><label for="${l}">
-              <input type="checkbox" id="${l}" name="showrels" onchange="setVisible(this)" value="${l}"
-                checked="true">${l}</input>
-            </label></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="${l}-ort" name="${l}" value="taxi"></td>
-          <td><input type="radio" onchange="setLineBends(this)" id="${l}-bez" name="${l}" value="bezier"
-              checked="true">
-          </td>
-        </tr>
-        `;
+      // Create a new row (tr)
+      const row = document.createElement("tr");
+
+      // Create the first cell (td) with a label and checkbox
+      const cell1 = document.createElement("td");
+      const label = document.createElement("label");
+      label.setAttribute("for", l);
+      const checkbox = document.createElement("input");
+      checkbox.setAttribute("type", "checkbox");
+      checkbox.setAttribute("id", l);
+      checkbox.setAttribute("name", "showrels");
+      checkbox.setAttribute("onchange", "setVisible(this)");
+      checkbox.setAttribute("value", l);
+      checkbox.checked = !["contains", "holds", "accepts", "returns", "accesses", "exhibits"].includes(l);
+      const labelText = document.createTextNode(l);
+      label.appendChild(checkbox);
+      label.appendChild(labelText);
+      cell1.appendChild(label);
+      row.appendChild(cell1);
+
+      // Create the second cell (td) with a radio button for taxi option
+      const cell2 = document.createElement("td");
+      const taxiRadio = document.createElement("input");
+      taxiRadio.setAttribute("type", "radio");
+      taxiRadio.setAttribute("onchange", "setLineBends(this)");
+      taxiRadio.setAttribute("id", `${l}-ort`);
+      taxiRadio.setAttribute("name", l);
+      taxiRadio.setAttribute("value", "taxi");
+      cell2.appendChild(taxiRadio);
+      row.appendChild(cell2);
+
+      // Create the third cell (td) with a radio button for bezier option
+      const cell3 = document.createElement("td");
+      const bezierRadio = document.createElement("input");
+      bezierRadio.setAttribute("type", "radio");
+      bezierRadio.setAttribute("onchange", "setLineBends(this)");
+      bezierRadio.setAttribute("id", `${l}-bez`);
+      bezierRadio.setAttribute("name", l);
+      bezierRadio.setAttribute("value", "bezier");
+      bezierRadio.checked = true;
+      cell3.appendChild(bezierRadio);
+      row.appendChild(cell3);
+
+      // Append the row to the table
+      table.appendChild(row);
     });
 
   document.querySelectorAll('input[name="showrels"]')
@@ -319,7 +347,7 @@ const fillFeatureDropdown = function (_cy) {
   }
 };
 
-const checkSelectedFeatures = function() {
+const checkSelectedFeatures = function () {
   var selectedValues = [];
   var options = document.getElementById('selectfeature').options;
   for (var i = 0; i < options.length; i++) {
@@ -330,39 +358,69 @@ const checkSelectedFeatures = function() {
   return selectedValues;
 };
 
+const highlight = function (text) {
+  if (text) {
+    const classes = text.split(/[,\s]+/);
+    // console.log(classes);
+    cy.elements().addClass("dimmed");
+    cy.elements('.hidden').removeClass('hidden').addClass("hidden");
+
+    const cy_classes = cy.nodes()
+      .filter(function (node) {
+        return classes.includes(node.data('name'));
+      });
+    const cy_edges = cy_classes.edgesWith(cy_classes);
+    cy_classes.removeClass("dimmed");
+    cy_edges.removeClass("dimmed");
+    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+  } else {
+    cy.elements().removeClass("dimmed");
+  }
+  cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
+};
+
 const showTrace = function (trace_names) {
-  const feature_nodes = cy.nodes().filter(function(node) {
-    return trace_names.some(function(trace) {
+  const feature_nodes = cy.nodes().filter(function (node) {
+    return trace_names.some(function (trace) {
       return node.data("properties.traces") && node.data("properties.traces").includes(trace);
     });
   });
 
-  const feature_edges = cy.edges().filter(function(edge) {
-    return trace_names.some(function(trace) {
+  const feature_edges = cy.edges().filter(function (edge) {
+    return trace_names.some(function (trace) {
       return edge.data("properties.traces") && edge.data("properties.traces").includes(trace);
-    });;
+    });
   });
 
-  // const feature_nodes = cy.nodes().filter(function (node) {
-  //   return node._private.data.properties.traces.includes(trace_name)
-  // });
-
-  // const feature_edges = cy.edges().filter(function (edge) {
-  //   return edge._private.data.properties.traces.includes(trace_name)
-  // });
-
-  cy.elements().removeClass("dimmed");
-  cy.elements().removeClass("feature_shown");
-  cy.elements().addClass("feature_reset");
-
-  if(!trace_names.includes("All")) {
+  if (!trace_names.includes("All")) {
     cy.elements().addClass("dimmed");
-    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+    cy.elements('.hidden').removeClass('hidden').addClass("hidden");
     feature_nodes.removeClass("dimmed");
     feature_edges.removeClass("dimmed");
+    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
     feature_nodes.removeClass("feature_reset");
     feature_edges.removeClass("feature_reset");
     feature_nodes.addClass("feature_shown");
     feature_edges.addClass("feature_shown");
+  } else {
+    cy.elements().removeClass("dimmed");
+    cy.elements().removeClass("feature_shown");
+    cy.elements().addClass("feature_reset");
   }
+  console.log(`[interaction = "${parentRel}"]`);
+  cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
+
+function openSidebarTab(evt, cityName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("sidebar-tab");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}

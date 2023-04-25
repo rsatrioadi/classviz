@@ -21,7 +21,7 @@ body {
   z-index: 9998;
 }
 
-#highlight {
+#highlight, #selectfeature {
   width: 234px;
 }
 
@@ -60,6 +60,7 @@ h2 {
   margin: 2px;
   padding: 2px 6px;
   border: 1px solid #cacaca;
+  width: fit-content;
 }
 
 .titlebar {
@@ -93,7 +94,7 @@ h2 {
   margin: 8px 0px 4px 4px;
 }
 
-button, select {
+button.sidebar, select.dd {
   background-image: linear-gradient(hsl(0, 0%, 99%), hsl(0, 0%, 94%));
   box-shadow: hsla(0, 0%, 0%, 0.3) 0 1px 1px -1px;
 
@@ -105,25 +106,77 @@ button, select {
   color: rgb(80, 80, 80);
 }
 
-button:active, select:active {
+button.sidebar:active, select.dd:active {
   background-image: linear-gradient(hsl(0, 0%, 89%), hsl(0, 0%, 86%));
   box-shadow: hsla(0, 0%, 0%, 0.5) 0 1px 1px -1px, inset 0 1px 1px -1px white;
 }
 
 button.toolbutton {
+  border-radius: 4px;
   background-image: linear-gradient(hsl(0, 0%, 97%), hsl(0, 0%, 80%));
   box-shadow: none;
   border: 1px solid hsl(0, 0%, 56%);
   color: hsl(0, 0%, 23%);
 }
 
-button:active.toolbutton {
+button.toolbutton:active {
   background-image: linear-gradient(hsl(0, 0%, 56%), hsl(0, 0%, 73%));
   box-shadow: none;
   border: 1px solid hsl(0, 0%, 56%);
   color: white;
 }
 
+.sidebar-tab {
+  display: block;
+}
+
+.tab-bar {
+  display: flex;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+}
+/* Reset default list styling */
+ul.tabs {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+/* Style for the tabs container */
+.tabs {
+  display: flex;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+/* Style for each tab */
+.tabs li {
+  flex-grow: 1;
+}
+
+/* Style for tab links */
+.tabs li a {
+  display: block;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+}
+
+/* Style for the active tab */
+.tabs li a.active {
+  color: #fff;
+  background-color: #007aff;
+}
+
+/* Style for the tab content container */
+.tab-content {
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #c0c0c0;
+}
 .download-text {
   display: none;
 }

@@ -80,6 +80,10 @@ node[properties.kind = "script"] {
   shape: round-rectangle;
 }
 
+node[labels.0 = "BugType"] {
+  display: none;
+}
+
 edge {
   width: 2;
   line-color: black;

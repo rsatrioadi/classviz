@@ -1,0 +1,864 @@
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "EI_EXPOSE_REP",
+          "properties": {
+            "simpleName": "MALICIOUS_CODE/EI_EXPOSE_REP",
+            "shortMessage": "May expose internal representation by returning reference to mutable object",
+            "category": "MALICIOUS_CODE",
+            "priority": "2",
+            "rank": "18"
+          },
+          "labels": [
+            "BugType"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.applet.DrawApplet",
+          "properties": {
+            "simpleName": "DrawApplet"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.application.DrawApplication",
+          "properties": {
+            "simpleName": "DrawApplication"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "EI_EXPOSE_REP2",
+          "properties": {
+            "simpleName": "MALICIOUS_CODE/EI_EXPOSE_REP2",
+            "shortMessage": "May expose internal representation by incorporating reference to mutable object",
+            "category": "MALICIOUS_CODE",
+            "priority": "2",
+            "rank": "18"
+          },
+          "labels": [
+            "BugType"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.GroupCommand",
+          "properties": {
+            "simpleName": "GroupCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ImageFigure",
+          "properties": {
+            "simpleName": "ImageFigure"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.InsertImageCommand",
+          "properties": {
+            "simpleName": "InsertImageCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.TextFigure",
+          "properties": {
+            "simpleName": "TextFigure"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.UngroupCommand",
+          "properties": {
+            "simpleName": "UngroupCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.DrawingChangeEvent",
+          "properties": {
+            "simpleName": "DrawingChangeEvent"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.FigureChangeEvent",
+          "properties": {
+            "simpleName": "FigureChangeEvent"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.Animator",
+          "properties": {
+            "simpleName": "Animator"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.JavaDrawViewer",
+          "properties": {
+            "simpleName": "JavaDrawViewer"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.PatternPainter",
+          "properties": {
+            "simpleName": "PatternPainter"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractConnector",
+          "properties": {
+            "simpleName": "AbstractConnector"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractHandle",
+          "properties": {
+            "simpleName": "AbstractHandle"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractTool",
+          "properties": {
+            "simpleName": "AbstractTool"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AlignCommand",
+          "properties": {
+            "simpleName": "AlignCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.BringToFrontCommand",
+          "properties": {
+            "simpleName": "BringToFrontCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChangeAttributeCommand",
+          "properties": {
+            "simpleName": "ChangeAttributeCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ConnectionHandle",
+          "properties": {
+            "simpleName": "ConnectionHandle"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ConnectionTool",
+          "properties": {
+            "simpleName": "ConnectionTool"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.CreationTool",
+          "properties": {
+            "simpleName": "CreationTool"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DecoratorFigure",
+          "properties": {
+            "simpleName": "DecoratorFigure"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DragTracker",
+          "properties": {
+            "simpleName": "DragTracker"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SendToBackCommand",
+          "properties": {
+            "simpleName": "SendToBackCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.StandardDrawingView",
+          "properties": {
+            "simpleName": "StandardDrawingView"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ToggleGridCommand",
+          "properties": {
+            "simpleName": "ToggleGridCommand"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "MS_EXPOSE_REP",
+          "properties": {
+            "simpleName": "MALICIOUS_CODE/MS_EXPOSE_REP",
+            "shortMessage": "Public static method may expose internal representation by returning array",
+            "category": "MALICIOUS_CODE",
+            "priority": "2",
+            "rank": "18"
+          },
+          "labels": [
+            "BugType"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Clipboard",
+          "properties": {
+            "simpleName": "Clipboard"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.FloatingTextField",
+          "properties": {
+            "simpleName": "FloatingTextField"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Iconkit",
+          "properties": {
+            "simpleName": "Iconkit"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {
+            "simpleName": "PaletteIcon"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteLayout",
+          "properties": {
+            "simpleName": "PaletteLayout"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.ReverseVectorEnumerator",
+          "properties": {
+            "simpleName": "ReverseVectorEnumerator"
+          },
+          "labels": [
+            "Structure"
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "6205878216176275a93b6ab7e48d9e69",
+          "source": "CH.ifa.draw.applet.DrawApplet",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "6205878216176275a93b6ab7e48d9e69",
+          "source": "CH.ifa.draw.applet.DrawApplet",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "e3122200fbb1b07f19f26361a5580f76",
+          "source": "CH.ifa.draw.application.DrawApplication",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "e3122200fbb1b07f19f26361a5580f76",
+          "source": "CH.ifa.draw.application.DrawApplication",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "fbeac5813de2d073c10efc099c9b46b5",
+          "source": "CH.ifa.draw.application.DrawApplication",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "6162deb28058bdd9fa2071bede636c97",
+          "source": "CH.ifa.draw.figures.GroupCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "48eb25f7e053ea8b25e67b2ad3a96d26",
+          "source": "CH.ifa.draw.figures.ImageFigure",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "cf5e769e1f9eb645ed61bb178b0e0303",
+          "source": "CH.ifa.draw.figures.InsertImageCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "95728c9b7efcceb00345f5c0a02909b1",
+          "source": "CH.ifa.draw.figures.TextFigure",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "3f716f11005aa959a792d67e5b9bb954",
+          "source": "CH.ifa.draw.figures.UngroupCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "4cb28ad2cb796a7cff14ce483bd4eaa3",
+          "source": "CH.ifa.draw.framework.DrawingChangeEvent",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "bc2b70a6c8fb626342d6c40e62a802de",
+          "source": "CH.ifa.draw.framework.DrawingChangeEvent",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "7667b449c89c758122999a357377c823",
+          "source": "CH.ifa.draw.framework.FigureChangeEvent",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "9369440f87811659f7f231937cd05c5a",
+          "source": "CH.ifa.draw.framework.FigureChangeEvent",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "c47c12fd3cae8f8db575d38b2562ee0a",
+          "source": "CH.ifa.draw.samples.javadraw.Animator",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "50c35309d35e376ab773fb1eb2c16842",
+          "source": "CH.ifa.draw.samples.javadraw.JavaDrawViewer",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "50c35309d35e376ab773fb1eb2c16842",
+          "source": "CH.ifa.draw.samples.javadraw.JavaDrawViewer",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "c7789c540011eb281450bed4d12b5e97",
+          "source": "CH.ifa.draw.samples.javadraw.PatternPainter",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "b64d6492cab677e68d5574ebec520e60",
+          "source": "CH.ifa.draw.standard.AbstractConnector",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "9733367554a147c40d090fb0bd5e736f",
+          "source": "CH.ifa.draw.standard.AbstractConnector",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "100c21ff40200112fdc2881d89c54d07",
+          "source": "CH.ifa.draw.standard.AbstractHandle",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "e756255fe5b2d1e6d3e1d472ccc536de",
+          "source": "CH.ifa.draw.standard.AbstractHandle",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "c456ffc7c55ee77aa894053bb80ff935",
+          "source": "CH.ifa.draw.standard.AbstractTool",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "7bcb82bb3d13a5109d74bc2ae4f2a047",
+          "source": "CH.ifa.draw.standard.AbstractTool",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "724c12f3e4719a86fd9865627d63ae69",
+          "source": "CH.ifa.draw.standard.AlignCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "f2386d261320d7af54cd6de562a7ef43",
+          "source": "CH.ifa.draw.standard.BringToFrontCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "a769323d34e854520d622c0bfeaf2b5a",
+          "source": "CH.ifa.draw.standard.ChangeAttributeCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "326bfd2053997c5e874104f2ea9b2e76",
+          "source": "CH.ifa.draw.standard.ConnectionHandle",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "dca69fea4bedc8e0767ff1d32418f8af",
+          "source": "CH.ifa.draw.standard.ConnectionTool",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "f2afdb563745244fe10c8be71e80e9f9",
+          "source": "CH.ifa.draw.standard.CreationTool",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "56d99e27a308aa3ff03092d5ff39ad51",
+          "source": "CH.ifa.draw.standard.DecoratorFigure",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "0b4d4d9428269e69469a7fdaa598f3b0",
+          "source": "CH.ifa.draw.standard.DecoratorFigure",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "88fe5da6eb057531f755c13ebf1834a6",
+          "source": "CH.ifa.draw.standard.DragTracker",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "421f71f56dada3ef9ad71deb8cc9356f",
+          "source": "CH.ifa.draw.standard.SendToBackCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "d58be71c7ce2fb1a79250b815d9a2bc1",
+          "source": "CH.ifa.draw.standard.StandardDrawingView",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "d58be71c7ce2fb1a79250b815d9a2bc1",
+          "source": "CH.ifa.draw.standard.StandardDrawingView",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "d58be71c7ce2fb1a79250b815d9a2bc1",
+          "source": "CH.ifa.draw.standard.StandardDrawingView",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "acdc289ed1f7278385fe7204c91b2558",
+          "source": "CH.ifa.draw.standard.StandardDrawingView",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "16b30e3267889dba735f862e4cb016e1",
+          "source": "CH.ifa.draw.standard.ToggleGridCommand",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "ebaaaeee79150d340f674ddf2a2063a9",
+          "source": "CH.ifa.draw.util.Clipboard",
+          "properties": {},
+          "target": "MS_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "c55d80174e60455e9b3c9ecfbafa5a2f",
+          "source": "CH.ifa.draw.util.FloatingTextField",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "363fa0cd36bb7748013e27979cda11c5",
+          "source": "CH.ifa.draw.util.Iconkit",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "ba553564b3ac51c0fb83a884465b428a",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "ba553564b3ac51c0fb83a884465b428a",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "ba553564b3ac51c0fb83a884465b428a",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "2a651ac75bcd9ed752fd2cd653a7789e",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "2a651ac75bcd9ed752fd2cd653a7789e",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "2a651ac75bcd9ed752fd2cd653a7789e",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "2a651ac75bcd9ed752fd2cd653a7789e",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "0ee3d580296ae4731d4b66e655c5f986",
+          "source": "CH.ifa.draw.util.PaletteLayout",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      },
+      {
+        "data": {
+          "id": "c1bda62e922eb6b21d07d6c5a0bb68b4",
+          "source": "CH.ifa.draw.util.ReverseVectorEnumerator",
+          "properties": {},
+          "target": "EI_EXPOSE_REP2",
+          "label": "exhibits"
+        }
+      }
+    ]
+  }
+}
