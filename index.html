@@ -58,9 +58,9 @@
   <div id="sidebar">
     <div class="tab-bar">
       <ul class="tabs">
-      <li><a class="tabs tablink active" onclick="openSidebarTab(event,'tab-basic')">General</a></li>
-      <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-features')">Features</a></li>
-      <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-bugs')">Bugs</a></li>
+        <li><a class="tabs tablink active" onclick="openSidebarTab(event,'tab-basic')">General</a></li>
+        <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-features')">Features</a></li>
+        <!-- <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-bugs')">Bugs</a></li> -->
       </ul>
     </div>
     <div class="sidebar-tab" id="tab-basic">
@@ -120,20 +120,22 @@
         </button>
       </div>
     </div>
-    <div class="sidebar-tab" id="tab-features" style="display:none;"><div class="menu">
-      <h2>Feature highlight</h2>
-    
-      <label for="feature">
-        Select a specific feature that you want to visualize.
-        To select multiple features, hold down the CTRL (or CMD) key.
-      </label>
-      <br />
-      <select id="selectfeature" size="20" multiple>
-        <option value="All">All (default)</option>
-      </select>
-      <p />
-      <Button class="sidebar" onclick="showTrace(checkSelectedFeatures())">Show</Button>
-    </div>
+    <div class="sidebar-tab" id="tab-features" style="display:none;">
+      <div class="menu">
+        <h2>Feature highlight</h2>
+
+        <!-- <label for="feature">
+          Select a specific feature that you want to visualize.
+          To select multiple features, hold down the CTRL (or CMD) key.
+        </label> -->
+        <!-- <br />
+        <select id="selectfeature" size="20" multiple>
+          <option value="All">All (default)</option>
+        </select>
+        <p />
+        <Button class="sidebar" onclick="showTrace(checkSelectedFeatures())">Show</Button> -->
+        <div id="selectfeature"></div>
+      </div>
 
     </div>
     <div class="sidebar-tab" id="tab-bugs" style="display:none;"></div>

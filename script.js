@@ -28,6 +28,21 @@ function setParents(relationship, inverted) {
 
 var parentRel = "contains";
 
+const colors = [
+  "#8dd3c7",
+  "#ffffb3",
+  "#bebada",
+  "#fb8072",
+  "#80b1d3",
+  "#fdb462",
+  "#b3de69",
+  "#fccde5",
+  "#d9d9d9",
+  "#bc80bd",
+  "#ccebc5",
+  "#ffed6f",
+];
+
 function initCy(payload) {
 
   const cy = window.cy = cytoscape({
@@ -77,8 +92,6 @@ function initCy(payload) {
       constraints.push(c);
     });
 
-  // console.log(constraints);
-
   bindRouters();
 
   const cbShowPrimitives = document.getElementById("showPrimitives");
@@ -117,8 +130,6 @@ function bindRouters() {
 
       const edges = evt.target.connectedEdges()
         .filter(e => interactions.includes(e.data('interaction')));
-      console.log(interactions)
-      console.log(edges)
       edges.addClass("dimmed");
     });
 
@@ -133,8 +144,6 @@ function bindRouters() {
 
     const edges = evt.target.connectedEdges()
       .filter(e => interactions.includes(e.data('interaction')));
-    console.log(interactions)
-    console.log(edges)
     edges.removeClass("dimmed");
     edges.connectedNodes().removeClass("dimmed");
 
@@ -151,7 +160,6 @@ function bindRouters() {
 }
 
 const relayout = function (layout) {
-  // console.log(layout);
   cy.layout({
     name: layout, animate: true,
     nodeDimensionsIncludeLabels: true,
@@ -195,7 +203,6 @@ const setVisible = function (ele) {
 };
 
 const setLineBends = function (ele) {
-  // console.log(ele.name);
   if (ele.checked) {
     cy.edges(`[interaction = "${ele.name}"]`)
       .style("curve-style", ele.value);
@@ -335,33 +342,41 @@ const fillFeatureDropdown = function (_cy) {
   // Get the dropdown element.
   const dropdown = document.getElementById('selectfeature');
   dropdown.innerHTML = "";
-  var allTraces = document.createElement("option");
-  allTraces.value = "All";
-  allTraces.text = "All (default)";
-  dropdown.appendChild(allTraces);
+
   for (var i = 0; i < tracesList.length; i++) {
-    var option = document.createElement("option");
-    option.value = tracesList[i];
-    option.text = tracesList[i];
-    dropdown.appendChild(option);
+
+    const div = document.createElement("div");
+    const label = document.createElement("label");
+    label.setAttribute("for", `feature-${tracesList[i]}`);
+    label.setAttribute("class", "featurelabel")
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `feature-${tracesList[i]}`);
+    checkbox.setAttribute("name", "showfeatures");
+    checkbox.setAttribute("onchange", "showTrace(this)");
+    checkbox.setAttribute("value", tracesList[i]);
+    const labelText = document.createTextNode(tracesList[i]);
+    label.appendChild(checkbox);
+    label.appendChild(labelText);
+
+    div.appendChild(label);
+    dropdown.appendChild(div);
   }
 };
 
-const checkSelectedFeatures = function () {
-  var selectedValues = [];
-  var options = document.getElementById('selectfeature').options;
-  for (var i = 0; i < options.length; i++) {
-    if (options[i].selected) {
-      selectedValues.push(options[i].value);
+function arrayIntersection(arr1, arr2) {
+  const result = [];
+  for (const item of arr1) {
+    if (arr2.includes(item)) {
+      result.push(item);
     }
   }
-  return selectedValues;
-};
+  return result;
+}
 
 const highlight = function (text) {
   if (text) {
     const classes = text.split(/[,\s]+/);
-    // console.log(classes);
     cy.elements().addClass("dimmed");
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
 
@@ -379,20 +394,37 @@ const highlight = function (text) {
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
-const showTrace = function (trace_names) {
-  const feature_nodes = cy.nodes().filter(function (node) {
-    return trace_names.some(function (trace) {
-      return node.data("properties.traces") && node.data("properties.traces").includes(trace);
-    });
+const showTrace = function (evt) {
+
+  const trace_names = Array.from(document.getElementsByName("showfeatures"))
+      .filter((e) => e.checked)
+      .map((e) => e.value);
+  
+  Array.from(document.getElementsByClassName("featurelabel")).forEach((e) => {
+    e.style.backgroundColor = "";
   });
 
-  const feature_edges = cy.edges().filter(function (edge) {
-    return trace_names.some(function (trace) {
-      return edge.data("properties.traces") && edge.data("properties.traces").includes(trace);
-    });
-  });
+  if (trace_names.length > 0) {
 
-  if (!trace_names.includes("All")) {
+    const colorMap = {};
+    for (var i = 0; i < trace_names.length; i++) {
+      const labelElement = document.querySelector(`label[for="feature-${trace_names[i]}"]`);
+      labelElement.style.backgroundColor = colors[i];
+      colorMap[trace_names[i]] = colors[i];
+    }
+
+    const feature_nodes = cy.nodes().filter(function (node) {
+      return trace_names.some(function (trace) {
+        return node.data("properties.traces") && node.data("properties.traces").includes(trace);
+      });
+    });
+
+    const feature_edges = cy.edges().filter(function (edge) {
+      return trace_names.some(function (trace) {
+        return edge.data("properties.traces") && edge.data("properties.traces").includes(trace);
+      });
+    });
+
     cy.elements().addClass("dimmed");
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
     feature_nodes.removeClass("dimmed");
@@ -402,12 +434,18 @@ const showTrace = function (trace_names) {
     feature_edges.removeClass("feature_reset");
     feature_nodes.addClass("feature_shown");
     feature_edges.addClass("feature_shown");
-  } else {
+
+    feature_nodes.forEach((node) => {
+      const trc = arrayIntersection(trace_names, node.data("properties.traces"));
+      node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
+      console.log(trc.map((t) => colorMap[t]).join(" "));
+    });
+
+  } else { 
     cy.elements().removeClass("dimmed");
     cy.elements().removeClass("feature_shown");
     cy.elements().addClass("feature_reset");
   }
-  console.log(`[interaction = "${parentRel}"]`);
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
@@ -418,7 +456,7 @@ function openSidebarTab(evt, cityName) {
     x[i].style.display = "none";
   }
   tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
+  for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
   document.getElementById(cityName).style.display = "block";
