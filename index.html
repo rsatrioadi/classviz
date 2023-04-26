@@ -124,15 +124,14 @@
       <h2>Feature highlight</h2>
     
       <label for="feature">
-        Select a specific feature that you want to visualize.
-        To select multiple features, hold down the CTRL (or CMD) key.
+        Select a specific feature that you want to visualize. By default, all features are shown.
       </label>
       <br />
-      <select id="selectfeature" size="20" multiple>
-        <option value="All">All (default)</option>
-      </select>
-      <p />
+      <form id="selectfeatures">
+      </form>
+      <p/>
       <Button class="sidebar" onclick="showTrace(checkSelectedFeatures())">Show</Button>
+      <Button class="sidebar" onclick="resetFeatures()">Reset</Button>
     </div>
 
     </div>

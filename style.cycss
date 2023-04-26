@@ -224,11 +224,18 @@ edge[interaction = "accepts"] {
 }
 
 .feature_shown {
-  color: blue;
-  border-color: blue;
+  background-color: yellow;
+}
+
+.feature_test {
+  background-fill: linear-gradient;
+  background-gradient-direction: to-right;
+  background-gradient-stop-colors: red red blue blue green green;
+  background-gradient-stop-positions: 0 50 50 75 75 100;
+
 }
 
 .feature_reset {
-  color: black;
-  border-color: black;
+  background-color: whitesmoke;
+  line-color: black;
 }

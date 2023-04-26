@@ -28,8 +28,8 @@ function setParents(relationship, inverted) {
 
 var parentRel = "contains";
 
-function initCy(payload) {
 
+function initCy(payload) {
   const cy = window.cy = cytoscape({
 
     container: document.getElementById('cy'),
@@ -48,6 +48,7 @@ function initCy(payload) {
 
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
+
 
   constraints = [];
 
@@ -147,7 +148,6 @@ function bindRouters() {
     evt.target.connectedNodes().removeClass("dimmed");
 
   });
-
 }
 
 const relayout = function (layout) {
@@ -234,7 +234,6 @@ const toggleVisibility = function () {
 };
 
 const fillRelationshipToggles = function (_cy) {
-
   const table = document.getElementById("reltab"); // Get the table element
   table.innerHTML = "";
 
@@ -320,6 +319,16 @@ const fillRelationshipToggles = function (_cy) {
 
 }
 
+const traceToColor = function (traceName) {
+  let hash = 0;
+  for (let i = 0; i < traceName.length; i++) {
+    hash = traceName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const color = Math.abs(hash).toString(16).substring(0, 6);
+  return '#' + '0'.repeat(6 - color.length) + color;
+}
+
+
 const fillFeatureDropdown = function (_cy) {
   let tracesSet = new Set();
   _cy.nodes().forEach((e) => {
@@ -332,31 +341,50 @@ const fillFeatureDropdown = function (_cy) {
 
   let tracesList = Array.from(tracesSet);
 
-  // Get the dropdown element.
-  const dropdown = document.getElementById('selectfeature');
-  dropdown.innerHTML = "";
-  var allTraces = document.createElement("option");
-  allTraces.value = "All";
-  allTraces.text = "All (default)";
-  dropdown.appendChild(allTraces);
+  var form = document.getElementById("selectfeatures");
+
+  // Need to reset everything when we choose a new JSON file to visualize.
+  const inputs = form.querySelectorAll("input");
+  const labels = form.querySelectorAll("label");
+  inputs.forEach(input => input.remove());
+  labels.forEach(label => label.remove());
+ 
   for (var i = 0; i < tracesList.length; i++) {
-    var option = document.createElement("option");
-    option.value = tracesList[i];
-    option.text = tracesList[i];
-    dropdown.appendChild(option);
+    const traceName = tracesList[i]; 
+
+    var input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = traceName;
+    input.id = traceName + i;
+    form.appendChild(input);
+  
+    var label = document.createElement("label");
+    label.setAttribute("for", input.id);
+    label.innerHTML = `${input.value}<br>`;
+    label.style.color = traceToColor(traceName);
+    form.appendChild(label);
   }
 };
 
 const checkSelectedFeatures = function () {
   var selectedValues = [];
-  var options = document.getElementById('selectfeature').options;
-  for (var i = 0; i < options.length; i++) {
-    if (options[i].selected) {
-      selectedValues.push(options[i].value);
+  var form = document.getElementById('selectfeatures');
+  const inputs = form.querySelectorAll("input");
+
+  inputs.forEach(input => {
+    if(input.checked) {
+      selectedValues.push(input.value);
     }
-  }
+  })
+
   return selectedValues;
 };
+
+const resetFeatures = function() {
+  var form = document.getElementById('selectfeatures');
+  form.reset();
+  showTrace(["All"]);
+}
 
 const highlight = function (text) {
   if (text) {
@@ -379,33 +407,47 @@ const highlight = function (text) {
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
-const showTrace = function (trace_names) {
-  const feature_nodes = cy.nodes().filter(function (node) {
-    return trace_names.some(function (trace) {
+const showTrace = function (traceNames) {
+  const featureNodes = cy.nodes().filter(function (node) {
+    return traceNames.some(function (trace) {
       return node.data("properties.traces") && node.data("properties.traces").includes(trace);
     });
   });
 
-  const feature_edges = cy.edges().filter(function (edge) {
-    return trace_names.some(function (trace) {
+  const featureEdges = cy.edges().filter(function (edge) {
+    return traceNames.some(function (trace) {
       return edge.data("properties.traces") && edge.data("properties.traces").includes(trace);
     });
   });
 
-  if (!trace_names.includes("All")) {
+  if (!traceNames.includes("All")) {
     cy.elements().addClass("dimmed");
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
-    feature_nodes.removeClass("dimmed");
-    feature_edges.removeClass("dimmed");
+    featureNodes.removeClass("dimmed");
+    featureEdges.removeClass("dimmed");
+
     cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
-    feature_nodes.removeClass("feature_reset");
-    feature_edges.removeClass("feature_reset");
-    feature_nodes.addClass("feature_shown");
-    feature_edges.addClass("feature_shown");
+
+    cy.elements().removeStyle(); // Remove styling that was overriden via eles.style().
+
+    featureNodes.forEach(function(node) {
+      traces = node.data("properties.traces");
+      colors = traces.map(trace => traceToColor(trace));
+      colors_string = colors.join(" ");
+
+      node.style({
+        "color": "white",
+        "font-weight": "bold", 
+        "background-fill": "linear-gradient",
+        "background-gradient-direction": "to-right",
+        "background-gradient-stop-colors": `${colors_string}`,
+        // "background-gradient-stop-positions": "0 50 50 75 75 100"
+      })
+    });
+
   } else {
     cy.elements().removeClass("dimmed");
-    cy.elements().removeClass("feature_shown");
-    cy.elements().addClass("feature_reset");
+    cy.elements().removeStyle();
   }
   console.log(`[interaction = "${parentRel}"]`);
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
@@ -423,4 +465,4 @@ function openSidebarTab(evt, cityName) {
   }
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
-}
+};
