@@ -19,6 +19,10 @@ node {
   text-wrap: wrap;
 }
 
+node[labels.1 = "vulnerable"]{
+  border-color: #ff0000;
+}
+
 node[properties.rs = "Controller"] {
   border-color: #984ea3;
   background-color: #decbe4;
@@ -38,6 +42,8 @@ node[properties.rs = "Interfacer"] {
   border-color: #ff7f00;
   background-color: #fed9a6;
 }
+
+
 
 node[properties.rs = "Service Provider"] {
   border-color: #377eb8;
