@@ -21,6 +21,7 @@ node {
 
 node[labels.1 = "vulnerable"]{
   border-color: #ff0000;
+  border-width: 4;
 }
 
 node[properties.rs = "Controller"] {
@@ -237,5 +238,14 @@ background-gradient-direction: to-right;
 
 .feature_reset {
   border-width: 1;
+  background-color: whitesmoke;
+}
+
+.bug_shown{
+    background-fill: linear-gradient;
+    background-gradient-direction: to-right;
+}
+
+.bug_reset {
   background-color: whitesmoke;
 }
