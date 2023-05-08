@@ -190,11 +190,12 @@ ul.tabs {
 .target-popper {
   display: none;
   max-width: 500px;
+  max-height: 200px;
   padding: 1rem;
   text-align: left;
   border-radius: 0;
   border: 1px solid #ccc;
-  background: #fff;
+  background: white;
   z-index: 2;
   overflow: scroll;
 }
