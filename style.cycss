@@ -53,6 +53,7 @@ node[properties.kind = "package"] {
   text-valign: top;
   background-opacity: 0.3;
   border-color: grey;
+  border-width: 3;
   background-color: #ececec;
   text-background-color: whitesmoke;
   text-border-color: grey;
@@ -224,12 +225,10 @@ edge[interaction = "accepts"] {
 }
 
 .feature_shown {
-  border-width: 2;
-background-fill: linear-gradient;
-background-gradient-direction: to-right;
+  background-fill: linear-gradient;
+  background-gradient-direction: to-right;
 }
 
 .feature_reset {
-  border-width: 1;
   background-color: whitesmoke;
 }

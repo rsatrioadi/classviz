@@ -27,7 +27,7 @@ def traverse_call_tree(parent_node, children, firstCall=False):
                 nodes.add(child_name)
 
                 if "init" in child_method or "cinit" in child_method:
-                    edge = (parent_name, child_name, "creates")
+                    edge = (parent_name, child_name, "constructs")
                 else:
                     edge = (parent_name, child_name, "calls")
                 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         call_tree = ET.parse(base_path + file_path)
 
         nodes = set() # Set of nodes to be constructed.
-        edges = set() # Set of edges to be constructed (source, target, calls/creates).
+        edges = set() # Set of edges to be constructed (source, target, calls/constructs).
 
         traverse_call_tree(call_tree, call_tree.findall("node"), firstCall=True)
         final_output = construct_json(nodes, edges, current_trace=folder)
