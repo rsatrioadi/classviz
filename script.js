@@ -26,7 +26,7 @@ function setParents(relationship, inverted) {
   cy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
 }
 
-var parentRel = "contains";
+let parentRel = "contains";
 
 const colors = [
   "#8dd3c7",
@@ -63,7 +63,7 @@ function initCy(payload) {
 
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
-
+  fillBugsDropdown(cy);
   constraints = [];
 
   // place subclasses below their superclasses
@@ -114,7 +114,7 @@ function initCy(payload) {
   //     spacing: 32
   //   }
   // }).run();
-
+  cy.nodes().filter('node').forEach(n=>(bindPopper(n)))
   return cy;
 }
 
@@ -193,7 +193,7 @@ const showPrimitives = function (ele) {
 };
 
 const showPackages = function (ele) {
-  cy.nodes().filter((n) => n.data("labels").includes("Container") && n.data("labels").length == 1)
+  cy.nodes().filter((n) => n.data("labels").includes("Container") && n.data("labels").length === 1)
     .toggleClass("pkghidden", !ele.checked);
 };
 
@@ -343,7 +343,7 @@ const fillFeatureDropdown = function (_cy) {
   const dropdown = document.getElementById('selectfeature');
   dropdown.innerHTML = "";
 
-  for (var i = 0; i < tracesList.length; i++) {
+  for (let i = 0; i < tracesList.length; i++) {
 
     const div = document.createElement("div");
     const label = document.createElement("label");
@@ -363,6 +363,49 @@ const fillFeatureDropdown = function (_cy) {
     dropdown.appendChild(div);
   }
 };
+
+
+const fillBugsDropdown = function (_cy) {
+  let bugsSet = new Set();
+  _cy.nodes().forEach((e) => {
+    if (e.data()["properties"]["vulnerabilities"]) {
+     e.data()["properties"]["vulnerabilities"].forEach((bug) => {
+
+       bugsSet.add(bug["analysis_name"])
+      });
+    }
+  });
+
+
+  let bugList = Array.from(bugsSet)
+  console.log(bugList)
+
+  // Get the dropdown element.
+  const dropdown = document.getElementById('tab-bugs');
+  dropdown.innerHTML = "";
+
+  for (var i = 0; i < bugList.length; i++) {
+
+    const div = document.createElement("div");
+    const label = document.createElement("label");
+    label.setAttribute("for", `bug-${bugList[i]}`);
+    label.setAttribute("class", "buglabel")
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `bug-${bugList[i]}`);
+    checkbox.setAttribute("name", "showbugs");
+    checkbox.setAttribute("onchange", "showBug(this)");
+    checkbox.setAttribute("value", bugList[i]);
+    const labelText = document.createTextNode(bugList[i]);
+    label.appendChild(checkbox);
+    label.appendChild(labelText);
+
+    div.appendChild(label);
+    dropdown.appendChild(div);
+  }
+};
+
+
 
 function arrayIntersection(arr1, arr2) {
   const result = [];
@@ -399,7 +442,7 @@ const showTrace = function (evt) {
   const trace_names = Array.from(document.getElementsByName("showfeatures"))
       .filter((e) => e.checked)
       .map((e) => e.value);
-  
+
   Array.from(document.getElementsByClassName("featurelabel")).forEach((e) => {
     e.style.backgroundColor = "";
   });
@@ -441,7 +484,7 @@ const showTrace = function (evt) {
       console.log(trc.map((t) => colorMap[t]).join(" "));
     });
 
-  } else { 
+  } else {
     cy.elements().removeClass("dimmed");
     cy.elements().removeClass("feature_shown");
     cy.elements().addClass("feature_reset");
@@ -449,8 +492,69 @@ const showTrace = function (evt) {
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
+const showBug = function (evt) {
+
+  const bug_names = Array.from(document.getElementsByName("showbugs"))
+      .filter((e) => e.checked)
+      .map((e) => e.value);
+
+  Array.from(document.getElementsByClassName("buglabel")).forEach((e) => {
+    e.style.backgroundColor = "";
+  });
+
+  if (bug_names.length > 0) {
+
+    const colorMap = {};
+    for (var i = 0; i < bug_names.length; i++) {
+      const labelElement = document.querySelector(`label[for="bug-${bug_names[i]}"]`);
+      labelElement.style.backgroundColor = colors[i];
+      colorMap[bug_names[i]] = colors[i];
+    }
+
+    const bug_nodes = cy.nodes().filter(function (node) {
+      return bug_names.some(function (bug) {
+        try {
+          return node.data()["properties"]["vulnerabilities"] && node.data()["properties"]["vulnerabilities"].some((e)=> e["analysis_name"]===bug);
+        }catch (e){
+
+        }
+      });
+    });
+
+
+
+    cy.elements().addClass("dimmed");
+    cy.elements('.hidden').removeClass('hidden').addClass("hidden");
+    bug_nodes.removeClass("dimmed");
+
+    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+    bug_nodes.removeClass("byg_reset");
+
+    bug_nodes.addClass("bug_shown");
+
+
+
+
+    bug_nodes.forEach((node) => {
+      const trc = arrayIntersection(bug_names, node.data()["properties"]["vulnerabilities"].map((vul)=> {
+        return vul["analysis_name"]
+      }));
+      node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
+      console.log(trc.map((t) => colorMap[t]).join(" "));
+    });
+
+  } else {
+    cy.elements().removeClass("dimmed");
+    cy.elements().removeClass("bug_shown");
+    cy.elements().addClass("bug_reset");
+  }
+  cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
+};
+
+
+
 function openSidebarTab(evt, cityName) {
-  var i, x, tablinks;
+  let i, x, tablinks;
   x = document.getElementsByClassName("sidebar-tab");
   for (i = 0; i < x.length; i++) {
     x[i].style.display = "none";
@@ -461,4 +565,72 @@ function openSidebarTab(evt, cityName) {
   }
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+}
+
+function bindPopper(target) {
+  let tooltipId = `popper-target-${target.id()}`;
+  let existingTarget = document.getElementById(tooltipId);
+  if (existingTarget && existingTarget.length !== 0) {
+    existingTarget.remove();
+  }
+
+  if (target.data()["properties"]["vulnerabilities"].length >0) {
+
+    let popper = target.popper({
+      content: () => {
+        // create div container
+        let tooltip = document.createElement('div');
+
+        // adding id for easier JavaScript control
+        tooltip.id = tooltipId;
+
+        // adding class for easier CSS control
+        tooltip.classList.add('target-popper');
+
+        // create actual table
+
+
+        // append table to div container
+
+        let targetData = target.data()["properties"]["vulnerabilities"];
+
+        // loop through target data
+        for (let prop in targetData) {
+          let targetValue = targetData[prop];
+          let p= document.createElement('p');
+          p.innerText = target.data()["properties"]["vulnerabilities"][prop]["analysis_name"]+": "+target.data()["properties"]["vulnerabilities"][prop]["description"];
+          tooltip.appendChild(p)
+        }
+
+        document.body.appendChild(tooltip);
+
+        return tooltip;
+      },
+      popper: {
+        placement: "auto"
+      }
+    });
+
+    target.on('position', () => {
+      popper.update();
+    });
+
+    target.cy().on('pan zoom resize', () => {
+      popper.update();
+    });
+
+
+    target.on('mouseover', () => {
+      if(!target.hasClass('dimmed')){
+        if (document.getElementById(tooltipId)) {
+          document.getElementById(tooltipId).classList.add('active');
+        }
+      }
+
+    }).on('mouseout', () => {
+      if (document.getElementById(tooltipId)) {
+        document.getElementById(tooltipId).classList.remove('active');
+      }
+    })
+  }
 }

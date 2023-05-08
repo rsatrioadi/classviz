@@ -1,4 +1,4 @@
-body { 
+body {
   font-family: Helvetica, 'Liberation Sans', Arial, sans-serif;
   font-size: 13px;
   color: rgba(0, 0, 0, 0.85);
@@ -21,9 +21,6 @@ body {
   z-index: 9998;
 }
 
-#highlight, #selectfeature {
-  width: 234px;
-}
 
 #cy {
   position: absolute;
@@ -31,7 +28,7 @@ body {
   top: 36px;
   bottom: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1;
   background-color: beige;
 }
 
@@ -189,3 +186,20 @@ ul.tabs {
   min-width: 30px;
   max-width: 30px;
 }
+
+.target-popper {
+  display: none;
+  max-width: 500px;
+  max-height: 200px;
+  padding: 1rem;
+  text-align: left;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background: white;
+  z-index: 2;
+  overflow: scroll;
+}
+.target-popper.active {
+  display: block;
+}
+
