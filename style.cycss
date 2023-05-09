@@ -162,7 +162,6 @@ edge[interaction = "holds"] {
   source-arrow-shape: diamond;
   source-arrow-fill: hollow;
   target-arrow-shape: none;
-  label: holds;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -173,7 +172,6 @@ edge[interaction = "calls"] {
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
-  label: calls;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -184,7 +182,6 @@ edge[interaction = "accesses"] {
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
-  label: accesses;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -195,7 +192,6 @@ edge[interaction = "constructs"] {
   source-arrow-shape: diamond;
   target-arrow-shape: none;
   arrow-scale: 1.5;
-  label: constructs;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -206,7 +202,6 @@ edge[interaction = "returns"] {
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
-  label: returns;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
@@ -216,7 +211,6 @@ edge[interaction = "accepts"] {
   line-color: #66c2a5;
   source-arrow-shape: none;
   target-arrow-shape: vee;
-  label: accepts;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }

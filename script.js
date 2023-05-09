@@ -1,3 +1,23 @@
+document.addEventListener('DOMContentLoaded', function () { // on dom ready
+
+  const filePrefix = (new URLSearchParams(window.location.search)).get('p')
+
+  if (filePrefix) {
+    const eles = fetch(`data/${filePrefix ? filePrefix : ''}.json`)
+      .then(res => res.json())
+      .then(json => json.elements)
+      .then(eles => prepareEles(eles))
+
+    document.getElementById("filename").textContent = `Software Visualization: ${filePrefix}.json`;
+
+    const style = fetch('style.cycss')
+      .then(res => res.text());
+
+    Promise.all([eles, style])
+      .then(initCy);
+  }
+});
+
 const prepareEles = function (eles) {
 
   eles.nodes.forEach((node) => {
@@ -64,34 +84,7 @@ function initCy(payload) {
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
   fillBugsDropdown(cy);
-  constraints = [];
-
-  // place subclasses below their superclasses
-  payload[0].edges
-    .filter((e) => ["specializes", "realizes"].includes(e.data.interaction))
-    .forEach((e) => {
-      let c = {
-        "axis": "y",
-        "left": cy.$id(e.data.target),
-        "right": cy.$id(e.data.source),
-        "gap": 128
-      };
-      constraints.push(c);
-    });
-
-  // place dependants to the left of the dependency
-  payload[0].edges
-    .filter((e) => !["specializes", "realizes", "contains"].includes(e.data.interaction))
-    .forEach((e) => {
-      let c = {
-        "axis": "x",
-        "left": cy.$id(e.data.source),
-        "right": cy.$id(e.data.target),
-        "gap": 128
-      };
-      constraints.push(c);
-    });
-
+  
   bindRouters();
 
   const cbShowPrimitives = document.getElementById("showPrimitives");
@@ -103,17 +96,6 @@ function initCy(payload) {
   showPrimitives(cbShowPrimitives);
   showPackages(cbShowPackages);
 
-  // cy.layout({
-  //   name: 'klay', animate: true,
-  //   nodeDimensionsIncludeLabels: true,
-  //   klay: {
-  //     direction: 'DOWN',
-  //     edgeRouting: 'ORTHOGONAL',
-  //     routeSelfLoopInside: true,
-  //     thoroughness: 4,
-  //     spacing: 32
-  //   }
-  // }).run();
   cy.nodes().filter('node').forEach(n=>(bindPopper(n)))
   return cy;
 }
@@ -574,7 +556,7 @@ function bindPopper(target) {
     existingTarget.remove();
   }
 
-  if (target.data()["properties"]["vulnerabilities"].length >0) {
+  if (target.data()["properties"]["vulnerabilities"]) {
 
     let popper = target.popper({
       content: () => {

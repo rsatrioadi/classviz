@@ -54,7 +54,7 @@ h2 {
 .notice {
   background-color: #ffffec;
   border-radius: 4px;
-  margin: 2px;
+  margin: 2px 2px 2px 2px;
   padding: 2px 6px;
   border: 1px solid #cacaca;
   width: fit-content;
@@ -129,7 +129,7 @@ button.toolbutton:active {
 
 .tab-bar {
   display: flex;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   border-bottom: 1px solid #c0c0c0;
 }
 /* Reset default list styling */
@@ -142,7 +142,7 @@ ul.tabs {
 /* Style for the tabs container */
 .tabs {
   display: flex;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   border-bottom: 1px solid #c0c0c0;
 }
 
@@ -158,7 +158,7 @@ ul.tabs {
   text-align: center;
   text-decoration: none;
   color: #000;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   transition: background-color 0.3s ease;
 }
 
@@ -176,6 +176,10 @@ ul.tabs {
 }
 .download-text {
   display: none;
+}
+
+#highlight {
+  width: 234px;
 }
 
 .toolbutton {
