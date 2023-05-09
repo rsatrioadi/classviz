@@ -556,7 +556,7 @@ function bindPopper(target) {
     existingTarget.remove();
   }
 
-  if (target.data()["properties"]["vulnerabilities"]) {
+  if (target.data()["properties"].hasOwnProperty('vulnerabilities') && target.data()["properties"]["vulnerabilities"].length >0) {
 
     let popper = target.popper({
       content: () => {
