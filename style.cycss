@@ -68,6 +68,17 @@ node[properties.kind = "package"] {
   text-border-width: 1;
 }
 
+node[properties.kind = "file"] {
+  text-valign: top;
+  background-opacity: 0.3;
+  border-color: grey;
+  background-color: #ececec;
+  text-background-color: whitesmoke;
+  text-border-color: grey;
+  text-background-shape: rectangle;
+  text-border-width: 1;
+}
+
 node[properties.kind = "field"] {
   shape: ellipse;
 }
