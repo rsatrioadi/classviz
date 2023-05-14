@@ -226,11 +226,13 @@ edge[interaction = "accepts"] {
   taxi-turn: -32px;
 }
 
-.pkghidden {
+.pkghidden .filehidden {
   background-opacity: 0;
   border-opacity: 0;
   text-opacity: 0;
 }
+
+
 
 .parentRel {
   display: none;
