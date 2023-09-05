@@ -1,0 +1,1734 @@
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "CH.ifa.draw.applet",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Initialize and manage the DrawApplet class and load icons and display status messages at regular intervals."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.applet.DrawApplet",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Initialize and manage the DrawApplet class."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.applet.SleeperThread",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Load icons and display status messages at regular intervals."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.application",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Create and manipulate drawings using the DrawApplication class in the CH.ifa.draw.application package."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.application.DrawApplication",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a DrawApplication that allows users to create and manipulate drawings."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Provides classes for drawing and manipulating polygon, diamond, and triangle figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.PolygonFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a polygon figure and provides methods for manipulating and interacting with it."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.PolygonScaleHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a handle for scaling and rotating a polygon figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.DiamondFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws and manages a diamond figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.PolygonTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a tool for drawing polygons."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.TriangleRotationHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws and manipulates a triangle rotation handle."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.PolygonHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a handle for manipulating a polygon shape."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.contrib.TriangleFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a triangle figure that can be rotated and manipulated."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Provides a collection of classes for drawing and manipulating figures in a Java application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.FigureAttributes",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents the attributes of a figure and provides methods to manipulate and retrieve these attributes."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.RadiusHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws and manipulates a radius handle for a figure with an arc."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.PolyLineFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a polyline figure that can be drawn and manipulated."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.LineConnection",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a line connection between two figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.NumberTextFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a figure that displays a number as text."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.LineFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a line figure in a drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ShortestDistanceConnector",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Find the start and end points of a connection figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.GroupHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws a group handle with a black rectangle and white border."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.InsertImageCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Inserts an image into the view and selects it."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ElbowTextLocator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Locates the position of the text for a given figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.BorderTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a tool for adding a border decoration to a figure in a drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.BorderDecorator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Calculate and display the display box of the BorderDecorator figure with specified border dimensions, update the invalidated rectangle of the figure, adjust the connection insets, and draw a border around the figure with white and gray lines."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.EllipseFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents an ellipse figure that can be displayed and manipulated in a drawing application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ConnectedTextTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Activate or deactivate the ConnectedTextTool and connect text holder figure to a pressed figure if not already connected."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ElbowConnection",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Update and layout the connection between two figures using elbow connection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.LineDecoration",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a line decoration for a figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ScribbleTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Activate and deactivate the ScribbleTool and handle mouse events for drawing scribbles."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.TextTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Activate and deactivate the TextTool and handle mouse events for editing and creating text figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.GroupCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Execute group command and check if it is executable."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.RectangleFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a rectangle figure and provides methods for drawing, manipulating, and storing the figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.FontSizeHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Set font and size of text figure, calculate new font size, and draw a filled oval with a black outline."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ArrowTip",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents an arrow tip that can be drawn and saved to a StorableOutput."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.AttributeFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents an attribute figure that can be drawn with specified fill and frame colors and can have attributes with default values."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ImageFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws and manages an image figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.ElbowHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws and manipulates an elbow handle for a line connection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.PolyLineLocator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Locates a point on a PolyLineFigure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.RoundRectangleFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a round rectangle figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.GroupFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Set and manipulate a group of figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.UngroupCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Clears the selection, groups and decomposes figures, and adds the decomposed figures to the selection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.TextFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a text figure that can be displayed and manipulated in a drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.figures.PolyLineHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a handle for a polyline figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Provides a framework for creating and manipulating drawings in a graphical user interface."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.DrawingChangeEvent",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a drawing change event."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.DrawingEditor",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a drawing editor."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.FigureEnumeration",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Enumerates figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.FigureSelection",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Retrieve and return data and type information from a FigureSelection object."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Connector",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a connector that can be used to connect two figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.DrawingChangeListener",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Update and invalidate the drawing based on drawing change events."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Drawing",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a drawing in a graphical user interface."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Tool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This interface represents a tool in a drawing framework."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.ConnectionFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a connection figure between two figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Figure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Define the behavior of a figure in a drawing framework."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.DrawingView",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a view of a drawing with various methods for manipulating and interacting with the drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Locator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Locates the position of the owner figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.PointConstrainer",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Constrains points to adhere to specific rules."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Painter",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a painter that can draw graphics onto a drawing view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.Handle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a handle for manipulating a figure in a drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.FigureChangeEvent",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a change event for a figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.framework.FigureChangeListener",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This interface defines the behavior of a FigureChangeListener."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Open and manage a JavaDrawApp application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.PatternPainter",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws a pattern using the given graphics object, image, and drawing view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.FollowURLTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Handle mouse events to show and open URLs associated with figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.BouncingDrawing",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a bouncing drawing that can add, replace, animate, and remove figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.URLTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class is responsible for handling URL-related actions and editing in a drawing view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.JavaDrawApp",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Open and manage a JavaDrawApp application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.JavaDrawViewer",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Initialize and manage a viewer for JavaDraw, a drawing application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.JavaDrawApplet",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a JavaDrawApplet that can toggle animation on or off and start or end the animation."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.MySelectionTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Open and inspect figures on mouse double-click, otherwise call superclass method."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.AnimationDecorator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Animate and control the movement of a decorator within a 300x300 box."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.javadraw.Animator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Run and control an animation."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.net",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Open the NetApp window and represent a node in a network."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.net.NetApp",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Open the NetApp window of the DrawApplication class."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.net.NodeFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a figure that represents a node in a network."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.nothing",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Open the NothingApp window of the DrawApplication class in the CH.ifa.draw.samples.nothing package."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.nothing.NothingApp",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Open the NothingApp window of the DrawApplication class."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.pert",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "(no description)"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.pert.PertDependency",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Handle connections and dependencies between figures in a PERT diagram."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.pert.PertApplication",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Open the Pert application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.samples.pert.PertFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a figure in a PERT (Program Evaluation and Review Technique) diagram."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Provides a set of standard classes and interfaces for creating and manipulating figures in a drawing application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.BoxHandleKit",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Create and manage handles for different corners and sides of a figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.BufferedUpdateStrategy",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws the view onto the graphics object using a buffered update strategy."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DecoratorFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a decorator figure that can add and remove decorations to a component figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SelectAreaTracker",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "SelectAreaTracker is a class that allows users to select an area on the canvas and perform actions based on the selected area."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DuplicateCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a command for duplicating selected figures in a view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.GridConstrainer",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Constrains points to a grid and provides information about the grid step sizes."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ActionTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Perform actions on figures and interact with the editor."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ToggleGridCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "ToggleGridCommand toggles the grid constrainer on or off for the view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.HandleTracker",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "HandleTracker class is responsible for tracking and handling mouse events on anchor handles."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.EastHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Set the display box of the owner object to a new rectangle defined by the given points."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractLocator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Save and restore the state of the object."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.FigureChangeEventMulticaster",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Manage and notify listeners of figure change events."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.CutCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class represents a command for cutting selected objects in a view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.NorthHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Move the north handle of the shape to the specified coordinates."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ReverseFigureEnumerator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Enumerates figures in reverse order."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents an abstract figure in a drawing application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SendToBackCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Move selected figures to the back of the drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.NullHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws a black rectangle with the specified dimensions using the given graphics context."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SouthHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Set the display box of the owner object to a new rectangle with updated dimensions."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SouthWestHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Handle for the south-west corner of a shape."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.StandardDrawingView",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a standard drawing view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.CreationTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Create a tool for drawing figures in a view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.CopyCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "CopyCommand class is responsible for copying selected items in the view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Check if a point is contained within the handle's display box and perform various operations on the handle and its owner figure."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SelectionTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Freezes the view, releases the mouse button, and handles mouse events for selecting figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AlignCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "AlignCommand class is responsible for aligning selected figures in the view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChangeConnectionEndHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a handle for changing the end point of a connection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.PasteCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Execute the paste command by retrieving the figures from the clipboard and inserting them into the view at the last clicked position."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DragTracker",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "DragTracker class is responsible for handling mouse events related to dragging and selecting figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChopBoxConnector",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Find the starting and ending points of a connection figure by determining the chop points on the start and end figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ToolButton",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Paints and manages the state of a tool button."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChangeConnectionHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Disconnects and connects a connection handle to a target connector and updates the connection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractConnector",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents an abstract connector for connecting figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.DeleteCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "DeleteCommand class is responsible for deleting selected objects and updating the view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.BringToFrontCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "BringToFrontCommand class is responsible for bringing the selected figures to the front of the drawing."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.CompositeFigure",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a composite figure that contains multiple figures and provides methods for managing and manipulating them."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SimpleUpdateStrategy",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Draws figures in a drawing view using a graphics context."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.SouthEastHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Set the display box of the owner object to a rectangle with the top-left corner at the current x and y coordinates and the bottom-right corner at the maximum x and y coordinates between the current x and y coordinates and the original x and y coordinates."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.AbstractTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Handle user interactions with the drawing tool."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChangeAttributeCommand",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a command to change the attribute of selected figures in the view."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.RelativeLocator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a locator that can be used to determine the position of a shape relative to its owner."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.FigureEnumerator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Enumerates figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.TextHolder",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Connects a text holder to a figure and provides methods for manipulating and retrieving text and font information."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.OffsetLocator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a locator that provides the location of a figure with a specified offset."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.LocatorHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Locates the handle at a specific location."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ConnectionTool",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class is responsible for creating and modifying connections between figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.NorthEastHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Move the handle to the specified coordinates and update the display box accordingly."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.StandardDrawing",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a standard drawing with various methods for manipulating and managing figures."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ChangeConnectionStartHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a handle for changing the starting point of a connection."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.WestHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Move the west handle of the shape to the specified coordinates."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.NorthWestHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Move the handle to specified coordinates while keeping the width and height of the owner's display box constant."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.LocatorConnector",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a locator connector that can contain a point, draw itself, write and read its state, and calculate its display box."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.standard.ConnectionHandle",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "(no description)"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util",
+          "labels": [
+            "Container"
+          ],
+          "properties": {
+            "description": "Provides utility classes and interfaces for handling palette buttons, geometric calculations, command choices, palette events, layout management, command menus, fillers, commands, color manipulation, image loading, data storage, animation, clipboard management, text fields, vector iteration, and command buttons."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteButton",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Handle the behavior and visual state of a palette button."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Geom",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Calculate geometric properties and perform operations on shapes."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.CommandChoice",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a command choice and provides methods to add commands and execute the selected command."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteListener",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a listener for palette events."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteLayout",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Layouts components in a container according to specified parameters."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.CommandMenu",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Manage a command menu and its associated commands."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Filler",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a utility class for managing fillers in a drawing application."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Command",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a command that can be executed."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.ColorMap",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class provides a color map and various methods to manipulate and retrieve colors from the map."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Iconkit",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "This class provides utility methods for loading and caching images."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.StorableOutput",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Write and store various data types to an output stream."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Storable",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Write and read objects to/from input/output streams."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.PaletteIcon",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a palette icon with different states and dimensions."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Animatable",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Perform animation steps."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.Clipboard",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Manage the clipboard contents."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.StorableInput",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Reads and retrieves various types of data from an input stream."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.FloatingTextField",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Represents a floating text field that can be overlayed on a container."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.ReverseVectorEnumerator",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "ReverseVectorEnumerator class provides a way to iterate over a vector in reverse order."
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "CH.ifa.draw.util.CommandButton",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "description": "Execute the command associated with this button and update the button label if necessary."
+          }
+        }
+      }
+    ],
+    "edges": []
+  }
+}

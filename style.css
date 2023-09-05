@@ -195,11 +195,12 @@ ul.tabs {
   display: none;
   max-width: 500px;
   max-height: 200px;
-  padding: 1rem;
+  padding: 4px;
   text-align: left;
   border-radius: 0;
   border: 1px solid #ccc;
-  background: white;
+  background: #000;
+  color: #fafafa;
   z-index: 2;
   overflow: scroll;
 }

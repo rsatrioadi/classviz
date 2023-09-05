@@ -615,4 +615,59 @@ function bindPopper(target) {
       }
     })
   }
+
+  if (target.data()["properties"].hasOwnProperty('description')) {
+
+    let popper = target.popper({
+      content: () => {
+        // create div container
+        let tooltip = document.createElement('div');
+
+        // adding id for easier JavaScript control
+        tooltip.id = tooltipId;
+
+        // adding class for easier CSS control
+        tooltip.classList.add('target-popper');
+
+        // create actual table
+
+
+        // append table to div container
+
+        let desc = target.data()["properties"]["description"];
+        // let p = document.createElement('p');
+        tooltip.innerText = desc;
+        // tooltip.appendChild(p)
+
+        document.body.appendChild(tooltip);
+
+        return tooltip;
+      },
+      popper: {
+        placement: "auto"
+      }
+    });
+
+    target.on('position', () => {
+      popper.update();
+    });
+
+    target.cy().on('pan zoom resize', () => {
+      popper.update();
+    });
+
+
+    target.on('mouseover', () => {
+      if (!target.hasClass('dimmed')) {
+        if (document.getElementById(tooltipId)) {
+          document.getElementById(tooltipId).classList.add('active');
+        }
+      }
+
+    }).on('mouseout', () => {
+      if (document.getElementById(tooltipId)) {
+        document.getElementById(tooltipId).classList.remove('active');
+      }
+    })
+  }
 }
