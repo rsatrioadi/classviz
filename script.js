@@ -84,7 +84,7 @@ function initCy(payload) {
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
   fillBugsDropdown(cy);
-  
+
   bindRouters();
 
   const cbShowPrimitives = document.getElementById("showPrimitives");
@@ -413,6 +413,7 @@ const highlight = function (text) {
     cy_classes.removeClass("dimmed");
     cy_edges.removeClass("dimmed");
     cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+    cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
   } else {
     cy.elements().removeClass("dimmed");
   }
@@ -509,8 +510,8 @@ const showBug = function (evt) {
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
     bug_nodes.removeClass("dimmed");
 
-    cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
-    bug_nodes.removeClass("byg_reset");
+    cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
+    bug_nodes.removeClass("bug_reset");
 
     bug_nodes.addClass("bug_shown");
 
@@ -562,7 +563,6 @@ function bindPopper(target) {
       content: () => {
         // create div container
         let tooltip = document.createElement('div');
-
         // adding id for easier JavaScript control
         tooltip.id = tooltipId;
 
@@ -589,7 +589,10 @@ function bindPopper(target) {
         return tooltip;
       },
       popper: {
-        placement: "auto"
+        placement: "auto",
+        options:{
+          offset:[0,40]
+        }
       }
     });
 
