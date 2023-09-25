@@ -1,3 +1,13 @@
+/*
+TODO
+- role stereotypes
+- animate dynamic aspects
+- summaries to sidebar
+- architecture recovery/clustering
+- collapse the classes
+- more padding inside padding
+*/
+
 document.addEventListener('DOMContentLoaded', function () { // on dom ready
 
   const filePrefix = (new URLSearchParams(window.location.search)).get('p')

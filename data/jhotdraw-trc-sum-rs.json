@@ -7,7 +7,7 @@
           "properties": {
             "simpleName": "StandardDrawingView",
             "kind": "class",
-            "rs": "Controller",
+            "rs": "Information Holder",
             "traces": [
               "ConnectionTool",
               "ElbowConnectionTool",
@@ -55,7 +55,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class provides a color map and various methods to manipulate and retrieve colors from the map."
+            "description": "This class provides a color map and various methods to manipulate and retrieve colors from the map.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -85,7 +86,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Update and layout the connection between two figures using elbow connection."
+            "description": "Update and layout the connection between two figures using elbow connection.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -115,7 +117,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a standard drawing with various methods for manipulating and managing figures."
+            "description": "Represents a standard drawing with various methods for manipulating and managing figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -145,7 +148,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Paints and manages the state of a tool button."
+            "description": "Paints and manages the state of a tool button.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -175,7 +179,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Open the NothingApp window of the DrawApplication class."
+            "description": "Open the NothingApp window of the DrawApplication class.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -205,7 +210,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class represents a polyline figure that can be drawn and manipulated."
+            "description": "This class represents a polyline figure that can be drawn and manipulated.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -235,7 +241,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "AlignCommand class is responsible for aligning selected figures in the view."
+            "description": "AlignCommand class is responsible for aligning selected figures in the view.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -265,7 +272,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Move selected figures to the back of the drawing."
+            "description": "Move selected figures to the back of the drawing.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -295,7 +303,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a palette icon with different states and dimensions."
+            "description": "Represents a palette icon with different states and dimensions.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -325,7 +334,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a text figure that can be displayed and manipulated in a drawing."
+            "description": "Represents a text figure that can be displayed and manipulated in a drawing.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -344,7 +354,8 @@
               "MenuAttributes",
               "PolygonTool"
             ],
-            "description": "Represents an abstract connector for connecting figures."
+            "description": "Represents an abstract connector for connecting figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -374,7 +385,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Draws the view onto the graphics object using a buffered update strategy."
+            "description": "Draws the view onto the graphics object using a buffered update strategy.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -404,7 +416,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents an arrow tip that can be drawn and saved to a StorableOutput."
+            "description": "Represents an arrow tip that can be drawn and saved to a StorableOutput.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -434,7 +447,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents an attribute figure that can be drawn with specified fill and frame colors and can have attributes with default values."
+            "description": "Represents an attribute figure that can be drawn with specified fill and frame colors and can have attributes with default values.",
+            "rs": "Structurer"
           },
           "labels": [
             "Structure"
@@ -464,7 +478,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Create a tool for drawing figures in a view."
+            "description": "Create a tool for drawing figures in a view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -491,7 +506,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Manage and notify listeners of figure change events."
+            "description": "Manage and notify listeners of figure change events.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -521,7 +537,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Execute group command and check if it is executable."
+            "description": "Execute group command and check if it is executable.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -551,7 +568,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a command to change the attribute of selected figures in the view."
+            "description": "Represents a command to change the attribute of selected figures in the view.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -610,7 +628,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "ToggleGridCommand toggles the grid constrainer on or off for the view."
+            "description": "ToggleGridCommand toggles the grid constrainer on or off for the view.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -640,7 +659,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "DeleteCommand class is responsible for deleting selected objects and updating the view."
+            "description": "DeleteCommand class is responsible for deleting selected objects and updating the view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -670,7 +690,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Activate and deactivate the TextTool and handle mouse events for editing and creating text figures."
+            "description": "Activate and deactivate the TextTool and handle mouse events for editing and creating text figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -700,7 +721,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Enumerates figures."
+            "description": "Enumerates figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -730,7 +752,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Handle the behavior and visual state of a palette button."
+            "description": "Handle the behavior and visual state of a palette button.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -760,7 +783,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "CopyCommand class is responsible for copying selected items in the view."
+            "description": "CopyCommand class is responsible for copying selected items in the view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -783,7 +807,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Enumerates figures in reverse order."
+            "description": "Enumerates figures in reverse order.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -813,7 +838,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a command for duplicating selected figures in a view."
+            "description": "Represents a command for duplicating selected figures in a view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -840,7 +866,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a drawing change event."
+            "description": "Represents a drawing change event.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -870,7 +897,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a round rectangle figure."
+            "description": "Represents a round rectangle figure.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -900,7 +928,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents an abstract figure in a drawing application."
+            "description": "Represents an abstract figure in a drawing application.",
+            "rs": "Structurer"
           },
           "labels": [
             "Structure"
@@ -930,7 +959,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Manage a command menu and its associated commands."
+            "description": "Manage a command menu and its associated commands.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -960,7 +990,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a line connection between two figures."
+            "description": "Represents a line connection between two figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -990,7 +1021,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents the attributes of a figure and provides methods to manipulate and retrieve these attributes."
+            "description": "Represents the attributes of a figure and provides methods to manipulate and retrieve these attributes.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1020,7 +1052,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Clears the selection, groups and decomposes figures, and adds the decomposed figures to the selection."
+            "description": "Clears the selection, groups and decomposes figures, and adds the decomposed figures to the selection.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1050,7 +1083,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a line figure in a drawing."
+            "description": "Represents a line figure in a drawing.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1080,7 +1114,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Execute the paste command by retrieving the figures from the clipboard and inserting them into the view at the last clicked position."
+            "description": "Execute the paste command by retrieving the figures from the clipboard and inserting them into the view at the last clicked position.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1110,7 +1145,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents an ellipse figure that can be displayed and manipulated in a drawing application."
+            "description": "Represents an ellipse figure that can be displayed and manipulated in a drawing application.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1139,7 +1175,8 @@
               "RoundRectangleTool",
               "SelectionTool",
               "TextTool"
-            ]
+            ],
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1169,7 +1206,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Handle user interactions with the drawing tool."
+            "description": "Handle user interactions with the drawing tool.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1188,7 +1226,8 @@
               "MenuAttributes",
               "PolygonTool"
             ],
-            "description": "Find the starting and ending points of a connection figure by determining the chop points on the start and end figures."
+            "description": "Find the starting and ending points of a connection figure by determining the chop points on the start and end figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1218,7 +1257,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Layouts components in a container according to specified parameters."
+            "description": "Layouts components in a container according to specified parameters.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1248,7 +1288,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a composite figure that contains multiple figures and provides methods for managing and manipulating them."
+            "description": "Represents a composite figure that contains multiple figures and provides methods for managing and manipulating them.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1275,7 +1316,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a change event for a figure."
+            "description": "Represents a change event for a figure.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1305,7 +1347,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class is responsible for creating and modifying connections between figures."
+            "description": "This class is responsible for creating and modifying connections between figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1335,7 +1378,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class represents a command for cutting selected objects in a view."
+            "description": "This class represents a command for cutting selected objects in a view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1365,7 +1409,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a DrawApplication that allows users to create and manipulate drawings."
+            "description": "Represents a DrawApplication that allows users to create and manipulate drawings.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1388,7 +1433,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "ReverseVectorEnumerator class provides a way to iterate over a vector in reverse order."
+            "description": "ReverseVectorEnumerator class provides a way to iterate over a vector in reverse order.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1418,7 +1464,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class provides utility methods for loading and caching images."
+            "description": "This class provides utility methods for loading and caching images.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1448,7 +1495,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Freezes the view, releases the mouse button, and handles mouse events for selecting figures."
+            "description": "Freezes the view, releases the mouse button, and handles mouse events for selecting figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1478,7 +1526,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "BringToFrontCommand class is responsible for bringing the selected figures to the front of the drawing."
+            "description": "BringToFrontCommand class is responsible for bringing the selected figures to the front of the drawing.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1508,7 +1557,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class represents a tool for drawing polygons."
+            "description": "This class represents a tool for drawing polygons.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1538,7 +1588,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "This class represents a rectangle figure and provides methods for drawing, manipulating, and storing the figure."
+            "description": "This class represents a rectangle figure and provides methods for drawing, manipulating, and storing the figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1568,7 +1619,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Represents a command that can be executed."
+            "description": "Represents a command that can be executed.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1595,7 +1647,8 @@
               "SelectionTool",
               "TextTool"
             ],
-            "description": "Calculate geometric properties and perform operations on shapes."
+            "description": "Calculate geometric properties and perform operations on shapes.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1671,7 +1724,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "Check if a point is contained within the handle's display box and perform various operations on the handle and its owner figure."
+            "description": "Check if a point is contained within the handle's display box and perform various operations on the handle and its owner figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1747,7 +1801,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "SelectAreaTracker is a class that allows users to select an area on the canvas and perform actions based on the selected area."
+            "description": "SelectAreaTracker is a class that allows users to select an area on the canvas and perform actions based on the selected area.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1766,7 +1821,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "Create and manage handles for different corners and sides of a figure."
+            "description": "Create and manage handles for different corners and sides of a figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1785,7 +1841,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "Save and restore the state of the object."
+            "description": "Save and restore the state of the object.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1804,7 +1861,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "Locates the handle at a specific location."
+            "description": "Locates the handle at a specific location.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1861,7 +1919,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "Represents a locator that can be used to determine the position of a shape relative to its owner."
+            "description": "Represents a locator that can be used to determine the position of a shape relative to its owner.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1877,7 +1936,8 @@
             "traces": [
               "MenuAlign"
             ],
-            "description": "Constrains points to a grid and provides information about the grid step sizes."
+            "description": "Constrains points to a grid and provides information about the grid step sizes.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1893,7 +1953,8 @@
             "traces": [
               "MenuAttributes"
             ],
-            "description": "Set font and size of text figure, calculate new font size, and draw a filled oval with a black outline."
+            "description": "Set font and size of text figure, calculate new font size, and draw a filled oval with a black outline.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1911,7 +1972,8 @@
               "MenuEdit",
               "SelectionTool"
             ],
-            "description": "DragTracker class is responsible for handling mouse events related to dragging and selecting figures."
+            "description": "DragTracker class is responsible for handling mouse events related to dragging and selecting figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1927,7 +1989,8 @@
             "traces": [
               "MenuAttributes"
             ],
-            "description": "Disconnects and connects a connection handle to a target connector and updates the connection."
+            "description": "Disconnects and connects a connection handle to a target connector and updates the connection.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1944,7 +2007,8 @@
               "MenuAttributes",
               "TextTool"
             ],
-            "description": "Represents a floating text field that can be overlayed on a container."
+            "description": "Represents a floating text field that can be overlayed on a container.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -1960,7 +2024,8 @@
             "traces": [
               "MenuAttributes"
             ],
-            "description": "Represents a handle for changing the end point of a connection."
+            "description": "Represents a handle for changing the end point of a connection.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1976,7 +2041,8 @@
             "traces": [
               "MenuAttributes"
             ],
-            "description": "Represents a handle for changing the starting point of a connection."
+            "description": "Represents a handle for changing the starting point of a connection.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -1993,7 +2059,8 @@
               "MenuAttributes",
               "MenuEdit"
             ],
-            "description": "Draws a black rectangle with the specified dimensions using the given graphics context."
+            "description": "Draws a black rectangle with the specified dimensions using the given graphics context.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2009,7 +2076,8 @@
             "traces": [
               "MenuDebug"
             ],
-            "description": "Draws figures in a drawing view using a graphics context."
+            "description": "Draws figures in a drawing view using a graphics context.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2026,7 +2094,8 @@
               "MenuEdit",
               "MenuFile"
             ],
-            "description": "Reads and retrieves various types of data from an input stream."
+            "description": "Reads and retrieves various types of data from an input stream.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2042,7 +2111,8 @@
             "traces": [
               "MenuEdit"
             ],
-            "description": "Manage the clipboard contents."
+            "description": "Manage the clipboard contents.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2059,7 +2129,8 @@
               "MenuEdit",
               "MenuFile"
             ],
-            "description": "Write and store various data types to an output stream."
+            "description": "Write and store various data types to an output stream.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2075,7 +2146,8 @@
             "traces": [
               "MenuEdit"
             ],
-            "description": "Retrieve and return data and type information from a FigureSelection object."
+            "description": "Retrieve and return data and type information from a FigureSelection object.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2091,7 +2163,8 @@
             "traces": [
               "MenuEdit"
             ],
-            "description": "Draws a group handle with a black rectangle and white border."
+            "description": "Draws a group handle with a black rectangle and white border.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2107,7 +2180,8 @@
             "traces": [
               "MenuEdit"
             ],
-            "description": "Set and manipulate a group of figures."
+            "description": "Set and manipulate a group of figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2123,7 +2197,8 @@
             "traces": [
               "PolygonTool"
             ],
-            "description": "Represents a polygon figure and provides methods for manipulating and interacting with it."
+            "description": "Represents a polygon figure and provides methods for manipulating and interacting with it.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2138,7 +2213,8 @@
             "kind": "class",
             "traces": [
               "PolygonTool"
-            ]
+            ],
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2154,7 +2230,8 @@
             "traces": [
               "SelectionTool"
             ],
-            "description": "HandleTracker class is responsible for tracking and handling mouse events on anchor handles."
+            "description": "HandleTracker class is responsible for tracking and handling mouse events on anchor handles.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2178,7 +2255,8 @@
           "properties": {
             "simpleName": "JavaDrawApp",
             "kind": "class",
-            "description": "Open and manage a JavaDrawApp application."
+            "description": "Open and manage a JavaDrawApp application.",
+            "rs": "Interfacer"
           },
           "labels": [
             "Structure"
@@ -2191,7 +2269,8 @@
           "properties": {
             "simpleName": "PertApplication",
             "kind": "class",
-            "description": "Open the Pert application."
+            "description": "Open the Pert application.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2204,7 +2283,8 @@
           "properties": {
             "simpleName": "OffsetLocator",
             "kind": "class",
-            "description": "Represents a locator that provides the location of a figure with a specified offset."
+            "description": "Represents a locator that provides the location of a figure with a specified offset.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2217,7 +2297,8 @@
           "properties": {
             "simpleName": "ConnectionFigure",
             "kind": "interface",
-            "description": "Represents a connection figure between two figures."
+            "description": "Represents a connection figure between two figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2230,7 +2311,8 @@
           "properties": {
             "simpleName": "ShortestDistanceConnector",
             "kind": "class",
-            "description": "Find the start and end points of a connection figure."
+            "description": "Find the start and end points of a connection figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2243,7 +2325,8 @@
           "properties": {
             "simpleName": "MySelectionTool",
             "kind": "class",
-            "description": "Open and inspect figures on mouse double-click, otherwise call superclass method."
+            "description": "Open and inspect figures on mouse double-click, otherwise call superclass method.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2280,7 +2363,8 @@
           "properties": {
             "simpleName": "Filler",
             "kind": "class",
-            "description": "Represents a utility class for managing fillers in a drawing application."
+            "description": "Represents a utility class for managing fillers in a drawing application.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2293,7 +2377,8 @@
           "properties": {
             "simpleName": "DrawingChangeListener",
             "kind": "interface",
-            "description": "Update and invalidate the drawing based on drawing change events."
+            "description": "Update and invalidate the drawing based on drawing change events.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2305,7 +2390,8 @@
           "id": "CH.ifa.draw.figures.ChopEllipseConnector",
           "properties": {
             "simpleName": "ChopEllipseConnector",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2318,7 +2404,8 @@
           "properties": {
             "simpleName": "PointConstrainer",
             "kind": "interface",
-            "description": "Constrains points to adhere to specific rules."
+            "description": "Constrains points to adhere to specific rules.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2331,7 +2418,8 @@
           "properties": {
             "simpleName": "TriangleFigure",
             "kind": "class",
-            "description": "Represents a triangle figure that can be rotated and manipulated."
+            "description": "Represents a triangle figure that can be rotated and manipulated.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2344,7 +2432,8 @@
           "properties": {
             "simpleName": "Animator",
             "kind": "class",
-            "description": "Run and control an animation."
+            "description": "Run and control an animation.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2357,7 +2446,8 @@
           "properties": {
             "simpleName": "LineDecoration",
             "kind": "interface",
-            "description": "Represents a line decoration for a figure."
+            "description": "Represents a line decoration for a figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2370,7 +2460,8 @@
           "properties": {
             "simpleName": "PolygonHandle",
             "kind": "class",
-            "description": "Represents a handle for manipulating a polygon shape."
+            "description": "Represents a handle for manipulating a polygon shape.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2394,7 +2485,8 @@
           "properties": {
             "simpleName": "FollowURLTool",
             "kind": "class",
-            "description": "Handle mouse events to show and open URLs associated with figures."
+            "description": "Handle mouse events to show and open URLs associated with figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2407,7 +2499,8 @@
           "properties": {
             "simpleName": "DrawApplet",
             "kind": "class",
-            "description": "Initialize and manage the DrawApplet class."
+            "description": "Initialize and manage the DrawApplet class.",
+            "rs": "Interfacer"
           },
           "labels": [
             "Structure"
@@ -2420,7 +2513,8 @@
           "properties": {
             "simpleName": "ConnectedTextTool",
             "kind": "class",
-            "description": "Activate or deactivate the ConnectedTextTool and connect text holder figure to a pressed figure if not already connected."
+            "description": "Activate or deactivate the ConnectedTextTool and connect text holder figure to a pressed figure if not already connected.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2433,7 +2527,8 @@
           "properties": {
             "simpleName": "Figure",
             "kind": "interface",
-            "description": "Define the behavior of a figure in a drawing framework."
+            "description": "Define the behavior of a figure in a drawing framework.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2459,7 +2554,8 @@
           "properties": {
             "simpleName": "ConnectionHandle",
             "kind": "class",
-            "description": "(no description)"
+            "description": "(no description)",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2472,7 +2568,8 @@
           "properties": {
             "simpleName": "ScribbleTool",
             "kind": "class",
-            "description": "Activate and deactivate the ScribbleTool and handle mouse events for drawing scribbles."
+            "description": "Activate and deactivate the ScribbleTool and handle mouse events for drawing scribbles.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2532,7 +2629,8 @@
           "id": "CH.ifa.draw.samples.nothing.NothingApplet",
           "properties": {
             "simpleName": "NothingApplet",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Interfacer"
           },
           "labels": [
             "Structure"
@@ -2556,7 +2654,8 @@
           "properties": {
             "simpleName": "DiamondFigure",
             "kind": "class",
-            "description": "Draws and manages a diamond figure."
+            "description": "Draws and manages a diamond figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2568,7 +2667,8 @@
           "id": "CH.ifa.draw.samples.pert.PertFigureCreationTool",
           "properties": {
             "simpleName": "PertFigureCreationTool",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2581,7 +2681,8 @@
           "properties": {
             "simpleName": "CommandChoice",
             "kind": "class",
-            "description": "Represents a command choice and provides methods to add commands and execute the selected command."
+            "description": "Represents a command choice and provides methods to add commands and execute the selected command.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2594,7 +2695,8 @@
           "properties": {
             "simpleName": "BouncingDrawing",
             "kind": "class",
-            "description": "This class represents a bouncing drawing that can add, replace, animate, and remove figures."
+            "description": "This class represents a bouncing drawing that can add, replace, animate, and remove figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2607,7 +2709,8 @@
           "properties": {
             "simpleName": "InsertImageCommand",
             "kind": "class",
-            "description": "Inserts an image into the view and selects it."
+            "description": "Inserts an image into the view and selects it.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2620,7 +2723,8 @@
           "properties": {
             "simpleName": "Handle",
             "kind": "interface",
-            "description": "Represents a handle for manipulating a figure in a drawing."
+            "description": "Represents a handle for manipulating a figure in a drawing.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2633,7 +2737,8 @@
           "properties": {
             "simpleName": "URLTool",
             "kind": "class",
-            "description": "This class is responsible for handling URL-related actions and editing in a drawing view."
+            "description": "This class is responsible for handling URL-related actions and editing in a drawing view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2646,7 +2751,8 @@
           "properties": {
             "simpleName": "Locator",
             "kind": "interface",
-            "description": "Locates the position of the owner figure."
+            "description": "Locates the position of the owner figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2659,7 +2765,8 @@
           "properties": {
             "simpleName": "JavaDrawApplet",
             "kind": "class",
-            "description": "This class represents a JavaDrawApplet that can toggle animation on or off and start or end the animation."
+            "description": "This class represents a JavaDrawApplet that can toggle animation on or off and start or end the animation.",
+            "rs": "Interfacer"
           },
           "labels": [
             "Structure"
@@ -2672,7 +2779,8 @@
           "properties": {
             "simpleName": "TextHolder",
             "kind": "interface",
-            "description": "Connects a text holder to a figure and provides methods for manipulating and retrieving text and font information."
+            "description": "Connects a text holder to a figure and provides methods for manipulating and retrieving text and font information.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2685,7 +2793,8 @@
           "properties": {
             "simpleName": "Connector",
             "kind": "interface",
-            "description": "Represents a connector that can be used to connect two figures."
+            "description": "Represents a connector that can be used to connect two figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2698,7 +2807,8 @@
           "properties": {
             "simpleName": "RadiusHandle",
             "kind": "class",
-            "description": "Draws and manipulates a radius handle for a figure with an arc."
+            "description": "Draws and manipulates a radius handle for a figure with an arc.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2722,7 +2832,8 @@
           "properties": {
             "simpleName": "NodeFigure",
             "kind": "class",
-            "description": "Represents a figure that represents a node in a network."
+            "description": "Represents a figure that represents a node in a network.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2745,7 +2856,8 @@
           "id": "CH.ifa.draw.framework.HJDError",
           "properties": {
             "simpleName": "HJDError",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -2771,7 +2883,8 @@
           "properties": {
             "simpleName": "NetApp",
             "kind": "class",
-            "description": "Open the NetApp window of the DrawApplication class."
+            "description": "Open the NetApp window of the DrawApplication class.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2784,7 +2897,8 @@
           "properties": {
             "simpleName": "ImageFigure",
             "kind": "class",
-            "description": "Draws and manages an image figure."
+            "description": "Draws and manages an image figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2797,7 +2911,8 @@
           "properties": {
             "simpleName": "PaletteListener",
             "kind": "interface",
-            "description": "Represents a listener for palette events."
+            "description": "Represents a listener for palette events.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2810,7 +2925,8 @@
           "properties": {
             "simpleName": "TriangleRotationHandle",
             "kind": "class",
-            "description": "Draws and manipulates a triangle rotation handle."
+            "description": "Draws and manipulates a triangle rotation handle.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2836,7 +2952,8 @@
           "properties": {
             "simpleName": "BorderTool",
             "kind": "class",
-            "description": "Represents a tool for adding a border decoration to a figure in a drawing."
+            "description": "Represents a tool for adding a border decoration to a figure in a drawing.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2874,7 +2991,8 @@
           "properties": {
             "simpleName": "PolygonScaleHandle",
             "kind": "class",
-            "description": "This class represents a handle for scaling and rotating a polygon figure."
+            "description": "This class represents a handle for scaling and rotating a polygon figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2900,7 +3018,8 @@
           "properties": {
             "simpleName": "PolyLineHandle",
             "kind": "class",
-            "description": "Represents a handle for a polyline figure."
+            "description": "Represents a handle for a polyline figure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2926,7 +3045,8 @@
           "properties": {
             "simpleName": "FigureChangeListener",
             "kind": "interface",
-            "description": "This interface defines the behavior of a FigureChangeListener."
+            "description": "This interface defines the behavior of a FigureChangeListener.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2952,7 +3072,8 @@
           "properties": {
             "simpleName": "BorderDecorator",
             "kind": "class",
-            "description": "Calculate and display the display box of the BorderDecorator figure with specified border dimensions, update the invalidated rectangle of the figure, adjust the connection insets, and draw a border around the figure with white and gray lines."
+            "description": "Calculate and display the display box of the BorderDecorator figure with specified border dimensions, update the invalidated rectangle of the figure, adjust the connection insets, and draw a border around the figure with white and gray lines.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2965,7 +3086,8 @@
           "properties": {
             "simpleName": "ElbowHandle",
             "kind": "class",
-            "description": "Draws and manipulates an elbow handle for a line connection."
+            "description": "Draws and manipulates an elbow handle for a line connection.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -2977,7 +3099,8 @@
           "id": "CH.ifa.draw.samples.pert.PertApplet",
           "properties": {
             "simpleName": "PertApplet",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3003,7 +3126,8 @@
           "properties": {
             "simpleName": "Painter",
             "kind": "interface",
-            "description": "Represents a painter that can draw graphics onto a drawing view."
+            "description": "Represents a painter that can draw graphics onto a drawing view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3027,7 +3151,8 @@
           "properties": {
             "simpleName": "DecoratorFigure",
             "kind": "abstract",
-            "description": "Represents a decorator figure that can add and remove decorations to a component figure."
+            "description": "Represents a decorator figure that can add and remove decorations to a component figure.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -3040,7 +3165,8 @@
           "properties": {
             "simpleName": "ActionTool",
             "kind": "abstract",
-            "description": "Perform actions on figures and interact with the editor."
+            "description": "Perform actions on figures and interact with the editor.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3077,7 +3203,8 @@
           "properties": {
             "simpleName": "Storable",
             "kind": "interface",
-            "description": "Write and read objects to/from input/output streams."
+            "description": "Write and read objects to/from input/output streams.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3090,7 +3217,8 @@
           "properties": {
             "simpleName": "DrawingView",
             "kind": "interface",
-            "description": "Represents a view of a drawing with various methods for manipulating and interacting with the drawing."
+            "description": "Represents a view of a drawing with various methods for manipulating and interacting with the drawing.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3116,7 +3244,8 @@
           "properties": {
             "simpleName": "AnimationDecorator",
             "kind": "class",
-            "description": "Animate and control the movement of a decorator within a 300x300 box."
+            "description": "Animate and control the movement of a decorator within a 300x300 box.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3129,7 +3258,8 @@
           "properties": {
             "simpleName": "DrawingEditor",
             "kind": "interface",
-            "description": "Represents a drawing editor."
+            "description": "Represents a drawing editor.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3142,7 +3272,8 @@
           "properties": {
             "simpleName": "Animatable",
             "kind": "interface",
-            "description": "Perform animation steps."
+            "description": "Perform animation steps.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3155,7 +3286,8 @@
           "properties": {
             "simpleName": "PertDependency",
             "kind": "class",
-            "description": "Handle connections and dependencies between figures in a PERT diagram."
+            "description": "Handle connections and dependencies between figures in a PERT diagram.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3168,7 +3300,8 @@
           "properties": {
             "simpleName": "PertFigure",
             "kind": "class",
-            "description": "Represents a figure in a PERT (Program Evaluation and Review Technique) diagram."
+            "description": "Represents a figure in a PERT (Program Evaluation and Review Technique) diagram.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3181,7 +3314,8 @@
           "properties": {
             "simpleName": "JavaDrawViewer",
             "kind": "class",
-            "description": "Initialize and manage a viewer for JavaDraw, a drawing application."
+            "description": "Initialize and manage a viewer for JavaDraw, a drawing application.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3194,7 +3328,8 @@
           "properties": {
             "simpleName": "Drawing",
             "kind": "interface",
-            "description": "Represents a drawing in a graphical user interface."
+            "description": "Represents a drawing in a graphical user interface.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3207,7 +3342,8 @@
           "properties": {
             "simpleName": "Tool",
             "kind": "interface",
-            "description": "This interface represents a tool in a drawing framework."
+            "description": "This interface represents a tool in a drawing framework.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3219,7 +3355,8 @@
           "id": "CH.ifa.draw.figures.PolyLineConnector",
           "properties": {
             "simpleName": "PolyLineConnector",
-            "kind": "class"
+            "kind": "class",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3232,7 +3369,8 @@
           "properties": {
             "simpleName": "PatternPainter",
             "kind": "class",
-            "description": "Draws a pattern using the given graphics object, image, and drawing view."
+            "description": "Draws a pattern using the given graphics object, image, and drawing view.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3245,7 +3383,8 @@
           "properties": {
             "simpleName": "LocatorConnector",
             "kind": "class",
-            "description": "Represents a locator connector that can contain a point, draw itself, write and read its state, and calculate its display box."
+            "description": "Represents a locator connector that can contain a point, draw itself, write and read its state, and calculate its display box.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3258,7 +3397,8 @@
           "properties": {
             "simpleName": "PolyLineLocator",
             "kind": "class",
-            "description": "Locates a point on a PolyLineFigure."
+            "description": "Locates a point on a PolyLineFigure.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3283,7 +3423,8 @@
           "properties": {
             "simpleName": "NumberTextFigure",
             "kind": "class",
-            "description": "Represents a figure that displays a number as text."
+            "description": "Represents a figure that displays a number as text.",
+            "rs": "Information Holder"
           },
           "labels": [
             "Structure"
@@ -3309,7 +3450,8 @@
           "properties": {
             "simpleName": "CommandButton",
             "kind": "class",
-            "description": "Execute the command associated with this button and update the button label if necessary."
+            "description": "Execute the command associated with this button and update the button label if necessary.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"
@@ -3322,7 +3464,8 @@
           "properties": {
             "simpleName": "FigureEnumeration",
             "kind": "interface",
-            "description": "Enumerates figures."
+            "description": "Enumerates figures.",
+            "rs": "Service Provider"
           },
           "labels": [
             "Structure"

@@ -58,7 +58,7 @@ node[properties.rs = "Structurer"] {
 
 node[properties.kind = "package"] {
   text-valign: top;
-  background-opacity: 0.3;
+  background-opacity: 0.1;
   border-color: grey;
   border-width: 3;
   background-color: #ececec;
@@ -66,6 +66,7 @@ node[properties.kind = "package"] {
   text-border-color: grey;
   text-background-shape: rectangle;
   text-border-width: 1;
+  padding: 16px;
 }
 
 node[properties.kind = "file"] {
