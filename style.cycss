@@ -9,7 +9,7 @@
 node {
   height: label;
   width: label;
-  padding: 4px;
+  padding: 16px;
   border-color: black;
   background-color: whitesmoke;
   border-width: 1;
@@ -35,7 +35,7 @@ node[properties.rs = "Coordinator"] {
 }
 
 node[properties.rs = "Information Holder"] {
-  border-color: #e41.5c;
+  border-color: #e4105c;
   background-color: #fbb4ae;
 }
 
@@ -58,7 +58,6 @@ node[properties.rs = "Structurer"] {
 
 node[properties.kind = "package"] {
   text-valign: top;
-  background-opacity: 0.1;
   border-color: grey;
   border-width: 3;
   background-color: #ececec;
@@ -66,7 +65,7 @@ node[properties.kind = "package"] {
   text-border-color: grey;
   text-background-shape: rectangle;
   text-border-width: 1;
-  padding: 16px;
+  padding: 32px;
 }
 
 node[properties.kind = "file"] {
@@ -179,8 +178,10 @@ edge[interaction = "holds"] {
 }
 
 edge[interaction = "calls"] {
-  target-arrow-color: #8da0cb;
-  line-color: #8da0cb;
+  target-arrow-color: red;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: yellow red;
+  line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;

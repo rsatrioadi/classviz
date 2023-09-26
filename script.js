@@ -1,11 +1,14 @@
 /*
 TODO
-- role stereotypes
+- role stereotypes DONE
+- filtering stereotypes
+- remove bug tab DONE
+- try font sizing DONE
 - animate dynamic aspects
-- summaries to sidebar
+- summaries to sidebar DONE
 - architecture recovery/clustering
 - collapse the classes
-- more padding inside padding
+- more padding inside packages DONE?
 */
 
 document.addEventListener('DOMContentLoaded', function () { // on dom ready
@@ -58,7 +61,16 @@ function setParents(relationship, inverted) {
 
 let parentRel = "contains";
 
-const colors = [
+const rs_colors = {
+  "Controller": ["#984ea3", "#decbe4"],
+  "Coordinator": ["#4daf4a", "#ccebc5"],
+  "Information Holder": ["#e4105c", "#fbb4ae"],
+  "Interfacer": ["#ff7f00", "#fed9a6"],
+  "Service Provider": ["#377eb8", "#b3cde3"],
+  "Structurer": ["#f781bf", "#fddaec"],
+};
+
+const ft_colors = [
   "#8dd3c7",
   "#ffffb3",
   "#bebada",
@@ -91,9 +103,16 @@ function initCy(payload) {
 
   setParents(parentRel, false);
 
+  cy.nodes('[properties.kind = "package"]').forEach((n) => {
+    const d = n.ancestors().length;
+    console.log(n.data('id'),d);
+    const grey = Math.min(160 + (d*20), 255);
+    n.style('background-color', `rgb(${grey},${grey},${grey})`);
+  });
+
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
-  fillBugsDropdown(cy);
+  // fillBugsDropdown(cy);
 
   bindRouters();
 
@@ -106,9 +125,28 @@ function initCy(payload) {
   showPrimitives(cbShowPrimitives);
   showPackages(cbShowPackages);
 
-  cy.nodes().filter('node').forEach(n=>(bindPopper(n)))
+  // cy.nodes().filter('node').forEach(n => (bindPopper(n)))
   return cy;
 }
+
+// Get a reference to the div element
+var infoTitle = document.getElementById("infotitle");
+var infoBody = document.getElementById("infobody");
+
+// Add a click event listener to the div
+infoTitle.addEventListener("click", function () {
+  if (infoBody.style.display === "none") {
+    infoBody.style.display = "block";
+    infoTitle.style.borderBottomLeftRadius = 0;
+    infoTitle.style.borderBottomRightRadius = 0;
+    infoTitle.style.borderBottom = "1px solid #9b999b";
+  } else {
+    infoBody.style.display = "none";
+    infoTitle.style.borderBottomLeftRadius = "inherit";
+    infoTitle.style.borderBottomRightRadius = "inherit";
+    infoTitle.style.borderBottom = 0;
+  }
+});
 
 function bindRouters() {
 
@@ -143,9 +181,37 @@ function bindRouters() {
 
   // left click highlights the edge and its connected nodes
   cy.on('tap', 'edge', evt => {
-
     evt.target.removeClass("dimmed");
     evt.target.connectedNodes().removeClass("dimmed");
+  });
+
+  cy.on('mouseover', 'node', evt => {
+    var infoHeader = document.createElement("h3");
+    var infoSubeader = document.createElement("p");
+    var infoText = document.createElement("p");
+
+    infoHeader.textContent = evt.target.data()["properties"]["simpleName"];
+    infoText.textContent = evt.target.data()["properties"]["description"] ? evt.target.data()["properties"]["description"] : "(no description)";
+
+    
+
+    if (evt.target.data()['labels'].includes('Structure')) {
+      if (evt.target.data()["properties"]["rs"]) {
+        infoBody.style.backgroundColor = rs_colors[evt.target.data()["properties"]["rs"]][1];
+        infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]}</i> – ${evt.target.data()["properties"]["rs"]}</b>`;
+      } else {
+        infoBody.style.backgroundColor = "inherit";
+        infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]}</i></b>`;
+      }
+    } else if (evt.target.data()['labels'].includes('Container')) {
+      infoBody.style.backgroundColor = "inherit";
+      infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]}</i></b>`;
+    }
+
+    infoBody.innerHTML = "";
+    infoBody.appendChild(infoHeader);
+    infoBody.appendChild(infoSubeader);
+    infoBody.appendChild(infoText);
 
   });
 
@@ -278,7 +344,7 @@ const fillRelationshipToggles = function (_cy) {
       checkbox.setAttribute("name", "showrels");
       checkbox.setAttribute("onchange", "setVisible(this)");
       checkbox.setAttribute("value", l);
-      checkbox.checked = !["contains", "holds", "accepts", "returns", "accesses", "exhibits"].includes(l);
+      checkbox.checked = ["calls"].includes(l);
       const labelText = document.createTextNode(l);
       label.appendChild(checkbox);
       label.appendChild(labelText);
@@ -445,8 +511,8 @@ const showTrace = function (evt) {
     const colorMap = {};
     for (var i = 0; i < trace_names.length; i++) {
       const labelElement = document.querySelector(`label[for="feature-${trace_names[i]}"]`);
-      labelElement.style.backgroundColor = colors[i];
-      colorMap[trace_names[i]] = colors[i];
+      labelElement.style.backgroundColor = ft_colors[i];
+      colorMap[trace_names[i]] = ft_colors[i];
     }
 
     const feature_nodes = cy.nodes().filter(function (node) {
@@ -500,8 +566,8 @@ const showBug = function (evt) {
     const colorMap = {};
     for (var i = 0; i < bug_names.length; i++) {
       const labelElement = document.querySelector(`label[for="bug-${bug_names[i]}"]`);
-      labelElement.style.backgroundColor = colors[i];
-      colorMap[bug_names[i]] = colors[i];
+      labelElement.style.backgroundColor = ft_colors[i];
+      colorMap[bug_names[i]] = ft_colors[i];
     }
 
     const bug_nodes = cy.nodes().filter(function (node) {
