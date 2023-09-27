@@ -72,7 +72,7 @@
         </ul>
     </div>
     <div class="sidebar-tab" id="tab-basic">
-        <div class="menu">
+        <div class="menu" id="menu-nodes">
             <h2>Nodes</h2>
             <label for="showPrimitives">
                 <input type="checkbox" id="showPrimitives" name="showPrimitives" onchange="showPrimitives(this)"
@@ -82,7 +82,7 @@
                    value="showPackages" checked="checked"/>Show packages
         </label>
         </div>
-        <div class="menu">
+        <div class="menu" id="menu-edges">
             <h2>Relationships</h2>
             <table style="width: 100%; text-align: left" id="reltab">
                 <thead>
@@ -94,7 +94,7 @@
             </table>
         </div>
 
-        <div class="menu">
+        <div class="menu" id="menu-layout">
             <h2>Layout algorithm</h2>
             <label for="layout">Select layout
                 <select class="dd" id="selectlayout" size="1">

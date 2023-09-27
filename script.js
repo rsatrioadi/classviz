@@ -1,14 +1,15 @@
 /*
 TODO
 - role stereotypes DONE
-- filtering stereotypes
+- filtering stereotypes DONE
 - remove bug tab DONE
 - try font sizing DONE
 - animate dynamic aspects
 - summaries to sidebar DONE
 - architecture recovery/clustering
 - collapse the classes
-- more padding inside packages DONE?
+- more padding inside packages DONE
+- tweak klay parameters
 */
 
 document.addEventListener('DOMContentLoaded', function () { // on dom ready
@@ -105,11 +106,12 @@ function initCy(payload) {
 
   cy.nodes('[properties.kind = "package"]').forEach((n) => {
     const d = n.ancestors().length;
-    console.log(n.data('id'),d);
+    // console.log(n.data('id'),d);
     const grey = Math.min(160 + (d*20), 255);
     n.style('background-color', `rgb(${grey},${grey},${grey})`);
   });
 
+  fillRSFilter(cy);
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
   // fillBugsDropdown(cy);
@@ -298,6 +300,35 @@ const toggleVisibility = function () {
   flip = !flip;
 };
 
+const fillRSFilter = function(_cy) {
+  const menuNodes = document.getElementById("menu-nodes");
+
+  const rsHeader = document.createElement("p");
+  rsHeader.innerHTML = "<b>Role Stereotypes</b>";
+  menuNodes.appendChild(rsHeader);
+
+  for (let i = 0; i < Object.keys(rs_colors).length; i++) {
+
+    const div = document.createElement("div");
+    const label = document.createElement("label");
+    label.setAttribute("for", `rs-${Object.keys(rs_colors)[i]}`);
+    label.setAttribute("class", "rslabel")
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `rs-${Object.keys(rs_colors)[i]}`);
+    checkbox.setAttribute("name", "showrs");
+    checkbox.setAttribute("onchange", "showRS(this)");
+    checkbox.setAttribute("value", Object.keys(rs_colors)[i]);
+    checkbox.checked = true;
+    const labelText = document.createTextNode(Object.keys(rs_colors)[i]);
+    label.appendChild(checkbox);
+    label.appendChild(labelText);
+
+    div.appendChild(label);
+    menuNodes.appendChild(div);
+  }
+}
+
 const fillRelationshipToggles = function (_cy) {
 
   const table = document.getElementById("reltab"); // Get the table element
@@ -436,7 +467,7 @@ const fillBugsDropdown = function (_cy) {
 
 
   let bugList = Array.from(bugsSet)
-  console.log(bugList)
+  // console.log(bugList)
 
   // Get the dropdown element.
   const dropdown = document.getElementById('tab-bugs');
@@ -496,6 +527,20 @@ const highlight = function (text) {
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
+const showRS = function (evt) {
+  // console.log(evt.checked, evt.value);
+  if (evt.checked) {
+    cy.nodes(`[properties.rs = "${evt.value}"]`).removeClass("dimmed");
+    cy.nodes(`[properties.rs = "${evt.value}"]`).connectedEdges().filter((e) => {
+      console.log(e.source(), e.target());
+      return !e.source().hasClass("dimmed") && !e.target().hasClass("dimmed");
+    }).removeClass("dimmed");
+  } else {
+    cy.nodes(`[properties.rs = "${evt.value}"]`).addClass("dimmed");
+    cy.nodes(`[properties.rs = "${evt.value}"]`).connectedEdges().addClass("dimmed");
+  }
+};
+
 const showTrace = function (evt) {
 
   const trace_names = Array.from(document.getElementsByName("showfeatures"))
@@ -540,7 +585,7 @@ const showTrace = function (evt) {
     feature_nodes.forEach((node) => {
       const trc = arrayIntersection(trace_names, node.data("properties.traces"));
       node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
-      console.log(trc.map((t) => colorMap[t]).join(" "));
+      // console.log(trc.map((t) => colorMap[t]).join(" "));
     });
 
   } else {
@@ -599,7 +644,7 @@ const showBug = function (evt) {
         return vul["analysis_name"]
       }));
       node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
-      console.log(trc.map((t) => colorMap[t]).join(" "));
+      // console.log(trc.map((t) => colorMap[t]).join(" "));
     });
 
   } else {
