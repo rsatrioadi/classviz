@@ -104,7 +104,7 @@ node[labels.0 = "BugType"] {
 }
 
 edge {
-  width: 2;
+  width: 3;
   line-color: black;
   target-arrow-color: black;
   source-arrow-color: black;
@@ -122,6 +122,53 @@ edge[interaction = "contains"] {
   width: 2;
   line-color: grey;
   taxi-direction: upward;
+  taxi-turn: -32px;
+}
+
+edge[interaction = "calls"] {
+  target-arrow-color: #1c9099;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #edf8b1 #1c9099;
+  line-gradient-stop-positions: 0% 100%;
+  source-arrow-shape: none;
+  target-arrow-shape: none;
+  line-style: dashed;
+  taxi-direction: leftward;
+  taxi-turn: -32px;
+}
+
+edge[interaction = "constructs"] {
+  source-arrow-color: #d95f0e;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #fff7bc #d95f0e;
+  line-gradient-stop-positions: 0% 100%;
+  source-arrow-shape: none;
+  target-arrow-shape: none;
+  arrow-scale: 1.5;
+  taxi-direction: leftward;
+  taxi-turn: -32px;
+}
+
+edge[interaction = "accepts"] {
+  target-arrow-color: #31a354;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #f7fcb9 #31a354;
+  line-gradient-stop-positions: 0% 100%;
+  source-arrow-shape: none;
+  target-arrow-shape: none;
+  taxi-direction: leftward;
+  taxi-turn: -32px;
+}
+
+edge[interaction = "holds"] {
+  source-arrow-color: #c51b8a;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #fde0dd #c51b8a;
+  line-gradient-stop-positions: 0% 100%;
+  source-arrow-shape: none;
+  source-arrow-fill: hollow;
+  target-arrow-shape: none;
+  taxi-direction: leftward;
   taxi-turn: -32px;
 }
 
@@ -167,28 +214,6 @@ edge[interaction = "composites"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "holds"] {
-  source-arrow-color: #e78ac3;
-  line-color: #e78ac3;
-  source-arrow-shape: diamond;
-  source-arrow-fill: hollow;
-  target-arrow-shape: none;
-  taxi-direction: leftward;
-  taxi-turn: -32px;
-}
-
-edge[interaction = "calls"] {
-  target-arrow-color: red;
-  line-fill: linear-gradient;
-  line-gradient-stop-colors: yellow red;
-  line-gradient-stop-positions: 0% 100%;
-  source-arrow-shape: none;
-  target-arrow-shape: vee;
-  line-style: dashed;
-  taxi-direction: leftward;
-  taxi-turn: -32px;
-}
-
 edge[interaction = "accesses"] {
   target-arrow-color: #e5c494;
   line-color: #e5c494;
@@ -199,31 +224,12 @@ edge[interaction = "accesses"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "constructs"] {
-  source-arrow-color: #fc8d62;
-  line-color: #fc8d62;
-  source-arrow-shape: diamond;
-  target-arrow-shape: none;
-  arrow-scale: 1.5;
-  taxi-direction: leftward;
-  taxi-turn: -32px;
-}
-
 edge[interaction = "returns"] {
   target-arrow-color: #a6d854;
   line-color: #a6d854;
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
-  taxi-direction: leftward;
-  taxi-turn: -32px;
-}
-
-edge[interaction = "accepts"] {
-  target-arrow-color: #66c2a5;
-  line-color: #66c2a5;
-  source-arrow-shape: none;
-  target-arrow-shape: vee;
   taxi-direction: leftward;
   taxi-turn: -32px;
 }
