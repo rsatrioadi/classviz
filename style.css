@@ -1,11 +1,10 @@
 body {
-  font-family: Helvetica, 'Liberation Sans', Arial, sans-serif;
+  font-family: Helvetica, "Liberation Sans", Arial, sans-serif;
   font-size: 13px;
   color: rgba(0, 0, 0, 0.85);
 }
 
-
-#file-selector{
+#file-selector {
   display: none;
 }
 
@@ -19,8 +18,8 @@ body {
   /* border-right: 1px solid #cacaca; */
   box-shadow: 0px 0px 3px rgba(101, 101, 101, 0.5);
   z-index: 9998;
+  overflow-y: scroll;
 }
-
 
 #cy {
   position: absolute;
@@ -69,7 +68,11 @@ h2 {
   max-height: 36px;
   right: 0;
   /* background-color: #fafafa; */
-  background-image: linear-gradient(to bottom, hsl(0, 0%, 95%), hsl(0, 0%, 87%));
+  background-image: linear-gradient(
+    to bottom,
+    hsl(0, 0%, 95%),
+    hsl(0, 0%, 87%)
+  );
   box-shadow: inset hsla(0, 0%, 100%, 0.5) 0 1px 1px;
   border-bottom: 1px solid #cacaca;
   z-index: 9999;
@@ -91,7 +94,8 @@ h2 {
   margin: 8px 0px 4px 4px;
 }
 
-button.sidebar, select.dd {
+button.sidebar,
+select.dd {
   background-image: linear-gradient(hsl(0, 0%, 99%), hsl(0, 0%, 94%));
   box-shadow: hsla(0, 0%, 0%, 0.3) 0 1px 1px -1px;
 
@@ -103,7 +107,8 @@ button.sidebar, select.dd {
   color: rgb(80, 80, 80);
 }
 
-button.sidebar:active, select.dd:active {
+button.sidebar:active,
+select.dd:active {
   background-image: linear-gradient(hsl(0, 0%, 89%), hsl(0, 0%, 86%));
   box-shadow: hsla(0, 0%, 0%, 0.5) 0 1px 1px -1px, inset 0 1px 1px -1px white;
 }
@@ -210,20 +215,21 @@ ul.tabs {
 
 #infobox {
   width: 270px;
-  position:fixed;
+  position: fixed;
   right: 20px;
   bottom: 20px;
   z-index: 2;
   /* padding: 4px; */
   background-color: #fafafa;
-  border-radius:5px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 11px 35px 2px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 11px 35px 2px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 #infotitle {
   text-align: center;
   border-bottom: 1px solid #9b999b;
-  background-image:linear-gradient(#eeecee, #d6d4d6);
+  background-image: linear-gradient(#eeecee, #d6d4d6);
   padding: 4px;
   height: 4px;
   border-top-left-radius: inherit;
