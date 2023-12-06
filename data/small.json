@@ -2,15 +2,15 @@
         { "nodes": [
             { "data":
                 { "id": "node1",
-                  "labels": ["Structure"]
+                  "labels": ["Structure"],
                   "properties":
-                    { "simpleName": "ChangeConnectionHandle"
+                    { "simpleName": "ChangeConnectionHandle",
                       "kind": "abstract" }}},
             { "data":
                 { "id": "node2",
-                  "labels": ["Structure"]
+                  "labels": ["Structure"],
                   "properties":
-                    { "simpleName": "Figure"
+                    { "simpleName": "Figure",
                       "kind": "interface" }}}],
           "edges": [
             { "data":
