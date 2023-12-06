@@ -267,3 +267,5 @@ edge[interaction = "returns"] {
 .bug_reset {
   background-color: whitesmoke;
 }
+
+/* Style for expanding and collapsing nodes */
