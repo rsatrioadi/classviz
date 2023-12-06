@@ -134,7 +134,7 @@ const initCy = async function (payload) {
     },
     style: payload[1],
     wheelSensitivity: 0.25,
-  }));
+  });
 
   setParents(parentRel, false);
 
@@ -366,7 +366,6 @@ const toggleVisibility = function () {
   flip = !flip;
 };
 
-const fillRSFilter = function (_cy) {
 const fillRSFilter = function (_cy) {
   const menuNodes = document.getElementById("menu-nodes");
   const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
@@ -780,7 +779,8 @@ function bindPopper(target) {
         if (document.getElementById(tooltipId)) {
           document.getElementById(tooltipId).classList.remove("active");
         }
-      });
+      }
+    });
   }
 
   if (target.data()["properties"].hasOwnProperty("description")) {
