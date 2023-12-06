@@ -12,42 +12,43 @@ TODO
 - tweak klay parameters
 */
 
-document.addEventListener('DOMContentLoaded', function () { // on dom ready
-
-  const filePrefix = (new URLSearchParams(window.location.search)).get('p')
+document.addEventListener('DOMContentLoaded', async function () {
+  const filePrefix = (new URLSearchParams(window.location.search)).get('p');
 
   if (filePrefix) {
-    const eles = fetch(`data/${filePrefix ? filePrefix : ''}.json`)
-      .then(res => res.json())
-      .then(json => json.elements)
-      .then(eles => prepareEles(eles))
+    try {
+      const response = await fetch(`data/${filePrefix ? filePrefix : ''}.json`);
+      const json = await response.json();
+      const eles = prepareEles(json.elements);
 
-    document.getElementById("filename").textContent = `Software Visualization: ${filePrefix}.json`;
+      document.getElementById("filename").textContent = `Software Visualization: ${filePrefix}.json`;
 
-    const style = fetch('style.cycss')
-      .then(res => res.text());
+      const styleResponse = await fetch('style.cycss');
+      const style = await styleResponse.text();
 
-    Promise.all([eles, style])
-      .then(initCy);
+      initCy([eles, style]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 });
 
 const prepareEles = function (eles) {
-
   eles.nodes.forEach((node) => {
-    node.data.name = node.data.properties.shortname ? node.data.properties.shortname : node.data.properties.simpleName;
+    node.data.name = node.data.properties.shortname || node.data.properties.simpleName;
     node.data.label = `${node.data.name}`;
   });
 
   eles.edges.forEach((edge) => {
-    edge.data.interaction = edge.data.label ? edge.data.label : edge.data.labels.join();
+    edge.data.interaction = edge.data.label || edge.data.labels.join();
   });
 
   return eles;
-}
+};
 
-function setParents(relationship, inverted) {
-  cy.edges("#parentRel").removeClass("parentRel")
+const setParents = function(relationship, inverted) {
+  cy.edges("#parentRel").removeClass("parentRel");
+
   if (inverted) {
     cy.edges(`[interaction = "${relationship}"]`).forEach(edge => {
       edge.source().move({ parent: edge.target().id() });
@@ -57,6 +58,7 @@ function setParents(relationship, inverted) {
       edge.target().move({ parent: edge.source().id() });
     });
   }
+
   cy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
 }
 
@@ -86,19 +88,14 @@ const ft_colors = [
   "#ffed6f",
 ];
 
-function initCy(payload) {
-
+const initCy = async function(payload) {
   const cy = window.cy = cytoscape({
-
     container: document.getElementById('cy'),
-
     elements: {
       nodes: payload[0].nodes,
-      edges: payload[0].edges
+      edges: payload[0].edges,
     },
-
     style: payload[1],
-
     wheelSensitivity: 0.25,
   });
 
@@ -106,15 +103,13 @@ function initCy(payload) {
 
   cy.nodes('[properties.kind = "package"]').forEach((n) => {
     const d = n.ancestors().length;
-    // console.log(n.data('id'),d);
-    const grey = Math.min(160 + (d*20), 255);
+    const grey = Math.min(160 + (d * 20), 255);
     n.style('background-color', `rgb(${grey},${grey},${grey})`);
   });
 
   fillRSFilter(cy);
   fillRelationshipToggles(cy);
   fillFeatureDropdown(cy);
-  // fillBugsDropdown(cy);
 
   bindRouters();
 
@@ -127,7 +122,6 @@ function initCy(payload) {
   showPrimitives(cbShowPrimitives);
   showPackages(cbShowPackages);
 
-  // cy.nodes().filter('node').forEach(n => (bindPopper(n)))
   return cy;
 }
 
@@ -253,7 +247,7 @@ const showPrimitives = function (ele) {
 };
 
 const showPackages = function (ele) {
-  cy.nodes().filter((n) => n.data("labels").includes("Container") && n.data("labels").length === 1)
+  cy.nodes().filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
     .toggleClass("pkghidden", !ele.checked);
 };
 

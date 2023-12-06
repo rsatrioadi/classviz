@@ -105,6 +105,11 @@ node[labels.0 = "BugType"] {
 
 edge {
   width: 3;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: magenta black;
+  line-gradient-stop-positions: 0% 100%;
+  source-arrow-shape: none;
+  target-arrow-shape: none;
   line-color: black;
   target-arrow-color: black;
   source-arrow-color: black;
