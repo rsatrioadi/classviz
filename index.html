@@ -170,7 +170,15 @@
 
         <div class="menu">
           <h2>Expand and Collapse</h2>
-
+          <label for="disableZoomToExpColl">
+            <input
+              type="checkbox"
+              id="disableZoomToExpColl"
+              name="disableZoomToExpColl"
+              onchange="disableZoomToExpCollHandler(this)"
+              value="disableZoomToExpColl"
+            />Disable zoom to expand/collapse
+          </label>
           <button class="sidebar" id="expandNodes">Expand All</button>
           <button class="sidebar" id="collapseNodes">Collapse All</button>
         </div>

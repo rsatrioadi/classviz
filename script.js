@@ -33,6 +33,30 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 });
 
+// Function to add on scrollzoom event listener
+// Params: Zoom obj to keep track of zoom value and cytoscape instance
+function addScrollZoomListener(zoom, cy) {
+  const api = cy.expandCollapse("get");
+  cy.on("scrollzoom", (_) => {
+    // FIlter each nodes that is a package
+    cy.nodes('[properties.kind = "package"]').forEach((n) => {
+      const { w, h } = n.layoutDimensions();
+      // if zooming in
+      if (zoom.value < cy.zoom() && h / w > 0.3) {
+        // check if collapsed
+        if (n.hasClass("cy-expand-collapse-collapsed-node"))
+          api.expand(n, generateExpColOptions());
+      }
+      // if zooming out
+      else if (zoom.value > cy.zoom() && h / w <= 0.3) {
+        if (!n.hasClass("cy-expand-collapse-collapsed-node"))
+          api.collapse(n, generateExpColOptions());
+      }
+    });
+  });
+  zoom.value = cy.zoom();
+}
+
 const prepareEles = function (eles) {
   eles.nodes.forEach((node) => {
     node.data.name = node.data.properties.shortname || node.data.properties.simpleName;
@@ -111,7 +135,7 @@ function generateExpColOptions(layoutName = "klay") {
 // Memory to save expanded and collapsed nodes in stack
 let expandedNodesIdx = [];
 let collapsedNodes = [];
-let zoom;
+let zoom = { value: 1 };
 
 const initCy = async function (payload) {
   const cy = window.cy = cytoscape({
@@ -160,7 +184,7 @@ const initCy = async function (payload) {
   showPrimitives(cbShowPrimitives);
   showPackages(cbShowPackages);
 
-  zoom = cy.zoom();
+  zoom.value = cy.zoom();
   // cy.nodes().filter('node').forEach(n => (bindPopper(n)))
   return cy;
 }
@@ -260,26 +284,10 @@ function bindRouters() {
 
   // TODO: Handle zooming
   // Still bugged,
-  cy.on("scrollzoom", (e) => {
-    // FIlter each nodes that is a package
-    cy.nodes('[properties.kind = "package"]').forEach((n) => {
-      const { w, h } = n.layoutDimensions();
-      // if zooming in
-      if (zoom < cy.zoom() && h / w > 0.3) {
-        // check if collapsed
-        if (n.hasClass("cy-expand-collapse-collapsed-node"))
-          api.expand(n, generateExpColOptions());
-      }
-      // if zooming out
-      else if (zoom > cy.zoom() && h / w <= 0.3) {
-        if (!n.hasClass("cy-expand-collapse-collapsed-node"))
-          api.collapse(n, generateExpColOptions());
-      }
-    });
-    zoom = cy.zoom();
-  });
+  addScrollZoomListener(zoom, cy);
 }
 
+/* Sidebar Utility Functions */
 const relayout = function (layout) {
   cy.layout({
     name: layout,
@@ -365,6 +373,16 @@ const toggleVisibility = function () {
     .update();
   flip = !flip;
 };
+
+function disableZoomToExpCollHandler(e) {
+  if (e.checked) {
+    cy.removeListener("scrollzoom");
+  } else {
+    addScrollZoomListener(zoom, cy);
+  }
+}
+
+/* ======================================== */
 
 const fillRSFilter = function (_cy) {
   const menuNodes = document.getElementById("menu-nodes");
