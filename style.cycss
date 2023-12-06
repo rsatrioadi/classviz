@@ -115,7 +115,6 @@ edge {
   source-arrow-color: black;
   curve-style: bezier;
   edge-text-rotation: autorotate;
-  target-arrow-shape: vee;
   label: data(interaction);
   arrow-scale: 1.5;
 }
