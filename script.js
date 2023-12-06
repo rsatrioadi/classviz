@@ -130,7 +130,7 @@ var infoTitle = document.getElementById("infotitle");
 var infoBody = document.getElementById("infobody");
 
 // Add a click event listener to the div
-infoTitle.addEventListener("click", function () {
+infoTitle.addEventListener("click", () => {
   if (infoBody.style.display === "none") {
     infoBody.style.display = "block";
     infoTitle.style.borderBottomLeftRadius = 0;
@@ -304,6 +304,7 @@ const fillRSFilter = function (_cy) {
     const label = document.createElement("label");
     label.setAttribute("for", `rs-${key}`);
     label.setAttribute("class", "rslabel");
+    label.style.backgroundColor = rs_colors[key][1];
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
@@ -540,8 +541,8 @@ const showTrace = function (evt) {
 
     const colorMap = {};
     trace_names.forEach((trace, i) => {
-      const labelElement = document.querySelector(`label[for="feature-${trace}"]`);
-      labelElement.style.backgroundColor = ft_colors[i];
+      const label = document.querySelector(`label[for="feature-${trace}"]`);
+      label.style.backgroundColor = ft_colors[i];
       colorMap[trace] = ft_colors[i];
     });
 
