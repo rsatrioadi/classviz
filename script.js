@@ -115,11 +115,7 @@ const ft_colors = [
 function generateExpColOptions(layoutName = "klay") {
   let cyExpandCollapseOptions = {
     // set default layout by klay
-    layoutBy: {
-      name: typeof layoutName === "string" ? layoutName : "klay",
-      randomize: false,
-      fit: false,
-    },
+    layoutBy: null,
     animate: false,
     fisheye: false,
     undoable: false,
