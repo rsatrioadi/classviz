@@ -46,7 +46,7 @@ const prepareEles = function (eles) {
   return eles;
 };
 
-const setParents = function(relationship, inverted) {
+const setParents = function (relationship, inverted) {
   cy.edges("#parentRel").removeClass("parentRel");
 
   if (inverted) {
@@ -88,7 +88,7 @@ const ft_colors = [
   "#ffed6f",
 ];
 
-const initCy = async function(payload) {
+const initCy = async function (payload) {
   const cy = window.cy = cytoscape({
     container: document.getElementById('cy'),
     elements: {
@@ -150,9 +150,9 @@ function bindRouters() {
   cy.on('cxttap', 'node,edge',
     evt => {
       evt.target.addClass("dimmed")
-      const interactions = Array.from(document
-        .querySelectorAll('input[name="showrels"]'))
-        .filter(cb => cb.checked).map(cb => cb.value);
+      const interactions = [...document.querySelectorAll('input[name="showrels"]')]
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
 
       const edges = evt.target.connectedEdges()
         .filter(e => interactions.includes(e.data('interaction')));
@@ -164,9 +164,9 @@ function bindRouters() {
     evt.target.removeClass("dimmed")
 
     // currently visible relationship types
-    const interactions = Array.from(document
-      .querySelectorAll('input[name="showrels"]'))
-      .filter(cb => cb.checked).map(cb => cb.value);
+    const interactions = [...document.querySelectorAll('input[name="showrels"]')]
+      .filter(cb => cb.checked)
+      .map(cb => cb.value);
 
     const edges = evt.target.connectedEdges()
       .filter(e => interactions.includes(e.data('interaction')));
@@ -189,8 +189,6 @@ function bindRouters() {
     infoHeader.textContent = evt.target.data()["properties"]["simpleName"];
     infoText.textContent = evt.target.data()["properties"]["description"] ? evt.target.data()["properties"]["description"] : "(no description)";
 
-    
-
     if (evt.target.data()['labels'].includes('Structure')) {
       if (evt.target.data()["properties"]["rs"]) {
         infoBody.style.backgroundColor = rs_colors[evt.target.data()["properties"]["rs"]][1];
@@ -210,7 +208,6 @@ function bindRouters() {
     infoBody.appendChild(infoText);
 
   });
-
 }
 
 const relayout = function (layout) {
@@ -229,25 +226,25 @@ const relayout = function (layout) {
 
 const saveAsSvg = function (filename) {
   const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
-  const blob = new Blob([svgContent],
-    { type: "image/svg+xml;charset=utf-8" });
+  const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
   saveAs(blob, filename);
 };
 
 const getSvgUrl = function () {
   const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
-  const blob = new Blob([svgContent],
-    { type: "image/svg+xml;charset=utf-8" });
+  const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
   return URL.createObjectURL(blob);
 };
 
 const showPrimitives = function (ele) {
-  cy.nodes().filter((n) => n.data("labels").includes("Primitive") || n.data("id") === "java.lang.String")
+  cy.nodes()
+    .filter((n) => n.data("labels").includes("Primitive") || n.data("id") === "java.lang.String")
     .style({ display: ele.checked ? "element" : "none" });
 };
 
 const showPackages = function (ele) {
-  cy.nodes().filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
+  cy.nodes()
+    .filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
     .toggleClass("pkghidden", !ele.checked);
 };
 
@@ -294,33 +291,35 @@ const toggleVisibility = function () {
   flip = !flip;
 };
 
-const fillRSFilter = function(_cy) {
+const fillRSFilter = function (_cy) {
   const menuNodes = document.getElementById("menu-nodes");
+  [...menuNodes.children].slice(4).forEach(child => menuNodes.removeChild(child));
 
   const rsHeader = document.createElement("p");
   rsHeader.innerHTML = "<b>Role Stereotypes</b>";
   menuNodes.appendChild(rsHeader);
 
-  for (let i = 0; i < Object.keys(rs_colors).length; i++) {
-
+  Object.keys(rs_colors).forEach(key => {
     const div = document.createElement("div");
     const label = document.createElement("label");
-    label.setAttribute("for", `rs-${Object.keys(rs_colors)[i]}`);
-    label.setAttribute("class", "rslabel")
+    label.setAttribute("for", `rs-${key}`);
+    label.setAttribute("class", "rslabel");
+
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", `rs-${Object.keys(rs_colors)[i]}`);
+    checkbox.setAttribute("id", `rs-${key}`);
     checkbox.setAttribute("name", "showrs");
     checkbox.setAttribute("onchange", "showRS(this)");
-    checkbox.setAttribute("value", Object.keys(rs_colors)[i]);
+    checkbox.setAttribute("value", key);
     checkbox.checked = true;
-    const labelText = document.createTextNode(Object.keys(rs_colors)[i]);
+
+    const labelText = document.createTextNode(key);
     label.appendChild(checkbox);
     label.appendChild(labelText);
 
     div.appendChild(label);
     menuNodes.appendChild(div);
-  }
+  });
 }
 
 const fillRelationshipToggles = function (_cy) {
@@ -420,31 +419,32 @@ const fillFeatureDropdown = function (_cy) {
     }
   });
 
-  let tracesList = Array.from(tracesSet);
+  let tracesList = [...tracesSet];
 
   // Get the dropdown element.
   const dropdown = document.getElementById('selectfeature');
   dropdown.innerHTML = "";
 
-  for (let i = 0; i < tracesList.length; i++) {
-
+  tracesList.forEach(trace => {
     const div = document.createElement("div");
     const label = document.createElement("label");
-    label.setAttribute("for", `feature-${tracesList[i]}`);
-    label.setAttribute("class", "featurelabel")
+    label.setAttribute("for", `feature-${trace}`);
+    label.setAttribute("class", "featurelabel");
+
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", `feature-${tracesList[i]}`);
+    checkbox.setAttribute("id", `feature-${trace}`);
     checkbox.setAttribute("name", "showfeatures");
     checkbox.setAttribute("onchange", "showTrace(this)");
-    checkbox.setAttribute("value", tracesList[i]);
-    const labelText = document.createTextNode(tracesList[i]);
+    checkbox.setAttribute("value", trace);
+
+    const labelText = document.createTextNode(trace);
     label.appendChild(checkbox);
     label.appendChild(labelText);
 
     div.appendChild(label);
     dropdown.appendChild(div);
-  }
+  });
 };
 
 
@@ -452,51 +452,46 @@ const fillBugsDropdown = function (_cy) {
   let bugsSet = new Set();
   _cy.nodes().forEach((e) => {
     if (e.data()["properties"]["vulnerabilities"]) {
-     e.data()["properties"]["vulnerabilities"].forEach((bug) => {
-
-       bugsSet.add(bug["analysis_name"])
-      });
+      e.data()["properties"]["vulnerabilities"]
+        .forEach((bug) => {
+          bugsSet.add(bug["analysis_name"])
+        });
     }
   });
 
 
-  let bugList = Array.from(bugsSet)
+  let bugList = [...bugsSet]
   // console.log(bugList)
 
   // Get the dropdown element.
   const dropdown = document.getElementById('tab-bugs');
   dropdown.innerHTML = "";
 
-  for (var i = 0; i < bugList.length; i++) {
-
+  bugList.forEach(bug => {
     const div = document.createElement("div");
     const label = document.createElement("label");
-    label.setAttribute("for", `bug-${bugList[i]}`);
-    label.setAttribute("class", "buglabel")
+    label.setAttribute("for", `bug-${bug}`);
+    label.setAttribute("class", "buglabel");
+
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", `bug-${bugList[i]}`);
+    checkbox.setAttribute("id", `bug-${bug}`);
     checkbox.setAttribute("name", "showbugs");
     checkbox.setAttribute("onchange", "showBug(this)");
-    checkbox.setAttribute("value", bugList[i]);
-    const labelText = document.createTextNode(bugList[i]);
+    checkbox.setAttribute("value", bug);
+
+    const labelText = document.createTextNode(bug);
     label.appendChild(checkbox);
     label.appendChild(labelText);
 
     div.appendChild(label);
     dropdown.appendChild(div);
-  }
+  });
 };
 
-
-
 function arrayIntersection(arr1, arr2) {
-  const result = [];
-  for (const item of arr1) {
-    if (arr2.includes(item)) {
-      result.push(item);
-    }
-  }
+  const set2 = new Set(arr2);
+  const result = arr1.filter(item => set2.has(item));
   return result;
 }
 
@@ -506,10 +501,7 @@ const highlight = function (text) {
     cy.elements().addClass("dimmed");
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
 
-    const cy_classes = cy.nodes()
-      .filter(function (node) {
-        return classes.includes(node.data('name'));
-      });
+    const cy_classes = cy.nodes().filter((node) => classes.includes(node.data('name')));
     const cy_edges = cy_classes.edgesWith(cy_classes);
     cy_classes.removeClass("dimmed");
     cy_edges.removeClass("dimmed");
@@ -537,33 +529,28 @@ const showRS = function (evt) {
 
 const showTrace = function (evt) {
 
-  const trace_names = Array.from(document.getElementsByName("showfeatures"))
-      .filter((e) => e.checked)
-      .map((e) => e.value);
+  const trace_names = [...document.getElementsByName("showfeatures")]
+    .filter((e) => e.checked)
+    .map((e) => e.value);
 
-  Array.from(document.getElementsByClassName("featurelabel")).forEach((e) => {
-    e.style.backgroundColor = "";
-  });
+  [...document.getElementsByClassName("featurelabel")]
+    .forEach((e) => { e.style.backgroundColor = ""; });
 
   if (trace_names.length > 0) {
 
     const colorMap = {};
-    for (var i = 0; i < trace_names.length; i++) {
-      const labelElement = document.querySelector(`label[for="feature-${trace_names[i]}"]`);
+    trace_names.forEach((trace, i) => {
+      const labelElement = document.querySelector(`label[for="feature-${trace}"]`);
       labelElement.style.backgroundColor = ft_colors[i];
-      colorMap[trace_names[i]] = ft_colors[i];
-    }
+      colorMap[trace] = ft_colors[i];
+    });
 
     const feature_nodes = cy.nodes().filter(function (node) {
-      return trace_names.some(function (trace) {
-        return node.data("properties.traces") && node.data("properties.traces").includes(trace);
-      });
+      return trace_names.some((trace) => node.data("properties.traces") && node.data("properties.traces").includes(trace));
     });
 
     const feature_edges = cy.edges().filter(function (edge) {
-      return trace_names.some(function (trace) {
-        return edge.data("properties.traces") && edge.data("properties.traces").includes(trace);
-      });
+      return trace_names.some((trace) => edge.data("properties.traces") && edge.data("properties.traces").includes(trace));
     });
 
     cy.elements().addClass("dimmed");
@@ -592,34 +579,30 @@ const showTrace = function (evt) {
 
 const showBug = function (evt) {
 
-  const bug_names = Array.from(document.getElementsByName("showbugs"))
-      .filter((e) => e.checked)
-      .map((e) => e.value);
+  const bug_names = [...document.getElementsByName("showbugs")]
+    .filter((e) => e.checked)
+    .map((e) => e.value);
 
-  Array.from(document.getElementsByClassName("buglabel")).forEach((e) => {
-    e.style.backgroundColor = "";
-  });
+  [...document.getElementsByClassName("buglabel")]
+    .forEach((e) => { e.style.backgroundColor = ""; });
 
   if (bug_names.length > 0) {
 
     const colorMap = {};
-    for (var i = 0; i < bug_names.length; i++) {
-      const labelElement = document.querySelector(`label[for="bug-${bug_names[i]}"]`);
+    bug_names.forEach((bug, i) => {
+      const labelElement = document.querySelector(`label[for="bug-${bug}"]`);
       labelElement.style.backgroundColor = ft_colors[i];
-      colorMap[bug_names[i]] = ft_colors[i];
-    }
+      colorMap[bug] = ft_colors[i];
+    });
 
     const bug_nodes = cy.nodes().filter(function (node) {
-      return bug_names.some(function (bug) {
+      return bug_names.some((bug) => {
         try {
-          return node.data()["properties"]["vulnerabilities"] && node.data()["properties"]["vulnerabilities"].some((e)=> e["analysis_name"]===bug);
-        }catch (e){
-
+          return node.data()["properties"]["vulnerabilities"] && node.data()["properties"]["vulnerabilities"].some((e) => e["analysis_name"] === bug);
+        } catch (e) {
         }
       });
     });
-
-
 
     cy.elements().addClass("dimmed");
     cy.elements('.hidden').removeClass('hidden').addClass("hidden");
@@ -630,13 +613,8 @@ const showBug = function (evt) {
 
     bug_nodes.addClass("bug_shown");
 
-
-
-
     bug_nodes.forEach((node) => {
-      const trc = arrayIntersection(bug_names, node.data()["properties"]["vulnerabilities"].map((vul)=> {
-        return vul["analysis_name"]
-      }));
+      const trc = arrayIntersection(bug_names, node.data()["properties"]["vulnerabilities"].map((vul) => vul["analysis_name"]));
       node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
       // console.log(trc.map((t) => colorMap[t]).join(" "));
     });
@@ -650,17 +628,17 @@ const showBug = function (evt) {
 };
 
 
-
 function openSidebarTab(evt, cityName) {
-  let i, x, tablinks;
-  x = document.getElementsByClassName("sidebar-tab");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+  const tabs = document.getElementsByClassName("sidebar-tab");
+  [...tabs].forEach(tab => {
+    tab.style.display = "none";
+  });
+
+  const tablinks = document.getElementsByClassName("tablink");
+  [...tablinks].forEach(tablink => {
+    tablink.className = tablink.className.replace(" active", "");
+  });
+
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
@@ -672,31 +650,20 @@ function bindPopper(target) {
     existingTarget.remove();
   }
 
-  if (target.data()["properties"].hasOwnProperty('vulnerabilities') && target.data()["properties"]["vulnerabilities"].length >0) {
+  if (target.data()["properties"].hasOwnProperty('vulnerabilities') && target.data()["properties"]["vulnerabilities"].length > 0) {
 
     let popper = target.popper({
       content: () => {
-        // create div container
         let tooltip = document.createElement('div');
-        // adding id for easier JavaScript control
         tooltip.id = tooltipId;
-
-        // adding class for easier CSS control
         tooltip.classList.add('target-popper');
-
-        // create actual table
-
-
-        // append table to div container
-
         let targetData = target.data()["properties"]["vulnerabilities"];
 
-        // loop through target data
-        for (let prop in targetData) {
-          let targetValue = targetData[prop];
-          let p= document.createElement('p');
-          p.innerText = target.data()["properties"]["vulnerabilities"][prop]["analysis_name"]+": "+target.data()["properties"]["vulnerabilities"][prop]["description"];
-          tooltip.appendChild(p)
+        for (const [prop, targetValue] of Object.entries(targetData)) {
+          const p = document.createElement('p');
+          const vulnerabilities = target.data().properties.vulnerabilities[prop];
+          p.innerText = `${vulnerabilities.analysis_name}: ${vulnerabilities.description}`;
+          tooltip.appendChild(p);
         }
 
         document.body.appendChild(tooltip);
@@ -705,8 +672,8 @@ function bindPopper(target) {
       },
       popper: {
         placement: "auto",
-        options:{
-          offset:[0,40]
+        options: {
+          offset: [0, 40]
         }
       }
     });
@@ -721,7 +688,7 @@ function bindPopper(target) {
 
 
     target.on('mouseover', () => {
-      if(!target.hasClass('dimmed')){
+      if (!target.hasClass('dimmed')) {
         if (document.getElementById(tooltipId)) {
           document.getElementById(tooltipId).classList.add('active');
         }
@@ -738,24 +705,11 @@ function bindPopper(target) {
 
     let popper = target.popper({
       content: () => {
-        // create div container
         let tooltip = document.createElement('div');
-
-        // adding id for easier JavaScript control
         tooltip.id = tooltipId;
-
-        // adding class for easier CSS control
         tooltip.classList.add('target-popper');
-
-        // create actual table
-
-
-        // append table to div container
-
         let desc = target.data()["properties"]["description"];
-        // let p = document.createElement('p');
         tooltip.innerText = desc;
-        // tooltip.appendChild(p)
 
         document.body.appendChild(tooltip);
 
