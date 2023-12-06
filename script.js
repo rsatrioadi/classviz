@@ -294,9 +294,7 @@ const toggleVisibility = function () {
 const fillRSFilter = function (_cy) {
   const menuNodes = document.getElementById("menu-nodes");
   const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
-  Array.from(rsFilters).forEach((rsFilter) => {
-    menuNodes.removeChild(rsFilter);
-  })
+  [...rsFilters].forEach((rsFilter) => menuNodes.removeChild(rsFilter))
 
   const containerDiv = document.createElement('div');
   containerDiv.setAttribute('class', 'rs-filter-container');
