@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <link rel="stylesheet" href="style.css" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="stylesheet" href="style.css">
+
 
     <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
     <!-- <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script> -->
@@ -38,169 +40,124 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
-
-    <script src="https://unpkg.com/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.js"></script>
     <title>Class Diagram Visualization</title>
-  </head>
+</head>
 
-  <body>
-    <div class="titlebar">
-      <h1 id="filename">Software Visualization</h1>
-      <button title="Upload JSON" class="toolbutton" onclick="fileUpload()">
-        <img class="icon icon-download" src="img/upload.png" alt="upload" />
-        <input type="file" id="file-selector" accept=".json" />
-      </button>
-      <button
-        title="Download as SVG"
-        class="toolbutton"
-        onclick="saveAsSvg('class-diagram.svg')"
-      >
-        <img class="icon icon-download" src="img/download.png" alt="download" />
-      </button>
-      <button
-        title="Open SVG in new tab"
-        class="toolbutton"
-        onclick="window.open(getSvgUrl(), '_blank')"
-      >
-        <img class="icon icon-download" src="img/open-new.png" alt="popout" />
-      </button>
+<body>
+<div class="titlebar">
+    <h1 id="filename">Software Visualization</h1>
+    <button title="Upload JSON" class="toolbutton" onclick="fileUpload()">
+        <img class="icon icon-download" src="img/upload.png" alt="upload">
+        <input type="file" id="file-selector" accept=".json">
+    </button>
+    <button title="Download as SVG" class="toolbutton" onclick="saveAsSvg('class-diagram.svg')">
+        <img class="icon icon-download" src="img/download.png" alt="download">
+    </button>
+    <button title="Open SVG in new tab" class="toolbutton" onclick="window.open(getSvgUrl(), '_blank')">
+        <img class="icon icon-download" src="img/open-new.png" alt="popout">
+    </button>
+
+</div>
+
+<div id="sidebar">
+    <div class="notice">
+        <strong>Tip:</strong> try (right-)clicking on nodes and edges!
+        Watch a screencast <a href="screencast.mp4" target="_blank">here</a>!
     </div>
-
-    <div id="sidebar">
-      <div class="notice">
-        <strong>Tip:</strong> try (right-)clicking on nodes and edges! Watch a
-        screencast <a href="screencast.mp4" target="_blank">here</a>!
-      </div>
-      <div class="tab-bar">
+    <div class="tab-bar">
         <ul class="tabs">
-          <li>
-            <a
-              class="tabs tablink active"
-              onclick="openSidebarTab(event,'tab-basic')"
-              >General</a
-            >
-          </li>
-          <li>
-            <a
-              class="tabs tablink"
-              onclick="openSidebarTab(event,'tab-features')"
-              >Features</a
-            >
-          </li>
-          <!-- <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-bugs')">Bugs</a></li> -->
+            <li><a class="tabs tablink active" onclick="openSidebarTab(event,'tab-basic')">General</a></li>
+            <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-features')">Features</a></li>
+            <!-- <li><a class="tabs tablink" onclick="openSidebarTab(event,'tab-bugs')">Bugs</a></li> -->
         </ul>
-      </div>
-      <div class="sidebar-tab" id="tab-basic">
+    </div>
+    <div class="sidebar-tab" id="tab-basic">
         <div class="menu" id="menu-nodes">
-          <h2>Nodes</h2>
-          <label for="showPrimitives">
-            <input
-              type="checkbox"
-              id="showPrimitives"
-              name="showPrimitives"
-              onchange="showPrimitives(this)"
-              value="showPrimitives"
-              checked="checked"
-            />Show primitives </label
-          ><br /><label for="showPackages">
-            <input
-              type="checkbox"
-              id="showPackages"
-              name="showPackages"
-              onchange="showPackages(this)"
-              value="showPackages"
-              checked="checked"
-            />Show packages
-          </label>
+            <h2>Nodes</h2>
+            <label for="showPrimitives">
+                <input type="checkbox" id="showPrimitives" name="showPrimitives" onchange="showPrimitives(this)"
+                       value="showPrimitives" checked="checked"/>Show primitives
+            </label><br/>
+            <label for="showPackages">
+                <input type="checkbox" id="showPackages" name="showPackages" onchange="showPackages(this)"
+                    value="showPackages" checked="checked"/>Show packages
+            </label>
         </div>
         <div class="menu" id="menu-edges">
-          <h2>Relationships</h2>
-          <table style="width: 100%; text-align: left" id="reltab">
-            <thead>
-              <th>Connection</th>
-              <th>Ortho</th>
-              <th>Bezier</th>
-            </thead>
-            <!-- relationship types here will be loaded from dataset -->
-          </table>
+            <h2>Relationships</h2>
+            <table style="width: 100%; text-align: left" id="reltab">
+                <thead>
+                <th>Connection</th>
+                <th>Ortho</th>
+                <th>Bezier</th>
+                </thead>
+                <!-- relationship types here will be loaded from dataset -->
+            </table>
         </div>
 
         <div class="menu" id="menu-layout">
-          <h2>Layout algorithm</h2>
-          <label for="layout"
-            >Select layout
-            <select class="dd" id="selectlayout" size="1">
-              <option value="cola">cola</option>
-              <option selected value="klay">klay</option>
-              <option value="fcose">fcose</option>
-              <option value="cose-bilkent">cose-bilkent</option>
-              <option value="euler">euler</option>
-              <option value="spread">spread (takes a while...)</option>
-              <option value="dagre">dagre</option>
-            </select>
-          </label>
-          <button
-            class="sidebar"
-            onclick="relayout(document.getElementById('selectlayout').options[document.getElementById('selectlayout').selectedIndex].value)"
-          >
-            Relayout
-          </button>
-          <!-- <button onclick="relayout()">Relayout</button> -->
+            <h2>Layout algorithm</h2>
+            <label for="layout">Select layout
+                <select class="dd" id="selectlayout" size="1">
+                    <option value="cola">cola</option>
+                    <option selected value="klay">klay</option>
+                    <option value="fcose">fcose</option>
+                    <option value="cose-bilkent">cose-bilkent</option>
+                    <option value="euler">euler</option>
+                    <option value="spread">spread (takes a while...)</option>
+                    <option value="dagre">dagre</option>
+                </select>
+            </label>
+            <button class="sidebar"
+                    onclick="relayout(document.getElementById('selectlayout').options[document.getElementById('selectlayout').selectedIndex].value)">
+                Relayout
+            </button>
+            <!-- <button onclick="relayout()">Relayout</button> -->
         </div>
 
         <div class="menu">
-          <h2>Highlight nodes</h2>
+            <h2>Highlight nodes</h2>
 
-          <label for="highlight"
-            >Separate node names by comma, whitespace, or new line.</label
-          >
-          <textarea id="highlight" name="highlight" rows="3"></textarea>
-          <button class="sidebar" onclick="highlight('')">Reset</button>
-          <button
-            class="sidebar"
-            onclick="highlight(document.getElementById('highlight').value)"
-          >
-            Highlight
-          </button>
-          <p></p>
-          <button class="sidebar" onclick="toggleVisibility()">
-            Toggle visibility
-          </button>
+            <label for="highlight">Separate node names by comma, whitespace, or new line.</label>
+            <textarea id="highlight" name="highlight" rows="3"></textarea>
+            <button class="sidebar" onclick="highlight('')">Reset
+            </button>
+            <button class="sidebar" onclick="highlight(document.getElementById('highlight').value)">Highlight
+            </button>
+            <p></p>
+            <button class="sidebar" onclick="toggleVisibility()">Toggle visibility
+            </button>
         </div>
-
+    </div>
+    <div class="sidebar-tab" id="tab-features" style="display:none;">
         <div class="menu">
-          <h2>Expand and Collapse</h2>
+            <h2>Feature highlight</h2>
 
-          <button class="sidebar" id="expandNodes">Expand All</button>
-          <button class="sidebar" id="collapseNodes">Collapse All</button>
-        </div>
-      </div>
-      <div class="sidebar-tab" id="tab-features" style="display: none">
-        <div class="menu">
-          <h2>Feature highlight</h2>
-
-          <!-- <label for="feature">
+            <!-- <label for="feature">
               Select a specific feature that you want to visualize.
               To select multiple features, hold down the CTRL (or CMD) key.
             </label> -->
-          <!-- <br />
+            <!-- <br />
             <select id="selectfeature" size="20" multiple>
               <option value="All">All (default)</option>
             </select>
             <p />
             <Button class="sidebar" onclick="showTrace(checkSelectedFeatures())">Show</Button> -->
-          <div id="selectfeature"></div>
+            <div id="selectfeature"></div>
         </div>
-      </div>
-      <!-- <div class="sidebar-tab" id="tab-bugs" style="display:none;"></div> -->
-    </div>
-    <div id="infobox">
-      <div id="infotitle"></div>
-      <div id="infobody"></div>
-    </div>
 
-    <div id="cy"></div>
+    </div>
+    <!-- <div class="sidebar-tab" id="tab-bugs" style="display:none;"></div> -->
+</div>
+<div id="infobox">
+    <div id="infotitle"></div>
+    <div id="infobody"></div>
+</div>
 
-    <script src="script.js"></script>
-  </body>
+<div id="cy">
+</div>
+
+<script src="script.js"></script>
+</body>
+
 </html>
