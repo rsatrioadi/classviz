@@ -1,27 +1,50 @@
-    { "elements":
-        { "nodes": [
-            { "data":
-                { "id": "node1",
-                  "labels": ["Structure"],
-                  "properties":
-                    { "simpleName": "ChangeConnectionHandle",
-                      "kind": "abstract" }}},
-            { "data":
-                { "id": "node2",
-                  "labels": ["Structure"],
-                  "properties":
-                    { "simpleName": "Figure",
-                      "kind": "interface" }}}],
-          "edges": [
-            { "data":
-                { "id": "edge1",
-                  "label": "holds",
-                  "source": "node1",
-                  "target": "node2",
-                  "properties": {} }},
-            { "data":
-                { "id": "edge2",
-                  "label": "calls",
-                  "source": "node1",
-                  "target": "node2",
-                  "properties": {} }}]}}
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "node1",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "simpleName": "ChangeConnectionHandle",
+            "kind": "abstract"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "node2",
+          "labels": [
+            "Structure"
+          ],
+          "properties": {
+            "simpleName": "Figure",
+            "kind": "interface"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "edge1",
+          "label": "holds",
+          "source": "node1",
+          "target": "node2",
+          "properties": {}
+        }
+      },
+      {
+        "data": {
+          "id": "edge2",
+          "label": "calls",
+          "source": "node1",
+          "target": "node2",
+          "properties": {}
+        }
+      }
+    ]
+  }
+}
