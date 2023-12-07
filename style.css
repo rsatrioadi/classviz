@@ -50,6 +50,7 @@ h2 {
   padding: 4px 12px 20px 12px;
   border-top: 1px solid #cacaca;
 }
+
 .notice {
   background-color: #ffffec;
   border-radius: 4px;
@@ -68,11 +69,9 @@ h2 {
   max-height: 36px;
   right: 0;
   /* background-color: #fafafa; */
-  background-image: linear-gradient(
-    to bottom,
-    hsl(0, 0%, 95%),
-    hsl(0, 0%, 87%)
-  );
+  background-image: linear-gradient(to bottom,
+      hsl(0, 0%, 95%),
+      hsl(0, 0%, 87%));
   box-shadow: inset hsla(0, 0%, 100%, 0.5) 0 1px 1px;
   border-bottom: 1px solid #cacaca;
   z-index: 9999;
@@ -137,6 +136,7 @@ button.toolbutton:active {
   background-color: #fafafa;
   border-bottom: 1px solid #c0c0c0;
 }
+
 /* Reset default list styling */
 ul.tabs {
   margin: 0;
@@ -179,6 +179,7 @@ ul.tabs {
   background-color: #fff;
   border: 1px solid #c0c0c0;
 }
+
 .download-text {
   display: none;
 }
@@ -209,6 +210,7 @@ ul.tabs {
   z-index: 2;
   overflow: scroll;
 }
+
 .target-popper.active {
   display: block;
 }

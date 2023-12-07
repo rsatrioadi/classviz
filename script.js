@@ -33,30 +33,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 });
 
-// Function to add on scrollzoom event listener
-// Params: Zoom obj to keep track of zoom value and cytoscape instance
-function addScrollZoomListener(zoom, cy) {
-  const api = cy.expandCollapse("get");
-  cy.on("scrollzoom", (_) => {
-    // FIlter each nodes that is a package
-    cy.nodes('[properties.kind = "package"]').forEach((n) => {
-      const { w, h } = n.layoutDimensions();
-      // if zooming in
-      if (zoom.value < cy.zoom() && h / w > 0.3) {
-        // check if collapsed
-        if (n.hasClass("cy-expand-collapse-collapsed-node"))
-          api.expand(n, generateExpColOptions());
-      }
-      // if zooming out
-      else if (zoom.value > cy.zoom() && h / w <= 0.3) {
-        if (!n.hasClass("cy-expand-collapse-collapsed-node"))
-          api.collapse(n, generateExpColOptions());
-      }
-    });
-  });
-  zoom.value = cy.zoom();
-}
-
 const prepareEles = function (eles) {
   eles.nodes.forEach((node) => {
     node.data.name = node.data.properties.shortname || node.data.properties.simpleName;
@@ -88,13 +64,15 @@ const setParents = function (relationship, inverted) {
 
 let parentRel = "contains";
 
-const rs_colors = {
-  Controller: ["#984ea3", "#decbe4"],
-  Coordinator: ["#4daf4a", "#ccebc5"],
-  "Information Holder": ["#e4105c", "#fbb4ae"],
-  Interfacer: ["#ff7f00", "#fed9a6"],
-  "Service Provider": ["#377eb8", "#b3cde3"],
-  Structurer: ["#f781bf", "#fddaec"],
+const role_stereotypes = {
+  "Controller": { symbol: "CT", color_dark: "#984ea3", color_light: "#decbe4" },
+  "Coordinator": { symbol: "CO", color_dark: "#4daf4a", color_light: "#ccebc5" },
+  "Information Holder": { symbol: "IH", color_dark: "#e4105c", color_light: "#fbb4ae" },
+  "Interfacer": { symbol: "IT", color_dark: "#ff7f00", color_light: "#fed9a6" },
+  "Service Provider": { symbol: "SP", color_dark: "#377eb8", color_light: "#b3cde3" },
+  "Structurer": { symbol: "ST", color_dark: "#f781bf", color_light: "#fddaec" },
+  "*": { symbol: "UR", label: "Unreliable" },
+  "-": { symbol: "UD", label: "Undetermined" }
 };
 
 const ft_colors = [
@@ -116,12 +94,12 @@ function generateExpColOptions(layoutName = "klay") {
   let cyExpandCollapseOptions = {
     // set default layout by klay
     layoutBy: null,
-    animate: false,
+    animate: true,
     fisheye: false,
     undoable: false,
     cueEnabled: true,
     expandCollapseCuePosition: "top-left",
-    groupEdgesOfSameTypeOnCollapse: false,
+    groupEdgesOfSameTypeOnCollapse: true,
     allowNestedEdgeCollapse: true,
   };
 
@@ -151,14 +129,6 @@ const initCy = async function (payload) {
       document
         .getElementById("expandNodes")
         .addEventListener("click", () => api.expandAll());
-      document.getElementById("collapseEdges").addEventListener("click", () => {
-        api.collapseAllEdges({
-          groupEdgesOfSameTypeOnCollapse:
-            generateExpColOptions().groupEdgesOfSameTypeOnCollapse,
-          allowNestedEdgeCollapse:
-            generateExpColOptions().allowNestedEdgeCollapse,
-        });
-      });
     },
     style: payload[1],
     wheelSensitivity: 0.25,
@@ -224,11 +194,11 @@ function bindRouters() {
         .filter(cb => cb.checked)
         .map(cb => cb.value);
 
-    const edges = evt.target
-      .connectedEdges()
-      .filter((e) => interactions.includes(e.data("interaction")));
-    edges.addClass("dimmed");
-  });
+      const edges = evt.target
+        .connectedEdges()
+        .filter((e) => interactions.includes(e.data("interaction")));
+      edges.addClass("dimmed");
+    });
 
   // left click highlights the node and its connected edges and nodes
   cy.on("tap", "node", (evt) => {
@@ -263,21 +233,18 @@ function bindRouters() {
     if (evt.target.data()['labels'].includes('Structure')) {
       if (evt.target.data()["properties"]["rs"]) {
         infoBody.style.backgroundColor =
-          rs_colors[evt.target.data()["properties"]["rs"]][1];
-        infoSubeader.innerHTML = `<b><i>${
-          evt.target.data()["properties"]["kind"]
-        }</i> – ${evt.target.data()["properties"]["rs"]}</b>`;
+          role_stereotypes[evt.target.data()["properties"]["rs"]].color_light;
+        infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]
+          }</i> – ${evt.target.data()["properties"]["rs"]}</b>`;
       } else {
         infoBody.style.backgroundColor = "inherit";
-        infoSubeader.innerHTML = `<b><i>${
-          evt.target.data()["properties"]["kind"]
-        }</i></b>`;
+        infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]
+          }</i></b>`;
       }
     } else if (evt.target.data()["labels"].includes("Container")) {
       infoBody.style.backgroundColor = "inherit";
-      infoSubeader.innerHTML = `<b><i>${
-        evt.target.data()["properties"]["kind"]
-      }</i></b>`;
+      infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]
+        }</i></b>`;
     }
 
     infoBody.innerHTML = "";
@@ -285,10 +252,6 @@ function bindRouters() {
     infoBody.appendChild(infoSubeader);
     infoBody.appendChild(infoText);
   });
-
-  // TODO: Handle zooming
-  // Still bugged,
-  addScrollZoomListener(zoom, cy);
 }
 
 /* Sidebar Utility Functions */
@@ -378,14 +341,6 @@ const toggleVisibility = function () {
   flip = !flip;
 };
 
-function disableZoomToExpCollHandler(e) {
-  if (e.checked) {
-    cy.removeListener("scrollzoom");
-  } else {
-    addScrollZoomListener(zoom, cy);
-  }
-}
-
 /* ======================================== */
 
 const fillRSFilter = function (_cy) {
@@ -399,22 +354,22 @@ const fillRSFilter = function (_cy) {
   rsHeader.innerHTML = "<b>Role Stereotypes</b>";
   containerDiv.appendChild(rsHeader);
 
-  Object.keys(rs_colors).forEach(key => {
+  Object.keys(role_stereotypes).forEach(key => {
     const div = document.createElement("div");
     const label = document.createElement("label");
-    label.setAttribute("for", `rs-${key}`);
+    label.setAttribute("for", `rs-${role_stereotypes[key].symbol}`);
     label.setAttribute("class", "rslabel");
-    label.style.backgroundColor = rs_colors[key][1];
+    label.style.backgroundColor = role_stereotypes[key].color_light;
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", `rs-${key}`);
+    checkbox.setAttribute("id", `rs-${role_stereotypes[key].symbol}`);
     checkbox.setAttribute("name", "showrs");
     checkbox.setAttribute("onchange", "showRS(this)");
     checkbox.setAttribute("value", key);
     checkbox.checked = true;
 
-    const labelText = document.createTextNode(key);
+    const labelText = document.createTextNode(role_stereotypes[key].label || key);
     label.appendChild(checkbox);
     label.appendChild(labelText);
 
