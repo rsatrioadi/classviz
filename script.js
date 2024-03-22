@@ -41,6 +41,7 @@ const prepareEles = function (eles) {
 
   eles.edges.forEach((edge) => {
     edge.data.interaction = edge.data.label || edge.data.labels.join();
+    edge.data.group = edge.data.interaction;
   });
 
   return eles;
@@ -90,7 +91,7 @@ const ft_colors = [
   "#ffed6f",
 ];
 
-function generateExpColOptions(layoutName = "klay") {
+function generateExpColOptions(_layoutName = "klay") {
   let cyExpandCollapseOptions = {
     // set default layout by klay
     layoutBy: null,
@@ -125,10 +126,10 @@ const initCy = async function (payload) {
 
       document
         .getElementById("collapseNodes")
-        .addEventListener("click", () => api.collapseAll());
+        .addEventListener("click", () => { api.collapseAll(); api.collapseAllEdges(generateExpColOptions()) });
       document
         .getElementById("expandNodes")
-        .addEventListener("click", () => api.expandAll());
+        .addEventListener("click", () => { api.expandAll(); api.expandAllEdges() });
     },
     style: payload[1],
     wheelSensitivity: 0.25,
@@ -137,7 +138,7 @@ const initCy = async function (payload) {
   setParents(parentRel, false);
 
   // Isolate nodes with kind equals to package
-  cy.nodes('[properties.kind = "package"]').forEach((n, idx) => {
+  cy.nodes('[properties.kind = "package"]').forEach((n) => {
     const d = n.ancestors().length;
     const grey = Math.min(160 + (d * 20), 255);
     n.style('background-color', `rgb(${grey},${grey},${grey})`);
@@ -182,7 +183,7 @@ infoTitle.addEventListener("click", () => {
   }
 });
 
-function bindRouters() {
+const bindRouters = function () {
   // Initiate cyExpandCollapseApi
   let api = cy.expandCollapse("get");
 
@@ -315,16 +316,15 @@ const fileUpload = function () {
   fileSelector.addEventListener("change", (event) => {
     const file = event.target.files[0];
     filePrefix = file.name;
-    document.getElementById(
-      "filename"
-    ).textContent = `Software Visualization: ${filePrefix}`;
+    document
+        .getElementById("filename")
+        .textContent = `Software Visualization: ${filePrefix}`;
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = function (e) {
       json = JSON.parse(e.target.result);
       eles = prepareEles(json.elements);
       const style = fetch("style.cycss").then((res) => res.text());
-
       Promise.all([eles, style]).then(initCy);
     };
   });
@@ -588,7 +588,7 @@ const showRS = function (evt) {
   }
 };
 
-const showTrace = function (evt) {
+const showTrace = function (_evt) {
 
   const trace_names = [...document.getElementsByName("showfeatures")]
     .filter((e) => e.checked)
@@ -642,7 +642,7 @@ const showTrace = function (evt) {
   cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
-const showBug = function (evt) {
+const showBug = function (_evt) {
 
   const bug_names = [...document.getElementsByName("showbugs")]
     .filter((e) => e.checked)
@@ -722,7 +722,7 @@ function bindPopper(target) {
         tooltip.classList.add('target-popper');
         let targetData = target.data()["properties"]["vulnerabilities"];
 
-        for (const [prop, targetValue] of Object.entries(targetData)) {
+        for (const [prop, ..._] of Object.entries(targetData)) {
           const p = document.createElement('p');
           const vulnerabilities = target.data().properties.vulnerabilities[prop];
           p.innerText = `${vulnerabilities.analysis_name}: ${vulnerabilities.description}`;
@@ -741,14 +741,9 @@ function bindPopper(target) {
       }
     });
 
-    target.on("position", () => {
-      popper.update();
-    });
+    target.on("position", () => { popper.update(); });
 
-    target.cy().on("pan zoom resize", () => {
-      popper.update();
-    });
-
+    target.cy().on("pan zoom resize", () => { popper.update(); });
 
     target.on('mouseover', () => {
       if (!target.hasClass('dimmed')) {
@@ -761,7 +756,7 @@ function bindPopper(target) {
 
   if (target.data()["properties"].hasOwnProperty("description")) {
     let popper = target.popper({
-      content: () => {
+      content: function () {
         let tooltip = document.createElement('div');
         tooltip.id = tooltipId;
         tooltip.classList.add('target-popper');

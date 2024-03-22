@@ -177,8 +177,7 @@ edge[interaction = "holds"] {
 }
 
 edge[interaction = "specializes"] {
-  target-arrow-color: #ffd92f;
-  line-color: #ffd92f;
+  target-arrow-color: #000;
   source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
@@ -188,8 +187,7 @@ edge[interaction = "specializes"] {
 }
 
 edge[interaction = "realizes"] {
-  target-arrow-color: #ffd92f;
-  line-color: #ffd92f;
+  target-arrow-color: #000;
   source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
