@@ -40,7 +40,13 @@ const prepareEles = function (eles) {
   });
 
   eles.edges.forEach((edge) => {
-    edge.data.interaction = edge.data.label || edge.data.labels.join();
+    if (edge.data.label) {
+      edge.data.interaction = edge.data.label;
+    } else if (edge.data.labels) {
+      edge.data.interaction = edge.data.labels.join();
+    } else {
+      edge.data.interaction = "nolabel";
+    }
     edge.data.group = edge.data.interaction;
   });
 
