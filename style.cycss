@@ -106,13 +106,13 @@ node[labels.0 = "BugType"] {
 edge {
   width: 3;
   line-fill: linear-gradient;
-  line-gradient-stop-colors: magenta black;
+  line-gradient-stop-colors: #FFCC66 #004080;
   line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   target-arrow-shape: none;
-  line-color: black;
-  target-arrow-color: black;
-  source-arrow-color: black;
+  line-color: #004080;
+  target-arrow-color: #004080;
+  source-arrow-color: #FFCC66;
   curve-style: bezier;
   edge-text-rotation: autorotate;
   label: data(interaction);
@@ -130,9 +130,9 @@ edge[interaction = "contains"] {
 }
 
 edge[interaction = "calls"] {
-  target-arrow-color: #1c9099;
+  source-arrow-color: #000080;
   line-fill: linear-gradient;
-  line-gradient-stop-colors: #edf8b1 #1c9099;
+  line-gradient-stop-colors: #CCFF66 #000080;
   line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   target-arrow-shape: none;
@@ -142,9 +142,9 @@ edge[interaction = "calls"] {
 }
 
 edge[interaction = "constructs"] {
-  source-arrow-color: #d95f0e;
+  target-arrow-color: #A61340;
   line-fill: linear-gradient;
-  line-gradient-stop-colors: #fff7bc #d95f0e;
+  line-gradient-stop-colors: #FFFF66 #A61340;
   line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   target-arrow-shape: none;
@@ -154,9 +154,9 @@ edge[interaction = "constructs"] {
 }
 
 edge[interaction = "accepts"] {
-  target-arrow-color: #31a354;
+  target-arrow-color: #800000;
   line-fill: linear-gradient;
-  line-gradient-stop-colors: #f7fcb9 #31a354;
+  line-gradient-stop-colors: #66FF66 #800000;
   line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   target-arrow-shape: none;
@@ -165,9 +165,9 @@ edge[interaction = "accepts"] {
 }
 
 edge[interaction = "holds"] {
-  source-arrow-color: #c51b8a;
+  source-arrow-color: #400080;
   line-fill: linear-gradient;
-  line-gradient-stop-colors: #fde0dd #c51b8a;
+  line-gradient-stop-colors: #66FFCC #400080;
   line-gradient-stop-positions: 0% 100%;
   source-arrow-shape: none;
   source-arrow-fill: hollow;
@@ -177,7 +177,11 @@ edge[interaction = "holds"] {
 }
 
 edge[interaction = "specializes"] {
-  target-arrow-color: #000;
+  source-arrow-color: #804000;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #66FFFF #804000;
+  line-gradient-stop-positions: 0% 100%;
+  target-arrow-color: #804000;
   source-arrow-shape: none;
   target-arrow-shape: triangle;
   target-arrow-fill: hollow;
@@ -227,8 +231,10 @@ edge[interaction = "accesses"] {
 }
 
 edge[interaction = "returns"] {
-  target-arrow-color: #a6d854;
-  line-color: #a6d854;
+  line-fill: linear-gradient;
+  line-gradient-stop-colors: #66CCFF #800080;
+  line-gradient-stop-positions: 0% 100%;
+  target-arrow-color: #800080;
   source-arrow-shape: none;
   target-arrow-shape: vee;
   line-style: dashed;
