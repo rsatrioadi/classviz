@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 const prepareEles = function (eles) {
   eles.nodes.forEach((node) => {
-    node.data.name = node.data.properties.shortname || node.data.properties.simpleName;
+	  node.data.name = node.data.properties.name || node.data.properties.shortname || node.data.properties.simpleName;
     node.data.label = `${node.data.name}`;
   });
 
@@ -75,7 +75,9 @@ const role_stereotypes = {
   "Controller": { symbol: "CT", color_dark: "#984ea3", color_light: "#decbe4" },
   "Coordinator": { symbol: "CO", color_dark: "#4daf4a", color_light: "#ccebc5" },
   "Information Holder": { symbol: "IH", color_dark: "#e4105c", color_light: "#fbb4ae" },
-  "Interfacer": { symbol: "IT", color_dark: "#ff7f00", color_light: "#fed9a6" },
+	"User Interfacer": { symbol: "ITu", color_dark: "#ff7f00", color_light: "#fed9a6" },
+	"Internal Interfacer": { symbol: "ITi", color_dark: "#ff7f00", color_light: "#fed9a6" },
+	"External Interfacer": { symbol: "ITe", color_dark: "#ff7f00", color_light: "#fed9a6" },
   "Service Provider": { symbol: "SP", color_dark: "#377eb8", color_light: "#b3cde3" },
   "Structurer": { symbol: "ST", color_dark: "#f781bf", color_light: "#fddaec" },
   "*": { symbol: "UR", label: "Unreliable" },
@@ -238,11 +240,11 @@ const bindRouters = function () {
     infoText.textContent = evt.target.data()["properties"]["description"] ? evt.target.data()["properties"]["description"] : "(no description)";
 
     if (evt.target.data()['labels'].includes('Structure')) {
-      if (evt.target.data()["properties"]["rs"]) {
+      if (evt.target.data()["properties"]["roleStereotype"]) {
         infoBody.style.backgroundColor =
-          role_stereotypes[evt.target.data()["properties"]["rs"]].color_light;
+          role_stereotypes[evt.target.data()["properties"]["roleStereotype"]].color_light;
         infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]
-          }</i> – ${evt.target.data()["properties"]["rs"]}</b>`;
+          }</i> – ${evt.target.data()["properties"]["roleStereotype"]}</b>`;
       } else {
         infoBody.style.backgroundColor = "inherit";
         infoSubeader.innerHTML = `<b><i>${evt.target.data()["properties"]["kind"]
