@@ -196,6 +196,7 @@ const role_stereotypes = {
 	"Controller": { symbol: "CT", color_dark: "#984ea3", color_light: "#decbe4" },
 	"Coordinator": { symbol: "CO", color_dark: "#4daf4a", color_light: "#ccebc5" },
 	"Information Holder": { symbol: "IH", color_dark: "#e4105c", color_light: "#fbb4ae" },
+	"Interfacer": { symbol: "IT", color_dark: "#ff7f00", color_light: "#fed9a6" },
 	"User Interfacer": { symbol: "ITu", color_dark: "#ff7f00", color_light: "#fed9a6" },
 	"Internal Interfacer": { symbol: "ITi", color_dark: "#ff7f00", color_light: "#fed9a6" },
 	"External Interfacer": { symbol: "ITe", color_dark: "#ff7f00", color_light: "#fed9a6" },
