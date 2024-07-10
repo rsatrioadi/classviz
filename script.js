@@ -114,12 +114,75 @@ const abstractize = function (graphData) {
 		.filter(item => !nestedClassSet.has(item));
 	const topLevelClassSet = new Set(topLevelClasses);
 
-	const newContains = edges.contains.filter((edge) => !topLevelClassSet.has(edge.source));
+	function extractTopLevelPackages(data) {
+		// Remove the last element from each tuple and convert to set for uniqueness
+		let uniquePrefixes = new Set(data.map(item => item.slice(0, -1).toString()));
+
+		// Convert set to array and sort uniquePrefixes by length of tuples in ascending order
+		let sortedPrefixes = Array.from(uniquePrefixes).map(item => item.split(',')).sort((a, b) => a.length - b.length);
+
+		let results = [];
+
+		for (let prefix of sortedPrefixes) {
+			// Check if the prefix is already a prefix of any result
+			if (!results.some(result => prefix.slice(0, result.length).toString() === result.toString())) {
+				results.push(prefix);
+			}
+		}
+
+		return results;
+	}
+
+	function findPathFromRoot(tree, targetNode) {
+		// Step 1: Build a dictionary to map each node to its parent
+		let parentMap = {};
+		for (let edge of tree) {
+			parentMap[edge.target] = edge.source;
+		}
+
+		// Step 2: Trace the path from targetNode to the root
+		let path = [];
+		let currentNode = targetNode;
+		while (parentMap.hasOwnProperty(currentNode)) {
+			path.push(currentNode);
+			currentNode = parentMap[currentNode];
+		}
+
+		// Step 3: Append the root node to the path
+		if (currentNode !== null) {
+			path.push(currentNode);
+		}
+
+		// Step 4: Reverse the path to get root to targetNode order
+		path.reverse();
+
+		return path;
+	}
+
+	let pkgWithClasses = new Set(
+		edges.contains
+			.filter(edge => nodes[edge.source].labels.includes('Container') && nodes[edge.target].labels.includes('Structure'))
+			.map(edge => edge.source)
+	);
+
+	let pkgPaths = Array.from(pkgWithClasses).map(pkgId => findPathFromRoot(edges.contains, pkgId));
+	let topLevelPackages = extractTopLevelPackages(pkgPaths);
+	let packagesToRemove = topLevelPackages.flatMap(pkg => pkg.slice(0, -1));
+	
+	const newContains = edges.contains
+		.filter((edge) => !topLevelClassSet.has(edge.source))
+		.filter((edge) => !packagesToRemove.includes(edge.source) && !packagesToRemove.includes(edge.target));
+
+	let components = topLevelPackages.map(pkg => pkg[pkg.length - 1]);
+	components.forEach((component) => {
+		nodes[component].properties.name = nodes[component].properties.qualifiedName;
+	});
+	
 	const nests = edges.nests ?? edges.contains
 		.filter((edge) => topLevelClassSet.has(edge.source))
 		.map((edge) => ({ ...edge, label: "nests" }));
 
-	const filterObjectsByLabels = function (data, labels) {
+	const filterNodesByLabels = function (data, labels) {
 		return Object.entries(data).reduce((filteredData, [key, object]) => {
 			if (object.labels.some((label) => labels.includes(label))) {
 				filteredData[key] = object;
@@ -128,7 +191,16 @@ const abstractize = function (graphData) {
 		}, {});
 	}
 
-	const abstractNodes = filterObjectsByLabels(nodes, ["Container", "Structure", "Primitive", "Problem"]);
+	function filterNodesByIds(obj, ids) {
+		return Object.keys(obj).reduce((acc, key) => {
+			if (!ids.includes(key)) {
+				acc[key] = obj[key];
+			}
+			return acc;
+		}, {});
+	}
+
+	const abstractNodes = filterNodesByIds(filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem"]), packagesToRemove);
 	const abstractEdges = {
 		contains: newContains,
 		specializes: edges.specializes,
@@ -267,10 +339,14 @@ const initCy = async function (payload) {
 
 	setParents(parentRel, false);
 
+	const max_depth = Math.max( ...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
+
 	// Isolate nodes with kind equals to package
 	cy.nodes('[properties.kind = "package"]').forEach((n) => {
-		const d = n.ancestors().length;
-		const grey = Math.min(160 + (d * 20), 255);
+		const d = 146;
+		const l = 236;
+		const depth = n.ancestors().length;
+		const grey = Math.max(l - ((max_depth - depth) * 15), d);
 		n.style('background-color', `rgb(${grey},${grey},${grey})`);
 	});
 
