@@ -97,11 +97,11 @@ const abstractize = function (graphData) {
 		return compose(compose(rel1, rel2), invert(rel1), newlabel);
 	}
 
-	const calls = lift(edges.hasScript, edges.invokes, "calls");
-	const constructs = compose(edges.hasScript, edges.instantiates, "constructs");
-	const holds = compose(edges.hasVariable, edges.type, "holds");
-	const accepts = compose(edges.hasScript, compose(edges.hasParameter, edges.type), "accepts");
-	const returns = compose(edges.hasScript, edges.returnType, "returns");
+	const calls = lift(edges.hasScript, edges.invokes, "calls").filter((edge) => edge.source != edge.target);
+	const constructs = compose(edges.hasScript, edges.instantiates, "constructs").filter((edge) => edge.source != edge.target);
+	const holds = compose(edges.hasVariable, edges.type, "holds").filter((edge) => edge.source != edge.target);
+	const accepts = compose(edges.hasScript, compose(edges.hasParameter, edges.type), "accepts").filter((edge) => edge.source != edge.target);
+	const returns = compose(edges.hasScript, edges.returnType, "returns").filter((edge) => edge.source != edge.target);
 
 	const nestedClassSet = new Set(
 		edges.contains
