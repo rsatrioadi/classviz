@@ -25,42 +25,42 @@ node[labels.1 = "vulnerable"]{
 }
 
 node[properties.roleStereotype = "Controller"] {
-  border-color: #984ea3;
-  background-color: #decbe4;
+  border-color: #9932FF;
+  background-color: #DCBCFB;
 }
 
 node[properties.roleStereotype = "Coordinator"] {
-  border-color: #4daf4a;
-  background-color: #ccebc5;
+  border-color: #A3CC28;
+  background-color: #E0F79D;
 }
 
 node[properties.roleStereotype = "Information Holder"] {
-  border-color: #e4105c;
-  background-color: #fbb4ae;
+  border-color: #FF3243;
+  background-color: #FBBCC1;
 }
 
 node[properties.roleStereotype = "Interfacer"] {
-  border-color: #ff7f00;
-  background-color: #fed9a6;
+  border-color: #FF9932;
+  background-color: #FBDCBC;
 }
 node[properties.roleStereotype="User Interfacer"] {
-	border-color: #ff7f00;
-	background-color: #fed9a6;
+	border-color: #FF9932;
+	background-color: #FBDCBC;
 }node[properties.roleStereotype="Internal Interfacer"] {
-	border-color: #ff7f00;
-	background-color: #fed9a6;
+	border-color: #FF9932;
+	background-color: #FBDCBC;
 }node[properties.roleStereotype="External Interfacer"] {
-	border-color: #ff7f00;
-	background-color: #fed9a6;
+	border-color: #FF9932;
+	background-color: #FBDCBC;
 }
 node[properties.roleStereotype = "Service Provider"] {
-  border-color: #377eb8;
-  background-color: #b3cde3;
+  border-color: #32BAFF;
+  background-color: #BCE6FB;
 }
 
 node[properties.roleStereotype = "Structurer"] {
-  border-color: #f781bf;
-  background-color: #fddaec;
+  border-color: #FF32FF;
+  background-color: #F6D6F6;
 }
 
 node[properties.kind = "package"] {
