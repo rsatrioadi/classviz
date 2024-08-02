@@ -169,14 +169,18 @@ const abstractize = function (graphData) {
 	let topLevelPackages = extractTopLevelPackages(pkgPaths);
 	let packagesToRemove = topLevelPackages.flatMap(pkg => pkg.slice(0, -1));
 	
-	const newContains = edges.contains
-		.filter((edge) => !topLevelClassSet.has(edge.source))
-		.filter((edge) => !packagesToRemove.includes(edge.source) && !packagesToRemove.includes(edge.target));
+	let newContains = edges.contains;
+	if (topLevelPackages && topLevelPackages[0].length > 1) {
+		console.log(topLevelPackages);
+		newContains = edges.contains
+			.filter((edge) => !topLevelClassSet.has(edge.source))
+			.filter((edge) => !packagesToRemove.includes(edge.source) && !packagesToRemove.includes(edge.target));
 
-	let components = topLevelPackages.map(pkg => pkg[pkg.length - 1]);
-	components.forEach((component) => {
-		nodes[component].properties.name = nodes[component].properties.qualifiedName;
-	});
+		let components = topLevelPackages.map(pkg => pkg[pkg.length - 1]);
+		components.forEach((component) => {
+			nodes[component].properties.name = nodes[component].properties.qualifiedName;
+		});
+	}
 	
 	const nests = edges.nests ?? edges.contains
 		.filter((edge) => topLevelClassSet.has(edge.source))
@@ -211,6 +215,32 @@ const abstractize = function (graphData) {
 		accepts,
 		returns,
 	};
+
+	function cleanEdges(cytoscapeJson) {
+		// Extract nodes and edges from the input JSON object
+		const nodes = cytoscapeJson.elements.nodes;
+		const edges = cytoscapeJson.elements.edges;
+
+		// Create a set of valid node ids
+		const nodeIds = new Set(nodes.map(node => node.data.id));
+
+		// Filter edges to remove those with source or target not in nodeIds
+		const validEdges = edges.filter(edge =>
+			nodeIds.has(edge.data.source) && nodeIds.has(edge.data.target)
+		);
+
+		// Create a new Cytoscape JSON object with cleaned edges
+		const cleanedCytoscapeJson = {
+			...cytoscapeJson,
+			elements: {
+				nodes: nodes,
+				edges: validEdges
+			}
+		};
+
+		return cleanedCytoscapeJson;
+	}
+
 	const abstractGraph = {
 		elements: {
 			nodes: Object.values(abstractNodes).map((node) => ({ data: { ...node } })),
@@ -220,7 +250,7 @@ const abstractize = function (graphData) {
 		},
 	};
 
-	return abstractGraph;
+	return cleanEdges(abstractGraph);
 }
 
 const prepareGraph = function (graphData) {
@@ -339,14 +369,25 @@ const initCy = async function (payload) {
 
 	setParents(parentRel, false);
 
-	const max_depth = Math.max( ...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
+	const max_pkg_depth = Math.max( ...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
 	cy.nodes('[properties.kind = "package"]').forEach((n) => {
 		const d = 146;
 		const l = 236;
 		const depth = n.ancestors().length;
-		const grey = Math.max(l - ((max_depth - depth) * 15), d);
+		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
+		n.style('background-color', `rgb(${grey},${grey},${grey})`);
+	});
+
+	const max_ns_depth = Math.max(...cy.nodes('[properties.kind = "Namespace"]').map((n) => n.ancestors().length));
+
+	// Isolate nodes with kind equals to Namespace
+	cy.nodes('[properties.kind = "Namespace"]').forEach((n) => {
+		const d = 146;
+		const l = 236;
+		const depth = n.ancestors().length;
+		const grey = Math.max(l - ((max_ns_depth - depth) * 15), d);
 		n.style('background-color', `rgb(${grey},${grey},${grey})`);
 	});
 
