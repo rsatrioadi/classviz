@@ -295,15 +295,15 @@ const setParents = function (relationship, inverted) {
 let parentRel = "contains";
 
 const role_stereotypes = {
-	"Controller": { symbol: "CT", color_dark: "#9932FF", color_light: "#DCBCFB" },
-	"Coordinator": { symbol: "CO", color_dark: "#A3CC28", color_light: "#E0F79D" },
-	"Information Holder": { symbol: "IH", color_dark: "#FF3243", color_light: "#FBBCC1" },
-	"Interfacer": { symbol: "IT", color_dark: "#FF9932", color_light: "#FBDCBC" },
-	"User Interfacer": { symbol: "ITu", color_dark: "#FF9932", color_light: "#FBDCBC" },
-	"Internal Interfacer": { symbol: "ITi", color_dark: "#FF9932", color_light: "#FBDCBC" },
-	"External Interfacer": { symbol: "ITe", color_dark: "#FF9932", color_light: "#FBDCBC" },
-	"Service Provider": { symbol: "SP", color_dark: "#32BAFF", color_light: "#BCE6FB" },
-	"Structurer": { symbol: "ST", color_dark: "#FF32FF", color_light: "#F6D6F6" },
+	"Controller": { symbol: "CT", color_dark: "#7A18F2", color_light: "#C7C4FF" },
+	"Coordinator": { symbol: "CO", color_dark: "#2EAA32", color_light: "#C8EFBF" },
+	"Information Holder": { symbol: "IH", color_dark: "#F2093F", color_light: "#FFDAD6" },
+	"Interfacer": { symbol: "IT", color_dark: "#FCE40C", color_light: "#EFE7A7" },
+	"User Interfacer": { symbol: "ITu", color_dark: "#FCE40C", color_light: "#EFE7A7" },
+	"Internal Interfacer": { symbol: "ITi", color_dark: "#FCE40C", color_light: "#EFE7A7" },
+	"External Interfacer": { symbol: "ITe", color_dark: "#FCE40C", color_light: "#EFE7A7" },
+	"Service Provider": { symbol: "SP", color_dark: "#267ECC", color_light: "#ADCCF4" },
+	"Structurer": { symbol: "ST", color_dark: "#FF7FBB", color_light: "#FFD6E9" },
 	"*": { symbol: "UR", label: "Unreliable" },
 	"-": { symbol: "UD", label: "Undetermined" }
 };
