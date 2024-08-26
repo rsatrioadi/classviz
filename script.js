@@ -173,7 +173,7 @@ const abstractize = function (graphData) {
 	let packagesToRemove = topLevelPackages.flatMap(pkg => pkg.slice(0, -1));
 	
 	let newContains = edges.contains;
-	if (topLevelPackages && topLevelPackages[0].length > 1) {
+	if (topLevelPackages && Array.isArray(topLevelPackages[0]) && topLevelPackages[0].length > 1) {
 		console.log(topLevelPackages);
 		newContains = edges.contains
 			.filter((edge) => !topLevelClassSet.has(edge.source))
