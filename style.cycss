@@ -40,18 +40,18 @@ node[properties.roleStereotype = "Information Holder"] {
 }
 
 node[properties.roleStereotype = "Interfacer"] {
-  border-color: #CC9900;
-  background-color: #FFE599;
+  border-color: #AA7F00;
+  background-color: #F6E5B2;
 }
 node[properties.roleStereotype="User Interfacer"] {
-	border-color: #CC9900;
-	background-color: #FFE599;
+	border-color: #AA7F00;
+	background-color: #F6E5B2;
 }node[properties.roleStereotype="Internal Interfacer"] {
-	border-color: #CC9900;
-	background-color: #FFE599;
+	border-color: #AA7F00;
+	background-color: #F6E5B2;
 }node[properties.roleStereotype="External Interfacer"] {
-	border-color: #CC9900;
-	background-color: #FFE599;
+	border-color: #AA7F00;
+	background-color: #F6E5B2;
 }
 node[properties.roleStereotype = "Service Provider"] {
   border-color: #0058B1;
