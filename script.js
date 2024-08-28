@@ -61,38 +61,41 @@ const abstractize = function (graphData) {
 		}));
 
 	const compose = function (l1, l2, newlabel) {
-		const mapping = new Map(
-			l2.map((
+		if (l1 && l2){
+			const mapping = new Map(
+				l2.map((
 				{ source, target, label, properties },
-			) => [source, { target, label, weight: properties?.weight || 1 }]),
-		);
+				) => [source, { target, label, weight: properties?.weight || 1 }]),
+			);
 
-		const result = [];
-		for (const { source: s1, target: t1, label, properties } of l1) {
-			const mappingEntry = mapping.get(t1);
+			const result = [];
+			for (const { source: s1, target: t1, label, properties } of l1) {
+				const mappingEntry = mapping.get(t1);
 
-			if (mappingEntry) {
-				const newWeight = mappingEntry.weight * (properties?.weight || 1);
-				const existingEntryIndex = result.findIndex((obj) =>
-					obj.source === s1 && obj.target === mappingEntry.target
-				);
+				if (mappingEntry) {
+					const newWeight = mappingEntry.weight * (properties?.weight || 1);
+					const existingEntryIndex = result.findIndex((obj) =>
+						obj.source === s1 && obj.target === mappingEntry.target
+					);
 
-				if (existingEntryIndex === -1) {
-					result.push({
-						source: s1,
-						target: mappingEntry.target,
-						label: newlabel || `${label}-${mappingEntry.label}`,
-						properties: { weight: newWeight },
-					});
-				} else {
-					result[existingEntryIndex].properties.weight += newWeight;
+					if (existingEntryIndex === -1) {
+						result.push({
+							source: s1,
+							target: mappingEntry.target,
+							label: newlabel || `${label}-${mappingEntry.label}`,
+							properties: { weight: newWeight },
+						});
+					} else {
+						result[existingEntryIndex].properties.weight += newWeight;
+					}
 				}
 			}
+
+			return result;
 		}
-
-		return result;
+		return [];
 	}
-
+	
 	const lift = function (rel1, rel2, newlabel) {
 		return compose(compose(rel1, rel2), invert(rel1), newlabel);
 	}
@@ -170,7 +173,7 @@ const abstractize = function (graphData) {
 	let packagesToRemove = topLevelPackages.flatMap(pkg => pkg.slice(0, -1));
 	
 	let newContains = edges.contains;
-	if (topLevelPackages && topLevelPackages[0].length > 1) {
+	if (topLevelPackages && Array.isArray(topLevelPackages[0]) && topLevelPackages[0].length > 1) {
 		console.log(topLevelPackages);
 		newContains = edges.contains
 			.filter((edge) => !topLevelClassSet.has(edge.source))
