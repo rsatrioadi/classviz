@@ -25,17 +25,17 @@ node[labels.1 = "vulnerable"]{
 }
 
 node[properties.roleStereotype = "Controller"] {
-  border-color: #7038A9;
+  border-color: #8B4293;
   background-color: #EFDFFF;
 }
 
 node[properties.roleStereotype = "Coordinator"] {
-  border-color: #008E00;
+  border-color: #50A848;
   background-color: #CEEECE;
 }
 
 node[properties.roleStereotype = "Information Holder"] {
-  border-color: #DF2424;
+  border-color: #E53033;
   background-color: #FFDEDE;
 }
 
@@ -54,12 +54,12 @@ node[properties.roleStereotype="User Interfacer"] {
 	background-color: #F6E5B2;
 }
 node[properties.roleStereotype = "Service Provider"] {
-  border-color: #0058B1;
+  border-color: #4274BF;
   background-color: #D2E8FF;
 }
 
 node[properties.roleStereotype = "Structurer"] {
-  border-color: #E234E2;
+  border-color: #FF7FD2;
   background-color: #FFDBFF;
 }
 
