@@ -415,6 +415,7 @@ const initCy = async function (payload) {
 }
 
 // Get a reference to the div element
+var infoBox = document.getElementById("infobox");
 var infoTitle = document.getElementById("infotitle");
 var infoBody = document.getElementById("infobody");
 
@@ -494,6 +495,15 @@ const bindRouters = function () {
 
 		infoBody.innerHTML = "";
 		infoBody.append(infoHeader, infoSubeader, infoText);
+
+		
+		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
+		const maxWidth = 600; 
+		const minWidth = 300;
+		infoBox.style.width = "auto";
+		infoBox.style.maxWidth = `${maxWidth}px`;
+		infoBox.style.minWidth = `${minWidth}px`;
+		infoBody.style.overflowWrap = "break-word";
 	});
 
 }
