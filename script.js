@@ -485,7 +485,7 @@ const bindRouters = function () {
 		infoText.textContent = properties.description || "(no description)";
 
 		if (evt.target.data().labels.includes('Structure')) {
-			const backgroundColor = roleStereotype ? role_stereotypes[roleStereotype].color_light : "inherit";
+			const backgroundColor = (roleStereotype && (roleStereotype in role_stereotypes)) ? role_stereotypes[roleStereotype].color_light : "inherit";
 			infoSubeader.innerHTML = `<b><i>${kind}</i>${roleStereotype ? ` – ${roleStereotype}` : ""}</b>`;
 			infoBody.style.backgroundColor = backgroundColor;
 		} else if (evt.target.data().labels.includes("Container")) {
