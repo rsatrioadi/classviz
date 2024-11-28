@@ -498,7 +498,7 @@ const bindRouters = function () {
 
 		
 		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
-		const maxWidth = 600; 
+		const maxWidth = 400; 
 		const minWidth = 300;
 		infoBox.style.width = "auto";
 		infoBox.style.maxWidth = `${maxWidth}px`;
@@ -570,8 +570,8 @@ const fileUpload = function () {
 		const file = event.target.files[0];
 		const fileName = file.name;
 		document
-				.getElementById("filename")
-				.textContent = `Software Visualization: ${fileName}`;
+			.getElementById("filename")
+			.textContent = `Software Visualization – ${fileName}`;
 		const reader = new FileReader();
 		reader.readAsText(file, "UTF-8");
 		reader.onload = function (e) {
