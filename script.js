@@ -13,15 +13,15 @@ TODO
 */
 
 document.addEventListener('DOMContentLoaded', async () => {
-	const filePrefix = new URLSearchParams(window.location.search).get('p');
-	if (filePrefix) {
+	const fileName = new URLSearchParams(window.location.search).get('p');
+	if (fileName) {
 		try {
 			const [rawGraph, style] = await Promise.all([
-				fetch(`data/${filePrefix}.json`).then(response => response.json()),
+				fetch(`data/${fileName}.json`).then(response => response.json()),
 				fetch('style.cycss').then(response => response.text())
 			]);
 
-			document.getElementById("filename").textContent = `Software Visualization: ${filePrefix}.json`;
+			document.getElementById("filename").textContent = `Software Visualization: ${fileName}.json`;
 			initCy([prepareGraph(rawGraph), style]);
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -826,16 +826,16 @@ const highlight = function (text) {
 const showRS = function (evt) {
 	// console.log(evt.checked, evt.value);
 	if (evt.checked) {
-		cy.nodes(`[properties.rs = "${evt.value}"]`).removeClass("dimmed");
-		cy.nodes(`[properties.rs = "${evt.value}"]`)
+		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`).removeClass("dimmed");
+		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`)
 			.connectedEdges()
 			.filter((e) => {
 				return !e.source().hasClass("dimmed") && !e.target().hasClass("dimmed");
 			})
 			.removeClass("dimmed");
 	} else {
-		cy.nodes(`[properties.rs = "${evt.value}"]`).addClass("dimmed");
-		cy.nodes(`[properties.rs = "${evt.value}"]`)
+		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`).addClass("dimmed");
+		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`)
 			.connectedEdges()
 			.addClass("dimmed");
 	}
