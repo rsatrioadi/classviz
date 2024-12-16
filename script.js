@@ -61,39 +61,52 @@ const abstractize = function (graphData) {
 		}));
 
 	const compose = function (l1, l2, newlabel) {
-		if (l1 && l2){
-			const mapping = new Map(
-				l2.map((
-				{ source, target, label, properties },
-				) => [source, { target, label, weight: properties?.weight || 1 }]),
-			);
+		if (!Array.isArray(l1) || !Array.isArray(l2)) return [];
 
-			const result = [];
-			for (const { source: s1, target: t1, label, properties } of l1) {
-				const mappingEntry = mapping.get(t1);
+		// Create a mapping from l2 with multiple targets per source
+		const mapping = new Map();
 
-				if (mappingEntry) {
-					const newWeight = mappingEntry.weight * (properties?.weight || 1);
-					const existingEntryIndex = result.findIndex((obj) =>
-						obj.source === s1 && obj.target === mappingEntry.target
+		for (const { source, target, label, properties } of l2) {
+			const weight = properties?.weight !== undefined ? properties.weight : 1;
+
+			if (!mapping.has(source)) {
+				mapping.set(source, []);
+			}
+			mapping.get(source).push({ target, label, weight });
+		}
+
+		const result = [];
+
+		// Process l1 and compose new results
+		for (const { source: s1, target: t1, label, properties } of l1) {
+			const mappings = mapping.get(t1);
+
+			if (mappings) {
+				for (const mappingEntry of mappings) {
+					const newWeight = mappingEntry.weight * (properties?.weight !== undefined ? properties.weight : 1);
+
+					// Check if the result already contains this source-target pair
+					const existingEntryIndex = result.findIndex(
+						obj => obj.source === s1 && obj.target === mappingEntry.target
 					);
 
 					if (existingEntryIndex === -1) {
+						// Add a new entry
 						result.push({
-							source: s1,
-							target: mappingEntry.target,
-							label: newlabel || `${label}-${mappingEntry.label}`,
-							properties: { weight: newWeight },
+								source: s1,
+								target: mappingEntry.target,
+								label: newlabel || `${label || ''}-${mappingEntry.label || ''}`.replace(/^-|-$/, ''),
+								properties: { weight: newWeight }
 						});
 					} else {
+						// Update the weight of the existing entry
 						result[existingEntryIndex].properties.weight += newWeight;
 					}
 				}
 			}
-
-			return result;
 		}
-		return [];
+
+		return result;
 	}
 	
 	const lift = function (rel1, rel2, newlabel) {
