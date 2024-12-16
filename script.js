@@ -75,7 +75,7 @@ const abstractize = function (graphData) {
 			mapping.get(source).push({ target, label, weight });
 		}
 
-		const result = [];
+		const aggregatedEdges = new Map(); // Map to aggregate weights for same source-target pairs
 
 		// Process l1 and compose new results
 		for (const { source: s1, target: t1, label, properties } of l1) {
@@ -84,30 +84,26 @@ const abstractize = function (graphData) {
 			if (mappings) {
 				for (const mappingEntry of mappings) {
 					const newWeight = mappingEntry.weight * (properties?.weight !== undefined ? properties.weight : 1);
+					const key = `${s1}-${mappingEntry.target}`; // Unique key for source-target pair
 
-					// Check if the result already contains this source-target pair
-					const existingEntryIndex = result.findIndex(
-						obj => obj.source === s1 && obj.target === mappingEntry.target
-					);
-
-					if (existingEntryIndex === -1) {
+					if (!aggregatedEdges.has(key)) {
 						// Add a new entry
-						result.push({
+						aggregatedEdges.set(key, {
 								source: s1,
 								target: mappingEntry.target,
-								label: newlabel || `${label || ''}-${mappingEntry.label || ''}`.replace(/^-|-$/, ''),
-								properties: { weight: newWeight }
+								label: newlabel || `${label}-${mappingEntry.label}`,
+								properties: { weight: newWeight },
 						});
 					} else {
 						// Update the weight of the existing entry
-						result[existingEntryIndex].properties.weight += newWeight;
+						aggregatedEdges.get(key).properties.weight += newWeight;
 					}
 				}
 			}
 		}
 
-		return result;
-	}
+		return Array.from(aggregatedEdges.values());
+	};
 	
 	const lift = function (rel1, rel2, newlabel) {
 		return compose(compose(rel1, rel2), invert(rel1), newlabel);
