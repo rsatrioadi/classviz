@@ -41,17 +41,21 @@ const collectUniqueLabels = function (dataList) {
 }
 
 const abstractize = function (graphData) {
-	const nodes = Object.fromEntries(graphData.elements.nodes.map(node => [node.data.id, node.data]));
+	// Build a node dictionary and an edge dictionary from graphData
+	const nodes = Object.fromEntries(graphData.elements.nodes.map((node) => [node.data.id, node.data]));
 	const edges = {};
 
 	for (const edge of graphData.elements.edges) {
-		const label = edge.data.label || edge.data.labels.join();
+		const label = edge.data.label || edge.data.labels?.join() || "";
 		if (!edges[label]) {
 			edges[label] = [];
 		}
 		edges[label].push(edge.data);
 	}
 
+	/**
+	 * Helper: invert each edge in edgeList (reverse source & target).
+	 */
 	const invert = (edgeList) =>
 		edgeList.map(({ source, target, label, ...rest }) => ({
 			source: target,
@@ -60,42 +64,44 @@ const abstractize = function (graphData) {
 			...rest,
 		}));
 
+	/**
+	 * Helper: compose l1 and l2 such that each l1.target matches l2.source.
+	 * Multiplies 'weight' if present, aggregates them if source->target repeats.
+	 */
 	const compose = function (l1, l2, newlabel) {
 		if (!Array.isArray(l1) || !Array.isArray(l2)) return [];
 
-		// Create a mapping from l2 with multiple targets per source
+		// Create a map from l2's source -> list of { target, label, weight }
 		const mapping = new Map();
-
 		for (const { source, target, label, properties } of l2) {
-			const weight = properties?.weight !== undefined ? properties.weight : 1;
-
+			const weight = properties?.weight ?? 1;
 			if (!mapping.has(source)) {
 				mapping.set(source, []);
 			}
 			mapping.get(source).push({ target, label, weight });
 		}
 
-		const aggregatedEdges = new Map(); // Map to aggregate weights for same source-target pairs
+		// We'll aggregate weights when multiple edges share the same source->target
+		const aggregatedEdges = new Map();
 
-		// Process l1 and compose new results
+		// For each l1 edge, see if we can connect to any l2 target
 		for (const { source: s1, target: t1, label, properties } of l1) {
-			const mappings = mapping.get(t1);
-
-			if (mappings) {
-				for (const mappingEntry of mappings) {
-					const newWeight = mappingEntry.weight * (properties?.weight !== undefined ? properties.weight : 1);
-					const key = `${s1}-${mappingEntry.target}`; // Unique key for source-target pair
+			const weight1 = properties?.weight ?? 1;
+			const matches = mapping.get(t1);
+			if (matches) {
+				for (const { target: t2, label: l2label, weight: w2 } of matches) {
+					const newWeight = w2 * weight1;
+					const key = `${s1}-${t2}`; // Unique key for the final edge
 
 					if (!aggregatedEdges.has(key)) {
-						// Add a new entry
 						aggregatedEdges.set(key, {
-								source: s1,
-								target: mappingEntry.target,
-								label: newlabel || `${label}-${mappingEntry.label}`,
-								properties: { weight: newWeight },
+							source: s1,
+							target: t2,
+							label: newlabel || `${label}-${l2label}`,
+							properties: { weight: newWeight },
 						});
 					} else {
-						// Update the weight of the existing entry
+						// If we already have the same source->target, just add to its weight
 						aggregatedEdges.get(key).properties.weight += newWeight;
 					}
 				}
@@ -104,40 +110,66 @@ const abstractize = function (graphData) {
 
 		return Array.from(aggregatedEdges.values());
 	};
-	
+
+	/**
+	 * Helper: triple-compose rel1->rel2->(inverted rel1).
+	 * (Used in the original code for "calls".)
+	 */
 	const lift = function (rel1, rel2, newlabel) {
 		return compose(compose(rel1, rel2), invert(rel1), newlabel);
-	}
+	};
 
-	const calls = lift(edges.hasScript, edges.invokes, "calls").filter((edge) => edge.source != edge.target);
-	const constructs = compose(edges.hasScript, edges.instantiates, "constructs").filter((edge) => edge.source != edge.target);
-	const holds = compose(edges.hasVariable, edges.type, "holds").filter((edge) => edge.source != edge.target);
-	const accepts = compose(edges.hasScript, compose(edges.hasParameter, edges.type), "accepts").filter((edge) => edge.source != edge.target);
-	const returns = compose(edges.hasScript, edges.returnType, "returns").filter((edge) => edge.source != edge.target);
-
-	const nestedClassSet = new Set(
-		edges.contains
-			.filter(edge => nodes[edge.source]?.labels.includes("Structure"))
-			.map(edge => edge.target)
+	/**
+	 * Original logic: calls, constructs, holds, accepts, returns
+	 */
+	const calls = lift(edges.hasScript, edges.invokes, "calls").filter(
+		(edge) => edge.source !== edge.target
 	);
+	const constructs = compose(edges.hasScript, edges.instantiates, "constructs").filter(
+		(edge) => edge.source !== edge.target
+	);
+	const holds = compose(edges.hasVariable, edges.type, "holds").filter(
+		(edge) => edge.source !== edge.target
+	);
+	const accepts = compose(edges.hasScript, compose(edges.hasParameter, edges.type), "accepts").filter(
+		(edge) => edge.source !== edge.target
+	);
+	const returns = compose(edges.hasScript, edges.returnType, "returns").filter(
+		(edge) => edge.source !== edge.target
+	);
+
+	/**
+	 * Identify top-level classes by analyzing "contains" edges
+	 */
+	const nestedClassSet = new Set(
+		(edges.contains || [])
+			.filter((edge) => nodes[edge.source]?.labels.includes("Structure"))
+			.map((edge) => edge.target)
+	);
+
 	const topLevelClasses = Object.entries(nodes)
 		.filter(([_, node]) => node.labels.includes("Structure"))
-		.map(entry => entry[0])
-		.filter(item => !nestedClassSet.has(item));
+		.map(([id]) => id)
+		.filter((id) => !nestedClassSet.has(id));
 	const topLevelClassSet = new Set(topLevelClasses);
 
+	/**
+	 * Helper: extract top-level packages from an array of paths
+	 */
 	function extractTopLevelPackages(data) {
-		// Remove the last element from each tuple and convert to set for uniqueness
-		let uniquePrefixes = new Set(data.map(item => item.slice(0, -1).toString()));
+		// Remove the last element from each tuple -> get prefix
+		const uniquePrefixes = new Set(data.map((item) => item.slice(0, -1).toString()));
 
-		// Convert set to array and sort uniquePrefixes by length of tuples in ascending order
-		let sortedPrefixes = Array.from(uniquePrefixes).map(item => item.split(',')).sort((a, b) => a.length - b.length);
+		// Convert set to array and sort by length of the split arrays
+		const sortedPrefixes = Array.from(uniquePrefixes)
+			.map((item) => item.split(","))
+			.sort((a, b) => a.length - b.length);
 
-		let results = [];
+		const results = [];
 
-		for (let prefix of sortedPrefixes) {
-			// Check if the prefix is already a prefix of any result
-			if (!results.some(result => prefix.slice(0, result.length).toString() === result.toString())) {
+		for (const prefix of sortedPrefixes) {
+			// Check if 'prefix' is already contained as a prefix in 'results'
+			if (!results.some((existing) => prefix.slice(0, existing.length).toString() === existing.toString())) {
 				results.push(prefix);
 			}
 		}
@@ -145,68 +177,94 @@ const abstractize = function (graphData) {
 		return results;
 	}
 
+	/**
+	 * Helper: find path from root to a target in a tree of edges
+	 */
 	function findPathFromRoot(tree, targetNode) {
-		// Step 1: Build a dictionary to map each node to its parent
-		let parentMap = {};
-		for (let edge of tree) {
+		const parentMap = {};
+		for (const edge of tree) {
 			parentMap[edge.target] = edge.source;
 		}
 
-		// Step 2: Trace the path from targetNode to the root
-		let path = [];
+		const path = [];
 		let currentNode = targetNode;
-		while (parentMap.hasOwnProperty(currentNode)) {
+
+		while (Object.hasOwn(parentMap, currentNode)) {
 			path.push(currentNode);
 			currentNode = parentMap[currentNode];
 		}
 
-		// Step 3: Append the root node to the path
 		if (currentNode !== null) {
 			path.push(currentNode);
 		}
 
-		// Step 4: Reverse the path to get root to targetNode order
 		path.reverse();
-
 		return path;
 	}
 
-	let pkgWithClasses = new Set(
-		edges.contains
-			.filter(edge => nodes[edge.source].labels.includes('Container') && nodes[edge.target].labels.includes('Structure'))
-			.map(edge => edge.source)
+	/**
+	 * Identify top-level packages and remove them from "contains" if needed
+	 */
+	const pkgWithClasses = new Set(
+		(edges.contains || [])
+			.filter(
+				(edge) =>
+					nodes[edge.source].labels.includes("Container") &&
+					nodes[edge.target].labels.includes("Structure")
+			)
+			.map((edge) => edge.source)
 	);
 
-	let pkgPaths = Array.from(pkgWithClasses).map(pkgId => findPathFromRoot(edges.contains, pkgId));
-	let topLevelPackages = extractTopLevelPackages(pkgPaths);
-	let packagesToRemove = topLevelPackages.flatMap(pkg => pkg.slice(0, -1));
-	
+	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges.contains, pkgId));
+	const topLevelPackages = extractTopLevelPackages(pkgPaths);
+	const packagesToRemove = topLevelPackages.flatMap((pkg) => pkg.slice(0, -1));
+
 	let newContains = edges.contains;
-	if (topLevelPackages && Array.isArray(topLevelPackages[0]) && topLevelPackages[0].length > 1) {
-		console.log(topLevelPackages);
+	if (
+		topLevelPackages &&
+		Array.isArray(topLevelPackages[0]) &&
+		topLevelPackages[0].length > 1
+	) {
+		// Show them (debug)
+		// console.log(topLevelPackages);
+
 		newContains = edges.contains
 			.filter((edge) => !topLevelClassSet.has(edge.source))
-			.filter((edge) => !packagesToRemove.includes(edge.source) && !packagesToRemove.includes(edge.target));
+			.filter(
+				(edge) =>
+					!packagesToRemove.includes(edge.source) && !packagesToRemove.includes(edge.target)
+			);
 
-		let components = topLevelPackages.map(pkg => pkg[pkg.length - 1]);
+		const components = topLevelPackages.map((pkg) => pkg[pkg.length - 1]);
 		components.forEach((component) => {
 			nodes[component].properties.name = nodes[component].properties.qualifiedName;
 		});
 	}
-	
-	const nests = edges.nests ?? edges.contains
-		.filter((edge) => topLevelClassSet.has(edge.source))
-		.map((edge) => ({ ...edge, label: "nests" }));
 
-	const filterNodesByLabels = function (data, labels) {
-		return Object.entries(data).reduce((filteredData, [key, object]) => {
-			if (object.labels.some((label) => labels.includes(label))) {
-				filteredData[key] = object;
+	/**
+	 * If there's no "nests" edge, build it for top-level classes
+	 */
+	const nests =
+		edges.nests ??
+		(edges.contains || [])
+			.filter((edge) => topLevelClassSet.has(edge.source))
+			.map((edge) => ({ ...edge, label: "nests" }));
+
+	/**
+	 * Keep a helper to filter nodes by certain labels
+	 */
+	const filterNodesByLabels = function (nodeObj, labels) {
+		return Object.entries(nodeObj).reduce((acc, [key, object]) => {
+			if (object.labels.some((lbl) => labels.includes(lbl))) {
+				acc[key] = object;
 			}
-			return filteredData;
+			return acc;
 		}, {});
-	}
+	};
 
+	/**
+	 * Helper: filter out nodes whose ids are in a blacklist
+	 */
 	function filterNodesByIds(obj, ids) {
 		return Object.keys(obj).reduce((acc, key) => {
 			if (!ids.includes(key)) {
@@ -216,54 +274,114 @@ const abstractize = function (graphData) {
 		}, {});
 	}
 
-	const abstractNodes = filterNodesByIds(filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem"]), packagesToRemove);
+	/**
+	 * Build the "abstract" set of nodes (remove packages to remove)
+	 */
+	const abstractNodes = filterNodesByIds(
+		filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem"]),
+		packagesToRemove
+	);
+
+	// Remove "contains" edges if the source node has the label "Structure"
+	newContains = newContains.filter((edge) => {
+		const sourceNode = abstractNodes[edge.source];
+		// Keep the edge only if the source node doesn't exist in abstractNodes or doesn't have "Structure"
+		return !sourceNode || !sourceNode.labels.includes("Structure");
+	});
+
+	// Object.values(abstractNodes).forEach((node) => {
+	// 	if (node.labels.includes("Container") && node.labels.includes("Structure")) {
+	// 		node.labels = node.labels.filter((label) => label !== "Container");
+	// 	}
+	// });
+
+	/**
+	 * -----------------------------------------------------------------
+	 *  (1) and (2) NEW LOGIC for edges derived from "uses":
+	 *  
+	 *   (1) (s1)-[:uses]->(v1:Variable)<-[:hasVariable]-(s2) => (s1)-[:accesses]->(s2)
+	 *   (2) (s1)-[:uses]->(o1:Operation)<-[:hasScript]-(s2) => (s1)-[:calls]->(s2)
+	 *
+	 *   Then filter them to ensure both s1 and s2 are Structures.
+	 * -----------------------------------------------------------------
+	 */
+
+	// "accesses" edges
+	const usesHasVarInverted = invert(edges.hasVariable || []);
+	const accesses = compose(edges.uses || [], usesHasVarInverted, "accesses").filter(
+		(edge) =>
+			nodes[edge.source]?.labels.includes("Structure") &&
+			nodes[edge.target]?.labels.includes("Structure") &&
+			edge.source !== edge.target
+	);
+
+	// "calls" edges (from s1 uses an Operation that belongs to s2)
+	const usesHasScriptInverted = invert(edges.hasScript || []);
+	const usesToCalls = compose(edges.uses || [], usesHasScriptInverted, "calls").filter(
+		(edge) =>
+			nodes[edge.source]?.labels.includes("Structure") &&
+			nodes[edge.target]?.labels.includes("Structure") &&
+			edge.source !== edge.target
+	);
+
+	/**
+	 * (3) We maintain any existing edges from Structure to Structure as is.
+	 * The original code never removed them, so we’ll just keep them in the final set.
+	 */
+
+	/**
+	 * Collect all final edges in an object so we can flatten them at the end
+	 * and produce a valid Cytoscape JSON structure.
+	 */
 	const abstractEdges = {
-		contains: newContains,
-		specializes: edges.specializes,
-		nests,
-		calls,
-		constructs,
-		holds,
-		accepts,
-		returns,
+		// Edges that the original code had
+		contains: newContains || [],
+		specializes: edges.specializes || [],
+		nests: nests || [],
+		calls: [...(calls || []), ...usesToCalls], // combine old + new "calls"
+		constructs: constructs || [],
+		holds: holds || [],
+		accepts: accepts || [],
+		returns: returns || [],
+
+		// The newly composed "accesses" edges
+		accesses,
 	};
 
+	/**
+	 * Finally, remove edges referencing nodes we have removed (if any),
+	 * to keep the final graph consistent.
+	 */
 	function cleanEdges(cytoscapeJson) {
-		// Extract nodes and edges from the input JSON object
-		const nodes = cytoscapeJson.elements.nodes;
-		const edges = cytoscapeJson.elements.edges;
-
-		// Create a set of valid node ids
-		const nodeIds = new Set(nodes.map(node => node.data.id));
-
-		// Filter edges to remove those with source or target not in nodeIds
-		const validEdges = edges.filter(edge =>
-			nodeIds.has(edge.data.source) && nodeIds.has(edge.data.target)
+		const { nodes, edges } = cytoscapeJson.elements;
+		const nodeIds = new Set(nodes.map((n) => n.data.id));
+		const validEdges = edges.filter(
+			(e) => nodeIds.has(e.data.source) && nodeIds.has(e.data.target)
 		);
 
-		// Create a new Cytoscape JSON object with cleaned edges
-		const cleanedCytoscapeJson = {
+		return {
 			...cytoscapeJson,
 			elements: {
-				nodes: nodes,
-				edges: validEdges
-			}
+				nodes,
+				edges: validEdges,
+			},
 		};
-
-		return cleanedCytoscapeJson;
 	}
 
+	/**
+	 * Build final Cytoscape structure
+	 */
 	const abstractGraph = {
 		elements: {
 			nodes: Object.values(abstractNodes).map((node) => ({ data: { ...node } })),
-			edges: Object.values(abstractEdges).flat().map((edge) => ({
-				data: { ...edge },
-			})),
+			edges: Object.values(abstractEdges)
+				.flat()
+				.map((edge) => ({ data: { ...edge } })),
 		},
 	};
 
 	return cleanEdges(abstractGraph);
-}
+};
 
 const prepareGraph = function (graphData) {
 	const nodeLabels = collectUniqueLabels(graphData.elements.nodes);
@@ -381,7 +499,7 @@ const initCy = async function (payload) {
 
 	setParents(parentRel, false);
 
-	const max_pkg_depth = Math.max( ...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
+	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
 	cy.nodes('[properties.kind = "package"]').forEach((n) => {
@@ -390,6 +508,20 @@ const initCy = async function (payload) {
 		const depth = n.ancestors().length;
 		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
 		n.style('background-color', `rgb(${grey},${grey},${grey})`);
+	});
+
+	const max_folder_depth = Math.max(...cy.nodes('[properties.kind = "folder"]').map((n) => n.ancestors().length));
+
+	// Isolate nodes with kind equals to package
+	cy.nodes('[properties.kind = "folder"]').forEach((n) => {
+		const d = 150;
+		const l = 250;
+		const depth = n.ancestors().length;
+		const grey = Math.max(l - ((max_folder_depth - depth) * 10), d);
+		n.style({
+			'background-color': `rgb(${grey},${grey},${grey})`,
+			'text-valign': "top"
+		});
 	});
 
 	const max_ns_depth = Math.max(...cy.nodes('[properties.kind = "Namespace"]').map((n) => n.ancestors().length));
@@ -824,7 +956,7 @@ const highlight = function (text) {
 		const cy_edges = cy_classes.edgesWith(cy_classes);
 		cy_classes.removeClass("dimmed");
 		cy_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+		cy.nodes('[properties.kind = "package", properties.kind = "folder"]').removeClass("dimmed");
 		cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
 	} else {
 		cy.elements().removeClass("dimmed");
@@ -879,7 +1011,7 @@ const showTrace = function (_evt) {
 		cy.elements(".hidden").removeClass("hidden").addClass("hidden");
 		feature_nodes.removeClass("dimmed");
 		feature_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package"]').removeClass("dimmed");
+		cy.nodes('[properties.kind = "package", properties.kind = "folder"]').removeClass("dimmed");
 		feature_nodes.removeClass("feature_reset");
 		feature_edges.removeClass("feature_reset");
 		feature_nodes.addClass("feature_shown");
