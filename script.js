@@ -1110,8 +1110,8 @@ const showBug = function (_evt) {
 	cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
-
-function flattenForest({ elements: { nodes, edges }, ...rest }, isContainment, isTreeNode, isLeaf) {
+// EXPERIMENTAL!!!!!!!!!!!!!
+var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nodes, edges }, ...rest }) => {
 
 	// Map each node by id for quick lookup.
 	const nodeMap = new Map(nodes.map(n => [n.data.id, n]));
