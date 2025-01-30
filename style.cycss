@@ -64,6 +64,7 @@ node[properties.roleStereotype = "Structurer"] {
 }
 
 node[properties.kind = "dummy"] {
+  label: ;
   background-color: grey;
   border-width: 0;
 }
@@ -75,7 +76,7 @@ node[properties.kind = "package"], node[properties.kind = "folder"] {
   background-color: #ececec;
   text-background-color: #ececec;
   text-background-shape: rectangle;
-  text-background-padding: 4;
+  text-background-padding: 8;
   text-background-opacity: 1;
   text-border-color: grey;
   text-border-width: 3;
@@ -90,7 +91,7 @@ node[properties.kind = "Namespace"] {
   background-color: #ececec;
   text-background-color: #ececec;
   text-background-shape: rectangle;
-  text-background-padding: 4;
+  text-background-padding: 8;
   text-background-opacity: 1;
   text-border-color: grey;
   text-border-width: 3;

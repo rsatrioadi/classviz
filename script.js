@@ -1171,7 +1171,7 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 				data: {
 					id: dummyId,
 					labels: ["Container"],
-					properties: { kind: "dummy" }
+					properties: { ...nodeMap.get(parentId).data.properties, kind: "dummy" }
 				}
 			});
 
@@ -1273,7 +1273,7 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 				data: {
 					id: dummyId,
 					labels: ["Container"],
-					properties: { kind: "dummy" }
+					properties: { ...nodeMap.get(parent).data.properties, kind: "dummy" }
 				}
 			});
 			edgeMap.set(edgeKey(currentParent, dummyId), {
