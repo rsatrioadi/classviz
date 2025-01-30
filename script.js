@@ -11,14 +11,20 @@ TODO
 - more padding inside packages DONE
 - tweak klay parameters
 */
+import { $, h, toJson, toText } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+	$("#btn-upload").addEventListener('click', fileUpload);
+	$("#btn-relayout").addEventListener('click', () => { 
+		relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value) });
+
 	const fileName = new URLSearchParams(window.location.search).get('p');
 	if (fileName) {
 		try {
 			const [rawGraph, style] = await Promise.all([
-				fetch(`data/${fileName}.json`).then(response => response.json()),
-				fetch('style.cycss').then(response => response.text())
+				fetch(`data/${fileName}.json`).then(toJson),
+				fetch('style.cycss').then(toText)
 			]);
 
 			document.getElementById("filename").textContent = `Software Visualization: ${fileName}.json`;
@@ -386,7 +392,7 @@ const abstractize = function (graphData) {
 const prepareGraph = function (graphData) {
 	const nodeLabels = collectUniqueLabels(graphData.elements.nodes);
 	const graphContainsScripts = nodeLabels.some(label => ['Operation', 'Constructor', 'Script'].includes(label));
-	
+
 	// Create a deep clone of graphData
 	const originalGraph = JSON.parse(JSON.stringify(graphData));
 
@@ -477,20 +483,18 @@ let zoom = { value: 1 };
 const initCy = async function (payload) {
 	const graph = payload[0];
 	const style = payload[1];
-	
-	const cy = window.cy = cytoscape({
-		container: document.getElementById('cy'),
+
+	window.cy = cytoscape({
+		container: $('#cy'),
 		elements: graph.abstract.elements,
 
 		// inititate cytoscape expand collapse
 		ready: function () {
 			let api = this.expandCollapse(generateExpColOptions());
 
-			document
-				.getElementById("collapseNodes")
+			$("#collapseNodes")
 				.addEventListener("click", () => { api.collapseAll(); api.collapseAllEdges(generateExpColOptions()) });
-			document
-				.getElementById("expandNodes")
+			$("#expandNodes")
 				.addEventListener("click", () => { api.expandAll(); api.expandAllEdges() });
 		},
 		style,
@@ -499,7 +503,7 @@ const initCy = async function (payload) {
 
 	setParents(parentRel, false);
 
-	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n)=>n.ancestors().length));
+	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n) => n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
 	cy.nodes('[properties.kind = "package"]').forEach((n) => {
@@ -541,8 +545,8 @@ const initCy = async function (payload) {
 
 	bindRouters();
 
-	const cbShowPrimitives = document.getElementById("showPrimitives");
-	const cbShowPackages = document.getElementById("showPackages");
+	const cbShowPrimitives = $("#showPrimitives");
+	const cbShowPackages = $("#showPackages");
 
 	cbShowPrimitives.checked = false;
 	cbShowPackages.checked = true;
@@ -637,9 +641,9 @@ const bindRouters = function () {
 		infoBody.innerHTML = "";
 		infoBody.append(infoHeader, infoSubeader, infoText);
 
-		
+
 		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
-		const maxWidth = 400; 
+		const maxWidth = 400;
 		const minWidth = 300;
 		infoBox.style.width = "auto";
 		infoBox.style.maxWidth = `${maxWidth}px`;
@@ -718,13 +722,13 @@ const fileUpload = function () {
 		reader.onload = function (e) {
 			const rawGraph = JSON.parse(e.target.result);
 			const graph = prepareGraph(rawGraph);
-			const style = fetch("style.cycss").then((res) => res.text());
+			const style = fetch("style.cycss").then(toText);
 			Promise.all([graph, style]).then(initCy);
 		};
 	});
 };
 
-flip = true;
+var flip = true;
 const toggleVisibility = function () {
 	cy.style()
 		.selector(".dimmed")
@@ -956,7 +960,7 @@ const highlight = function (text) {
 		const cy_edges = cy_classes.edgesWith(cy_classes);
 		cy_classes.removeClass("dimmed");
 		cy_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package", properties.kind = "folder"]').removeClass("dimmed");
+		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"]').removeClass("dimmed");
 		cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
 	} else {
 		cy.elements().removeClass("dimmed");
@@ -1011,7 +1015,7 @@ const showTrace = function (_evt) {
 		cy.elements(".hidden").removeClass("hidden").addClass("hidden");
 		feature_nodes.removeClass("dimmed");
 		feature_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package", properties.kind = "folder"]').removeClass("dimmed");
+		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"]').removeClass("dimmed");
 		feature_nodes.removeClass("feature_reset");
 		feature_edges.removeClass("feature_reset");
 		feature_nodes.addClass("feature_shown");
@@ -1098,4 +1102,112 @@ function openSidebarTab(evt, cityName) {
 
 	document.getElementById(cityName).style.display = "block";
 	evt.currentTarget.className += " active";
+}
+
+function flattenForest({ elements: { nodes, edges }, ...rest }, isContainment, isTreeNode, isLeaf) {
+
+	// Map each node by id for quick lookup.
+	const nodeMap = new Map(nodes.map(n => [n.data.id, n]));
+
+	// Track children, parents count, and adjacency for BFS.
+	const childrenMap = new Map();
+	const parentsCount = new Map();
+
+	for (const e of edges.filter(isContainment)) {
+		if (!childrenMap.has(e.data.source)) {
+			childrenMap.set(e.data.source, []);
+		}
+		childrenMap.get(e.data.source).push(e.data.target);
+
+		parentsCount.set(e.data.target, (parentsCount.get(e.data.target) || 0) + 1);
+	}
+
+	// Identify all roots (nodes with no incoming edges).
+	const roots = nodes
+		.filter(n => isTreeNode(n))
+		.map(n => n.data.id)
+		.filter(id => !parentsCount.has(id));
+
+	// If no roots found but there's data, treat everything as roots (degenerate).
+	const actualRoots = roots.length ? roots : nodes.map(n => n.data.id);
+
+	// Compute depth of each node using BFS from all roots.
+	const depth = new Map();
+	const queue = [];
+
+	for (const r of actualRoots) {
+		depth.set(r, 1);
+		queue.push(r);
+	}
+
+	while (queue.length) {
+		const current = queue.shift();
+		if (childrenMap.has(current)) {
+			for (const c of childrenMap.get(current)) {
+				if (!depth.has(c)) {
+					depth.set(c, depth.get(current) + 1);
+					queue.push(c);
+				}
+			}
+		}
+	}
+
+	// Find overall maximum depth.
+	let maxDepth = 0;
+	for (const d of depth.values()) {
+		if (d > maxDepth) maxDepth = d;
+	}
+
+	// Prepare arrays for the transformed structure.
+	const newNodes = [...nodes]; // start with original nodes
+	const newEdges = [];
+	const visitedEdges = new Set(); // avoid duplicate edge processing
+
+	// Counter for dummy folder naming.
+	let dummyCount = 0;
+	function createDummyFolder(parentId, level) {
+		dummyCount++;
+		const dummyId = `${parentId}.$${dummyCount}`;
+		newNodes.push({ data: { id: dummyId, labels: ["Container"], properties: { kind: "dummy" } } });
+		newEdges.push({ data: { source: parentId, target: dummyId, label: "contains", properties: {} } });
+		depth.set(dummyId, level);
+		return dummyId;
+	}
+
+	// Rebuild edges, inserting dummy folders to push files to maxDepth.
+	for (const e of edges) {
+		// Skip duplicates if any exist in the input
+		const edgeKey = `${e.data.source}->${e.data.target}`;
+		if (visitedEdges.has(edgeKey)) continue;
+		visitedEdges.add(edgeKey);
+
+		const srcNode = nodeMap.get(e.data.source);
+		const tgtNode = nodeMap.get(e.data.target);
+		if (!srcNode || !tgtNode) continue;
+
+		if (!isLeaf(tgtNode)) {
+			// Folder -> Folder edge remains as-is
+			newEdges.push(e);
+		} else {
+			const srcDepth = depth.get(e.data.source) || 1;
+			const neededDepth = maxDepth;
+			// The file belongs at neededDepth
+			// If the source is at srcDepth, we need (neededDepth - (srcDepth + 1)) dummy nodes
+			const fileDepth = srcDepth + 1;
+			if (fileDepth === neededDepth) {
+				newEdges.push(e);
+			} else {
+				let parent = e.data.source;
+				let currentDepth = fileDepth;
+				while (currentDepth < neededDepth) {
+					parent = createDummyFolder(parent, currentDepth);
+					currentDepth++;
+				}
+				// Now attach the file
+				newEdges.push({ data: { source: parent, target: e.data.target, label: "contains", properties: {} } });
+			}
+		}
+	}
+
+	return { elements: { nodes: newNodes, edges: newEdges }, ...rest };
 }

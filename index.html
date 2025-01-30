@@ -47,7 +47,7 @@
   <body>
     <div class="titlebar">
       <h1 id="filename">Software Visualization</h1>
-      <button title="Upload JSON" class="toolbutton" onclick="fileUpload()">
+      <button title="Upload JSON" id="btn-upload" class="toolbutton">
         <img class="icon icon-download" src="img/upload.png" alt="upload" />
         <input type="file" id="file-selector" accept=".json" />
       </button>
@@ -142,7 +142,7 @@
           </label>
           <button
             class="sidebar"
-            onclick="relayout(document.getElementById('selectlayout').options[document.getElementById('selectlayout').selectedIndex].value)"
+            id="btn-relayout"
           >
             Relayout
           </button>
@@ -202,6 +202,6 @@
 
     <div id="cy"></div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
