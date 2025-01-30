@@ -591,7 +591,7 @@ const bindRouters = function () {
 				.filter(cb => cb.checked)
 				.map(cb => cb.value);
 
-			const edges = evt.target
+			const edges = evt.target.descendants().merge(evt.target)
 				.connectedEdges()
 				.filter((e) => interactions.includes(e.data("interaction")));
 			edges.addClass("dimmed");
@@ -599,14 +599,17 @@ const bindRouters = function () {
 
 	// left click highlights the node and its connected edges and nodes
 	cy.on("tap", "node", (evt) => {
-		evt.target.removeClass("dimmed");
+
+		const to_activate = evt.target.descendants().merge(evt.target.ancestors()).merge(evt.target)
+
+		to_activate.removeClass("dimmed");
 
 		// currently visible relationship types
 		const interactions = [...document.querySelectorAll('input[name="showrels"]')]
 			.filter(cb => cb.checked)
 			.map(cb => cb.value);
 
-		const edges = evt.target
+		const edges = to_activate
 			.connectedEdges()
 			.filter((e) => interactions.includes(e.data("interaction")));
 		edges.removeClass("dimmed");
