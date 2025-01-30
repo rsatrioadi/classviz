@@ -15,6 +15,8 @@ import { $, $all, h, on, toJson, toText } from './shorthands.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
+	cytoscape.warnings(false);
+
 	on('click', $("#btn-upload"),           fileUpload);
 	on('click', $("#btn-relayout"),         () => relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value));
 	on('click', $("#btn-highlight"),        () => highlight(document.getElementById('highlight').value));
@@ -420,6 +422,10 @@ const prepareGraph = function (graphData) {
 		abstract: graphContainsScripts ? abstractize(graphData) : graphData
 	};
 
+	const makeDummyContainers = homogenizeForest(e=>e.data.label==="contains", n=>n.data.labels.includes("Container"), n=>n.data.labels.includes("Structure"));
+
+	graph.abstract = makeDummyContainers(graph.abstract);
+
 	graph.abstract.elements.nodes.forEach(node => {
 		const { name, shortname, simpleName } = node.data.properties;
 		node.data.name = name || shortname || simpleName;
@@ -518,6 +524,7 @@ const initCy = async function (payload) {
 		},
 		style,
 		wheelSensitivity: 0.25,
+		
 	});
 
 	setParents(parentRel, false);
@@ -525,12 +532,13 @@ const initCy = async function (payload) {
 	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n) => n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
-	cy.nodes('[properties.kind = "package"]').forEach((n) => {
+	cy.nodes('[properties.kind = "package"], [properties.kind = "dummy"]').forEach((n) => {
 		const d = 146;
 		const l = 236;
 		const depth = n.ancestors().length;
 		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
 		n.style('background-color', `rgb(${grey},${grey},${grey})`);
+		n.style('text-background-color', `rgb(${grey},${grey},${grey})`);
 	});
 
 	const max_folder_depth = Math.max(...cy.nodes('[properties.kind = "folder"]').map((n) => n.ancestors().length));
@@ -1112,109 +1120,232 @@ const showBug = function (_evt) {
 
 // EXPERIMENTAL!!!!!!!!!!!!!
 var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nodes, edges }, ...rest }) => {
-
-	// Map each node by id for quick lookup.
+	// Build maps for quick lookups
 	const nodeMap = new Map(nodes.map(n => [n.data.id, n]));
+	const edgeKey = (s, t) => `${s} -> ${t}`;
 
-	// Track children, parents count, and adjacency for BFS.
-	const childrenMap = new Map();
-	const parentsCount = new Map();
+	// Partition edges into containment vs. others
+	const containmentEdges = edges.filter(isContainment);
+	const otherEdges = edges.filter(e => !isContainment(e));
 
-	for (const e of edges.filter(isContainment)) {
-		if (!childrenMap.has(e.data.source)) {
-			childrenMap.set(e.data.source, []);
-		}
-		childrenMap.get(e.data.source).push(e.data.target);
-
-		parentsCount.set(e.data.target, (parentsCount.get(e.data.target) || 0) + 1);
+	// Adjacency (children) and single-parent tracking
+	var childrenMap = new Map();
+	var parentMap = new Map();
+	for (const e of containmentEdges) {
+		const { source, target } = e.data;
+		if (!childrenMap.has(source)) childrenMap.set(source, []);
+		childrenMap.get(source).push(target);
+		parentMap.set(target, source); // assumption: single parent
 	}
 
-	// Identify all roots (nodes with no incoming edges).
-	const roots = nodes
-		.filter(n => isTreeNode(n))
-		.map(n => n.data.id)
-		.filter(id => !parentsCount.has(id));
-
-	// If no roots found but there's data, treat everything as roots (degenerate).
-	const actualRoots = roots.length ? roots : nodes.map(n => n.data.id);
-
-	// Compute depth of each node using BFS from all roots.
-	const depth = new Map();
-	const queue = [];
-
-	for (const r of actualRoots) {
-		depth.set(r, 1);
-		queue.push(r);
+	// Convert edges to a map for easy mutation
+	const edgeMap = new Map();
+	for (const e of containmentEdges) {
+		edgeMap.set(edgeKey(e.data.source, e.data.target), e);
 	}
 
-	while (queue.length) {
-		const current = queue.shift();
-		if (childrenMap.has(current)) {
-			for (const c of childrenMap.get(current)) {
-				if (!depth.has(c)) {
-					depth.set(c, depth.get(current) + 1);
-					queue.push(c);
-				}
-			}
-		}
-	}
-
-	// Find overall maximum depth.
-	let maxDepth = 0;
-	for (const d of depth.values()) {
-		if (d > maxDepth) maxDepth = d;
-	}
-
-	// Prepare arrays for the transformed structure.
-	const newNodes = [...nodes]; // start with original nodes
-	const newEdges = [];
-	const visitedEdges = new Set(); // avoid duplicate edge processing
-
-	// Counter for dummy folder naming.
+	// We'll add or modify nodes in this map
+	const newNodes = new Map(nodes.map(n => [n.data.id, { ...n }]));
 	let dummyCount = 0;
-	function createDummyFolder(parentId, level) {
-		dummyCount++;
-		const dummyId = `${parentId}.$${dummyCount}`;
-		newNodes.push({ data: { id: dummyId, labels: ["Container"], properties: { kind: "dummy" } } });
-		newEdges.push({ data: { source: parentId, target: dummyId, label: "contains", properties: {} } });
-		depth.set(dummyId, level);
-		return dummyId;
-	}
 
-	// Rebuild edges, inserting dummy folders to push files to maxDepth.
-	for (const e of edges) {
-		// Skip duplicates if any exist in the input
-		const edgeKey = `${e.data.source}->${e.data.target}`;
-		if (visitedEdges.has(edgeKey)) continue;
-		visitedEdges.add(edgeKey);
+	// Step A: For each container node that has children:
+	//         If it "contains" both leaf and non-leaf children, create a single dummy node
+	//         and move all leaf children under that dummy.
+	for (const [parentId, kids] of childrenMap.entries()) {
 
-		const srcNode = nodeMap.get(e.data.source);
-		const tgtNode = nodeMap.get(e.data.target);
-		if (!srcNode || !tgtNode) continue;
-
-		if (!isLeaf(tgtNode)) {
-			// Folder -> Folder edge remains as-is
-			newEdges.push(e);
-		} else {
-			const srcDepth = depth.get(e.data.source) || 1;
-			const neededDepth = maxDepth;
-			// The file belongs at neededDepth
-			// If the source is at srcDepth, we need (neededDepth - (srcDepth + 1)) dummy nodes
-			const fileDepth = srcDepth + 1;
-			if (fileDepth === neededDepth) {
-				newEdges.push(e);
+		const leafChildren = [];
+		const nonLeafChildren = [];
+		for (const k of kids) {
+			if (isLeaf(nodeMap.get(k))) {
+				leafChildren.push(k);
 			} else {
-				let parent = e.data.source;
-				let currentDepth = fileDepth;
-				while (currentDepth < neededDepth) {
-					parent = createDummyFolder(parent, currentDepth);
-					currentDepth++;
-				}
-				// Now attach the file
-				newEdges.push({ data: { source: parent, target: e.data.target, label: "contains", properties: {} } });
+				nonLeafChildren.push(k);
 			}
+		}
+
+		// Only do the wrapping if there are BOTH leaves and non-leaves
+		if (leafChildren.length > 0 && nonLeafChildren.length > 0) {
+			dummyCount++;
+			const dummyId = `${parentId}.dummy.${dummyCount}`;
+			newNodes.set(dummyId, {
+				data: {
+					id: dummyId,
+					labels: ["Container"],
+					properties: { kind: "dummy" }
+				}
+			});
+
+			// Insert edge parent->dummy
+			edgeMap.set(edgeKey(parentId, dummyId), {
+				data: {
+					source: parentId,
+					target: dummyId,
+					label: "contains",
+					properties: {}
+				}
+			});
+
+			// Remove edges parent->leafChild
+			// Add edges dummy->leafChild
+			for (const childId of leafChildren) {
+				edgeMap.delete(edgeKey(parentId, childId));
+				edgeMap.set(edgeKey(dummyId, childId), {
+					data: {
+						source: dummyId,
+						target: childId,
+						label: "contains",
+						properties: {}
+					}
+				});
+				parentMap.set(childId, dummyId);
+			}
+
+			// Update childrenMap
+			childrenMap.set(parentId, nonLeafChildren);
+			childrenMap.set(dummyId, leafChildren);
 		}
 	}
 
-	return { elements: { nodes: newNodes, edges: newEdges }, ...rest };
-}
+	// Adjacency (children) and single-parent tracking
+	childrenMap = new Map();
+	parentMap = new Map();
+	for (const e of edgeMap.values()) {
+		const { source, target } = e.data;
+		if (!childrenMap.has(source)) childrenMap.set(source, []);
+		childrenMap.get(source).push(target);
+		parentMap.set(target, source); // assumption: single parent
+	}
+
+	// Identify roots (no parent).
+	const allTreeNodeIds = nodes.filter(isTreeNode).map(n => n.data.id);
+	const allIdsWithoutParent = new Set(allTreeNodeIds);
+	for (const childId of parentMap.keys()) allIdsWithoutParent.delete(childId);
+	const roots = [...allIdsWithoutParent]; // forest roots
+
+	// BFS to compute nodeDepth
+	const nodeDepth = new Map();
+	function bfsComputeDepth(root) {
+		const queue = [root];
+		nodeDepth.set(root, 1);
+		while (queue.length) {
+			const current = queue.shift();
+			if (childrenMap.has(current)) {
+				for (const child of childrenMap.get(current)) {
+					if (!nodeDepth.has(child)) {
+						nodeDepth.set(child, nodeDepth.get(current) + 1);
+						queue.push(child);
+					}
+				}
+			}
+		}
+	}
+	roots.forEach(r => bfsComputeDepth(r));
+
+	// Post-order DFS to compute subtreeDepth
+	const subtreeDepth = new Map();
+	function dfsComputeSubtreeDepth(node) {
+		let maxBelow = 0;
+		if (childrenMap.has(node)) {
+			for (const c of childrenMap.get(node)) {
+				maxBelow = Math.max(maxBelow, dfsComputeSubtreeDepth(c));
+			}
+		}
+		const depth = maxBelow + 1;
+		subtreeDepth.set(node, depth);
+		return depth;
+	}
+	roots.forEach(r => dfsComputeSubtreeDepth(r));
+
+	// Find maximum leaf depth in the forest
+	let L = 0;
+	for (const d of subtreeDepth.values()) {
+		if (d > L) L = d;
+	}
+
+	// Insert dummy nodes above a node if its subtree doesn't reach the global deepest level
+	function insertDummyChain(parent, node, d) {
+		edgeMap.delete(edgeKey(parent, node));
+		let currentParent = parent;
+		for (let i = 0; i < d; i++) {
+			dummyCount++;
+			const dummyId = `${parent}.${node}.dummy.${dummyCount}`;
+			newNodes.set(dummyId, {
+				data: {
+					id: dummyId,
+					labels: ["Container"],
+					properties: { kind: "dummy" }
+				}
+			});
+			edgeMap.set(edgeKey(currentParent, dummyId), {
+				data: {
+					source: currentParent,
+					target: dummyId,
+					label: "contains",
+					properties: {}
+				}
+			});
+			parentMap.set(dummyId, currentParent);
+			currentParent = dummyId;
+		}
+		edgeMap.set(edgeKey(currentParent, node), {
+			data: {
+				source: currentParent,
+				target: node,
+				label: "contains",
+				properties: {}
+			}
+		});
+		parentMap.set(node, currentParent);
+	}
+
+	// Recursively ensure subtree extends to depth L
+	function fixSubtree(node) {
+		const d1 = nodeDepth.get(node) || 1;
+		const d2 = subtreeDepth.get(node) || 1;
+		const totalDepth = d1 + d2 - 1;
+		if (totalDepth < L) {
+			const d = L - totalDepth;
+			const p = parentMap.get(node);
+			if (!p) {
+				// Node is root, create a super-root
+				dummyCount++;
+				const superRoot = `superRoot.${node}.dummy.${dummyCount}`;
+				newNodes.set(superRoot, {
+					data: {
+						id: superRoot,
+						labels: ["Container"],
+						properties: { kind: "dummy" }
+					}
+				});
+				roots.push(superRoot);
+				nodeDepth.set(superRoot, 1);
+				insertDummyChain(superRoot, node, d);
+			} else {
+				insertDummyChain(p, node, d);
+			}
+			// Shift nodeDepth in subtree
+			const queue = [node];
+			while (queue.length) {
+				const curr = queue.shift();
+				nodeDepth.set(curr, (nodeDepth.get(curr) || 1) + d);
+				if (childrenMap.has(curr)) {
+					for (const c of childrenMap.get(curr)) {
+						queue.push(c);
+					}
+				}
+			}
+		}
+		// Recurse
+		if (childrenMap.has(node)) {
+			for (const c of childrenMap.get(node)) fixSubtree(c);
+		}
+	}
+	roots.forEach(r => fixSubtree(r));
+
+	// Final result arrays
+	const finalNodes = [...newNodes.values()];
+	// Keep updated containment edges + all other edges
+	const finalEdges = [...edgeMap.values(), ...otherEdges];
+
+	return { elements: { nodes: finalNodes, edges: finalEdges }, ...rest };
+};
