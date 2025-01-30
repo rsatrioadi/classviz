@@ -11,13 +11,32 @@ TODO
 - more padding inside packages DONE
 - tweak klay parameters
 */
-import { $, h, toJson, toText } from './utils.js';
+import { $, $all, h, on, toJson, toText } from './shorthands.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-	$("#btn-upload").addEventListener('click', fileUpload);
-	$("#btn-relayout").addEventListener('click', () => { 
-		relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value) });
+	on('click', $("#btn-upload"),           fileUpload);
+	on('click', $("#btn-relayout"),         () => relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value));
+	on('click', $("#btn-highlight"),        () => highlight(document.getElementById('highlight').value));
+	on('click', $("#btn-download"),         () => saveAsSvg('class-diagram.svg'));
+	on('click', $("#btn-popup"),            () => window.open(getSvgUrl(), '_blank'));
+	on('click', $("#btn-reset"),            () => highlight(''));
+	on('click', $("#btn-toggleVisibility"), toggleVisibility);
+
+	const tablinks = $all(".tablink");
+	tablinks.forEach((tab) => {
+		on('click', tab, () => {
+			tablinks.forEach((t) => t.classList.remove("active"));
+			tab.classList.add("active");
+
+			const selectedTab = tab.getAttribute('data-tab');
+			$all('.sidebar-tab').forEach((t) => t.style.display="none");
+			$(`#${selectedTab}`).style.display = "block";
+		});
+	});
+
+	on('change', $('#showPrimitives'), () => showPrimitives($('#showPrimitives')));
+	on('change', $('#showPackages'), () => showPackages($('#showPackages')));
 
 	const fileName = new URLSearchParams(window.location.search).get('p');
 	if (fileName) {
@@ -27,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				fetch('style.cycss').then(toText)
 			]);
 
-			document.getElementById("filename").textContent = `Software Visualization: ${fileName}.json`;
+			$("#filename").textContent = `Software Visualization: ${fileName}.json`;
 			initCy([prepareGraph(rawGraph), style]);
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -560,12 +579,12 @@ const initCy = async function (payload) {
 }
 
 // Get a reference to the div element
-var infoBox = document.getElementById("infobox");
-var infoTitle = document.getElementById("infotitle");
-var infoBody = document.getElementById("infobody");
+var infoBox = $("#infobox");
+var infoTitle = $("#infotitle");
+var infoBody = $("#infobody");
 
 // Add a click event listener to the div
-infoTitle.addEventListener("click", () => {
+on("click", infoTitle, () => {
 	if (infoBody.style.display === "none") {
 		infoBody.style.display = "block";
 		infoTitle.style.borderBottomLeftRadius = 0;
@@ -686,40 +705,38 @@ const getSvgUrl = function () {
 	return URL.createObjectURL(blob);
 };
 
-const showPrimitives = function (ele) {
+const showPrimitives = function (e) {
 	cy.nodes()
 		.filter((n) => n.data("labels").includes("Primitive") || n.data("id") === "java.lang.String")
-		.style({ display: ele.checked ? "element" : "none" });
+		.style({ display: e.checked ? "element" : "none" });
 };
 
-const showPackages = function (ele) {
+const showPackages = function (e) {
 	cy.nodes()
 		.filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
-		.toggleClass("pkghidden", !ele.checked);
+		.toggleClass("pkghidden", !e.checked);
 };
 
-const setVisible = function (ele) {
-	cy.edges(`[interaction = "${ele.value}"]`).toggleClass(
+const setVisible = function (e) {
+	cy.edges(`[interaction = "${e.value}"]`).toggleClass(
 		"hidden",
-		!ele.checked
+		!e.checked
 	);
 };
 
-const setLineBends = function (ele) {
-	if (ele.checked) {
-		cy.edges(`[interaction = "${ele.name}"]`).style("curve-style", ele.value);
+const setLineBends = function (e) {
+	if (e.checked) {
+		cy.edges(`[interaction = "${e.name}"]`).style("curve-style", e.value);
 	}
 };
 
 const fileUpload = function () {
-	const fileSelector = document.getElementById("file-selector");
+	const fileSelector = $("#file-selector");
 	fileSelector.click();
 	fileSelector.addEventListener("change", (event) => {
 		const file = event.target.files[0];
 		const fileName = file.name;
-		document
-			.getElementById("filename")
-			.textContent = `Software Visualization – ${fileName}`;
+		$("#filename").textContent = `Software Visualization – ${fileName}`;
 		const reader = new FileReader();
 		reader.readAsText(file, "UTF-8");
 		reader.onload = function (e) {
@@ -745,14 +762,15 @@ const toggleVisibility = function () {
 /* ======================================== */
 
 const fillRSFilter = function (_cy) {
-	const menuNodes = document.getElementById("menu-nodes");
+	const menuNodes = $("#menu-nodes");
 	const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
 	[...rsFilters].forEach((rsFilter) => menuNodes.removeChild(rsFilter))
 
-	const containerDiv = document.createElement('div');
-	containerDiv.setAttribute('class', 'rs-filter-container');
 	const rsHeader = document.createElement("p");
 	rsHeader.innerHTML = "<b>Role Stereotypes</b>";
+
+	const containerDiv = document.createElement('div');
+	containerDiv.setAttribute('class', 'rs-filter-container');
 	containerDiv.appendChild(rsHeader);
 
 	Object.keys(role_stereotypes).forEach(key => {
@@ -766,9 +784,9 @@ const fillRSFilter = function (_cy) {
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.setAttribute("id", `rs-${role_stereotypes[key].symbol}`);
 		checkbox.setAttribute("name", "showrs");
-		checkbox.setAttribute("onchange", "showRS(this)");
 		checkbox.setAttribute("value", key);
 		checkbox.checked = true;
+		on('change', checkbox, (event) => showRS(event.target));
 
 		const labelText = document.createTextNode(role_stereotypes[key].label || key);
 		label.appendChild(checkbox);
@@ -782,7 +800,7 @@ const fillRSFilter = function (_cy) {
 }
 
 const fillRelationshipToggles = function (_cy) {
-	const table = document.getElementById("reltab"); // Get the table element
+	const table = $("#reltab"); // Get the table element
 	table.innerHTML = "";
 
 	// Create the thead element
@@ -826,9 +844,11 @@ const fillRelationshipToggles = function (_cy) {
 			checkbox.setAttribute("type", "checkbox");
 			checkbox.setAttribute("id", l);
 			checkbox.setAttribute("name", "showrels");
-			checkbox.setAttribute("onchange", "setVisible(this)");
+			// checkbox.setAttribute("onchange", "setVisible(this)");
 			checkbox.setAttribute("value", l);
 			checkbox.checked = ["calls"].includes(l);
+			on('change', checkbox, (event) => setVisible(event.target));
+
 			const labelText = document.createTextNode(l);
 			label.appendChild(checkbox);
 			label.appendChild(labelText);
@@ -839,10 +859,12 @@ const fillRelationshipToggles = function (_cy) {
 			const cell2 = document.createElement("td");
 			const taxiRadio = document.createElement("input");
 			taxiRadio.setAttribute("type", "radio");
-			taxiRadio.setAttribute("onchange", "setLineBends(this)");
+			// taxiRadio.setAttribute("onchange", "setLineBends(this)");
 			taxiRadio.setAttribute("id", `${l}-ort`);
 			taxiRadio.setAttribute("name", l);
 			taxiRadio.setAttribute("value", "taxi");
+			on('change', taxiRadio, (event) => setLineBends(event.target));
+
 			cell2.appendChild(taxiRadio);
 			row.appendChild(cell2);
 
@@ -850,11 +872,13 @@ const fillRelationshipToggles = function (_cy) {
 			const cell3 = document.createElement("td");
 			const bezierRadio = document.createElement("input");
 			bezierRadio.setAttribute("type", "radio");
-			bezierRadio.setAttribute("onchange", "setLineBends(this)");
+			// bezierRadio.setAttribute("onchange", "setLineBends(this)");
 			bezierRadio.setAttribute("id", `${l}-bez`);
 			bezierRadio.setAttribute("name", l);
 			bezierRadio.setAttribute("value", "bezier");
 			bezierRadio.checked = true;
+			on('change', bezierRadio, (event) => setLineBends(event.target));
+
 			cell3.appendChild(bezierRadio);
 			row.appendChild(cell3);
 
@@ -862,9 +886,7 @@ const fillRelationshipToggles = function (_cy) {
 			table.appendChild(row);
 		});
 
-	document.querySelectorAll('input[name="showrels"]').forEach((checkbox) => {
-		setVisible(checkbox);
-	});
+	$all('input[name="showrels"]').forEach(setVisible);
 };
 
 const fillFeatureDropdown = function (_cy) {
@@ -880,7 +902,7 @@ const fillFeatureDropdown = function (_cy) {
 	let tracesList = [...tracesSet];
 
 	// Get the dropdown element.
-	const dropdown = document.getElementById("selectfeature");
+	const dropdown = $("#selectfeature");
 	dropdown.innerHTML = "";
 
 	tracesList.forEach(trace => {
@@ -893,8 +915,9 @@ const fillFeatureDropdown = function (_cy) {
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.setAttribute("id", `feature-${trace}`);
 		checkbox.setAttribute("name", "showfeatures");
-		checkbox.setAttribute("onchange", "showTrace(this)");
+		// checkbox.setAttribute("onchange", "showTrace(this)");
 		checkbox.setAttribute("value", trace);
+		on('change', checkbox, (event) => showTrace(event.target));
 
 		const labelText = document.createTextNode(trace);
 		label.appendChild(checkbox);
@@ -921,7 +944,7 @@ const fillBugsDropdown = function (_cy) {
 	// console.log(bugList)
 
 	// Get the dropdown element.
-	const dropdown = document.getElementById("tab-bugs");
+	const dropdown = $("#tab-bugs");
 	dropdown.innerHTML = "";
 
 	bugList.forEach(bug => {
@@ -934,8 +957,8 @@ const fillBugsDropdown = function (_cy) {
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.setAttribute("id", `bug-${bug}`);
 		checkbox.setAttribute("name", "showbugs");
-		checkbox.setAttribute("onchange", "showBug(this)");
 		checkbox.setAttribute("value", bug);
+		on('change', checkbox, (event) => showBug(event.target));
 
 		const labelText = document.createTextNode(bug);
 		label.appendChild(checkbox);
@@ -972,18 +995,15 @@ const highlight = function (text) {
 };
 
 const showRS = function (evt) {
-	// console.log(evt.checked, evt.value);
 	if (evt.checked) {
-		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`).removeClass("dimmed");
 		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`)
+			.removeClass("dimmed")
 			.connectedEdges()
-			.filter((e) => {
-				return !e.source().hasClass("dimmed") && !e.target().hasClass("dimmed");
-			})
+			.filter((e) => !e.source().hasClass("dimmed") && !e.target().hasClass("dimmed"))
 			.removeClass("dimmed");
 	} else {
-		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`).addClass("dimmed");
 		cy.nodes(`[properties.roleStereotype = "${evt.value}"]`)
+			.addClass("dimmed")
 			.connectedEdges()
 			.addClass("dimmed");
 	}
@@ -991,12 +1011,11 @@ const showRS = function (evt) {
 
 const showTrace = function (_evt) {
 
-	const trace_names = [...document.getElementsByName("showfeatures")]
+	const trace_names = document.getElementsByName("showfeatures")
 		.filter((e) => e.checked)
 		.map((e) => e.value);
 
-	[...document.getElementsByClassName("featurelabel")]
-		.forEach((e) => { e.style.backgroundColor = ""; });
+	$all(".featurelabel").forEach((e) => { e.style.backgroundColor = ""; });
 
 	if (trace_names.length > 0) {
 		const colorMap = {};
@@ -1091,21 +1110,6 @@ const showBug = function (_evt) {
 	cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
-
-function openSidebarTab(evt, cityName) {
-	const tabs = document.getElementsByClassName("sidebar-tab");
-	[...tabs].forEach(tab => {
-		tab.style.display = "none";
-	});
-
-	const tablinks = document.getElementsByClassName("tablink");
-	[...tablinks].forEach(tablink => {
-		tablink.className = tablink.className.replace(" active", "");
-	});
-
-	document.getElementById(cityName).style.display = "block";
-	evt.currentTarget.className += " active";
-}
 
 function flattenForest({ elements: { nodes, edges }, ...rest }, isContainment, isTreeNode, isLeaf) {
 

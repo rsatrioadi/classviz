@@ -173,6 +173,10 @@ ul.tabs {
   background-color: #007aff;
 }
 
+.tablink {
+  cursor: pointer;
+}
+
 /* Style for the tab content container */
 .tab-content {
   padding: 20px;
