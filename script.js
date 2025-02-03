@@ -26,19 +26,17 @@ on('DOMContentLoaded', document, async () => {
 	on('click', $("#btn-toggleVisibility"), toggleVisibility);
 
 	const tablinks = $all(".tablink");
-	tablinks.forEach((tab) => {
-		on('click', tab, () => {
-			tablinks.forEach((t) => t.classList.remove("active"));
-			tab.classList.add("active");
+	on('click', tablinks, (event) => {
+		tablinks.forEach((t) => t.classList.remove("active"));
+		event.target.classList.add("active");
 
-			const selectedTab = tab.getAttribute('data-tab');
-			$all('.sidebar-tab').forEach((t) => t.style.display="none");
-			$(`#${selectedTab}`).style.display = "block";
-		});
+		const selectedTab = event.target.getAttribute('data-tab');
+		$all('.sidebar-tab').forEach((t) => t.style.display = "none");
+		$(`#${selectedTab}`).style.display = "block";
 	});
 
 	on('change', $('#showPrimitives'), () => showPrimitives($('#showPrimitives')));
-	on('change', $('#showPackages'), () => showPackages($('#showPackages')));
+	// on('change', $('#showPackages'),   () => showPackages($('#showPackages')));
 
 	const fileName = new URLSearchParams(window.location.search).get('p');
 	if (fileName) {
@@ -420,7 +418,11 @@ const prepareGraph = function (graphData) {
 		abstract: graphContainsScripts ? abstractize(graphData) : graphData
 	};
 
-	const makeDummyContainers = homogenizeForest(e=>e.data.label==="contains", n=>n.data.labels.includes("Container"), n=>n.data.labels.includes("Structure"));
+	const makeDummyContainers = homogenizeForest(
+		e => e.data.label === "contains", 
+		n => n.data.labels.includes("Container"), 
+		n => n.data.labels.includes("Structure")
+	);
 
 	graph.abstract = makeDummyContainers(graph.abstract);
 
@@ -515,18 +517,17 @@ const initCy = async function (payload) {
 		ready: function () {
 			let api = this.expandCollapse(generateExpColOptions());
 
-			on("click", $("#collapseNodes"), () => { 
-				api.collapseAll(); 
-				api.collapseAllEdges(generateExpColOptions()) 
+			on("click", $("#collapseNodes"), () => {
+				api.collapseAll();
+				api.collapseAllEdges(generateExpColOptions())
 			});
-			on("click", $("#expandNodes"), () => { 
-				api.expandAll(); 
-				api.expandAllEdges() 
+			on("click", $("#expandNodes"), () => {
+				api.expandAll();
+				api.expandAllEdges()
 			});
 		},
 		style,
 		wheelSensitivity: 0.25,
-		
 	});
 
 	setParents(parentRel, false);
@@ -575,13 +576,12 @@ const initCy = async function (payload) {
 	bindRouters();
 
 	const cbShowPrimitives = $("#showPrimitives");
-	const cbShowPackages = $("#showPackages");
-
 	cbShowPrimitives.checked = false;
-	cbShowPackages.checked = true;
-
 	showPrimitives(cbShowPrimitives);
-	showPackages(cbShowPackages);
+
+	// const cbShowPackages = $("#showPackages");
+	// cbShowPackages.checked = true;
+	// showPackages(cbShowPackages);
 
 	zoom.value = cy.zoom();
 
@@ -718,11 +718,11 @@ const showPrimitives = function (e) {
 		.style({ display: e.checked ? "element" : "none" });
 };
 
-const showPackages = function (e) {
-	cy.nodes()
-		.filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
-		.toggleClass("pkghidden", !e.checked);
-};
+// const showPackages = function (e) {
+// 	cy.nodes()
+// 		.filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
+// 		.toggleClass("pkghidden", !e.checked);
+// };
 
 const setVisible = function (e) {
 	cy.edges(`[interaction = "${e.value}"]`).toggleClass(
@@ -801,30 +801,18 @@ const fillRSFilter = function (_cy) {
 }
 
 const fillRelationshipToggles = function (_cy) {
+
 	const table = $("#reltab"); // Get the table element
 	table.textContent = "";
 
 	// Create the thead element
-	const thead = document.createElement("thead");
-
-	// Create the tr element for the table header row
-	const headerRow = document.createElement("tr");
-
-	// Create the th elements for the table header cells
-	const th1 = document.createElement("th");
-	th1.textContent = "Connection";
-	const th2 = document.createElement("th");
-	th2.textContent = "Ortho";
-	const th3 = document.createElement("th");
-	th3.textContent = "Bezier";
-
-	// Append the th elements to the header row
-	headerRow.appendChild(th1);
-	headerRow.appendChild(th2);
-	headerRow.appendChild(th3);
-
-	// Append the header row to the thead element
-	thead.appendChild(headerRow);
+	const thead = h("thead", {}, 
+		h("tr", {}, [
+			h("th", {}, "Connection"),
+			h("th", {}, "Ortho"),
+			h("th", {}, "Bezier"),
+		])
+	);
 
 	// Append the thead element to the table element
 	table.appendChild(thead);
@@ -833,55 +821,39 @@ const fillRelationshipToggles = function (_cy) {
 		.edges()
 		.map((e) => e.data("interaction"))
 		.filter((v, i, s) => s.indexOf(v) === i)
-		.forEach((l) => {
-			// Create a new row (tr)
-			const row = document.createElement("tr");
+		.forEach((edgeLabel) => {
 
-			// Create the first cell (td) with a label and checkbox
-			const cell1 = document.createElement("td");
-			const label = document.createElement("label");
-			label.setAttribute("for", l);
-			const checkbox = document.createElement("input");
-			checkbox.setAttribute("type", "checkbox");
-			checkbox.setAttribute("id", l);
-			checkbox.setAttribute("name", "showrels");
-			// checkbox.setAttribute("onchange", "setVisible(this)");
-			checkbox.setAttribute("value", l);
-			checkbox.checked = ["calls"].includes(l);
+			const checkbox = h("input", {
+				type: "checkbox",
+				id: edgeLabel,
+				name: "showrels",
+				value: edgeLabel,
+			});
+			checkbox.checked = ["calls"].includes(edgeLabel);
 			on('change', checkbox, (event) => setVisible(event.target));
 
-			const labelText = document.createTextNode(l);
-			label.appendChild(checkbox);
-			label.appendChild(labelText);
-			cell1.appendChild(label);
-			row.appendChild(cell1);
-
-			// Create the second cell (td) with a radio button for taxi option
-			const cell2 = document.createElement("td");
-			const taxiRadio = document.createElement("input");
-			taxiRadio.setAttribute("type", "radio");
-			// taxiRadio.setAttribute("onchange", "setLineBends(this)");
-			taxiRadio.setAttribute("id", `${l}-ort`);
-			taxiRadio.setAttribute("name", l);
-			taxiRadio.setAttribute("value", "taxi");
+			const taxiRadio = h("input", {
+				type: "radio",
+				id: `${edgeLabel}-ort`,
+				name: edgeLabel,
+				value: "taxi",
+			});
 			on('change', taxiRadio, (event) => setLineBends(event.target));
 
-			cell2.appendChild(taxiRadio);
-			row.appendChild(cell2);
-
-			// Create the third cell (td) with a radio button for bezier option
-			const cell3 = document.createElement("td");
-			const bezierRadio = document.createElement("input");
-			bezierRadio.setAttribute("type", "radio");
-			// bezierRadio.setAttribute("onchange", "setLineBends(this)");
-			bezierRadio.setAttribute("id", `${l}-bez`);
-			bezierRadio.setAttribute("name", l);
-			bezierRadio.setAttribute("value", "bezier");
+			const bezierRadio = h("input", {
+				type: "radio",
+				id: `${edgeLabel}-bez`,
+				name: edgeLabel,
+				value: "bezier",
+			});
 			bezierRadio.checked = true;
 			on('change', bezierRadio, (event) => setLineBends(event.target));
 
-			cell3.appendChild(bezierRadio);
-			row.appendChild(cell3);
+			const row = h("tr", {}, [
+				h("td", {}, h("label", { for: edgeLabel }, [checkbox, edgeLabel])),
+				h("td", {}, taxiRadio),
+				h("td", {}, bezierRadio),
+			]);
 
 			// Append the row to the table
 			table.appendChild(row);
@@ -893,10 +865,9 @@ const fillRelationshipToggles = function (_cy) {
 const fillFeatureDropdown = function (_cy) {
 	let tracesSet = new Set();
 	_cy.nodes().forEach((e) => {
-		if (e.data("properties.traces")) {
-			e.data("properties.traces").forEach((trace) => {
-				tracesSet.add(trace);
-			});
+		const traces = e.data("properties.traces");
+		if (traces) {
+			traces.forEach((trace) => tracesSet.add(trace));
 		}
 	});
 
@@ -907,12 +878,8 @@ const fillFeatureDropdown = function (_cy) {
 	dropdown.textContent = "";
 
 	tracesList.forEach(trace => {
-		const div = document.createElement("div");
-		const label = document.createElement("label");
-		label.setAttribute("for", `feature-${trace}`);
-		label.setAttribute("class", "featurelabel");
 
-		const checkbox = document.createElement("input");
+		const checkbox = h("input", {});
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.setAttribute("id", `feature-${trace}`);
 		checkbox.setAttribute("name", "showfeatures");
@@ -920,11 +887,11 @@ const fillFeatureDropdown = function (_cy) {
 		checkbox.setAttribute("value", trace);
 		on('change', checkbox, (event) => showTrace(event.target));
 
-		const labelText = document.createTextNode(trace);
-		label.appendChild(checkbox);
-		label.appendChild(labelText);
+		const div = h("div", {}, h("label", {
+			for: `feature-${trace}`,
+			class: "featurelabel",
+		}, [checkbox, trace]));
 
-		div.appendChild(label);
 		dropdown.appendChild(div);
 	});
 };
@@ -949,23 +916,20 @@ const fillBugsDropdown = function (_cy) {
 	dropdown.textContent = "";
 
 	bugList.forEach(bug => {
-		const div = document.createElement("div");
-		const label = document.createElement("label");
-		label.setAttribute("for", `bug-${bug}`);
-		label.setAttribute("class", "buglabel");
 
-		const checkbox = document.createElement("input");
-		checkbox.setAttribute("type", "checkbox");
-		checkbox.setAttribute("id", `bug-${bug}`);
-		checkbox.setAttribute("name", "showbugs");
-		checkbox.setAttribute("value", bug);
+		const checkbox = h("input", {
+			type: "checkbox",
+			id: `bug-${bug}`,
+			name: "showbugs",
+			value: bug,
+		});
 		on('change', checkbox, (event) => showBug(event.target));
 
-		const labelText = document.createTextNode(bug);
-		label.appendChild(checkbox);
-		label.appendChild(labelText);
+		const div = h("div", {}, h("label", {
+			for: `bug-${bug}`,
+			class: "buglabel",
+		}, [checkbox, bug]));
 
-		div.appendChild(label);
 		dropdown.appendChild(div);
 	});
 };
@@ -987,8 +951,7 @@ const highlight = function (text) {
 		const cy_edges = cy_classes.edgesWith(cy_classes);
 		cy_classes.removeClass("dimmed");
 		cy_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"], [properties.kind="dummy"]').removeClass("dimmed");
-		cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
+		cy.nodes(n => n.data('labels').includes('Container')).removeClass("dimmed");
 	} else {
 		cy.elements().removeClass("dimmed");
 	}
@@ -1012,7 +975,7 @@ const showRS = function (evt) {
 
 const showTrace = function (_evt) {
 
-	const trace_names = document.getElementsByName("showfeatures")
+	const trace_names = $all('[name="showfeatures"]')
 		.filter((e) => e.checked)
 		.map((e) => e.value);
 
@@ -1021,7 +984,7 @@ const showTrace = function (_evt) {
 	if (trace_names.length > 0) {
 		const colorMap = {};
 		trace_names.forEach((trace, i) => {
-			const label = document.querySelector(`label[for="feature-${trace}"]`);
+			const label = $(`label[for="feature-${trace}"]`);
 			label.style.backgroundColor = ft_colors[i];
 			colorMap[trace] = ft_colors[i];
 		});
@@ -1038,7 +1001,7 @@ const showTrace = function (_evt) {
 		cy.elements(".hidden").removeClass("hidden").addClass("hidden");
 		feature_nodes.removeClass("dimmed");
 		feature_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"]').removeClass("dimmed");
+		cy.nodes(n => n.data('labels').includes('Container')).removeClass("dimmed");
 		feature_nodes.removeClass("feature_reset");
 		feature_edges.removeClass("feature_reset");
 		feature_nodes.addClass("feature_shown");

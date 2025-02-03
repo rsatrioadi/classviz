@@ -83,11 +83,14 @@
       <div class="menu" id="menu-nodes">
         <h2>Nodes</h2>
         <label for="showPrimitives">
-          <input type="checkbox" id="showPrimitives" name="showPrimitives" value="showPrimitives"
-            checked="checked" />Show primitives </label><br /><label for="showPackages">
-          <input type="checkbox" id="showPackages" name="showPackages" value="showPackages" checked="checked" />Show
-          packages
+          <input type="checkbox" id="showPrimitives" name="showPrimitives" value="showPrimitives" checked="checked" />
+          Show primitives
         </label>
+        <!-- <br />
+        <label for="showPackages">
+          <input type="checkbox" id="showPackages" name="showPackages" value="showPackages" checked="checked" />
+          Show packages
+        </label> -->
       </div>
       <div class="menu" id="menu-edges">
         <h2>Relationships</h2>
@@ -127,7 +130,7 @@
         <textarea id="highlight" name="highlight" rows="3"></textarea>
         <button class="sidebar" id="btn-reset">Reset</button>
         <button class="sidebar" id="btn-highlight">Highlight</button>
-        <p></p>
+        <p/>
         <button class="sidebar" id="btn-toggleVisibility">
           Toggle visibility
         </button>
@@ -143,17 +146,6 @@
     <div class="sidebar-tab" id="tab-features" style="display: none">
       <div class="menu">
         <h2>Feature highlight</h2>
-
-        <!-- <label for="feature">
-              Select a specific feature that you want to visualize.
-              To select multiple features, hold down the CTRL (or CMD) key.
-            </label> -->
-        <!-- <br />
-            <select id="selectfeature" size="20" multiple>
-              <option value="All">All (default)</option>
-            </select>
-            <p />
-            <Button class="sidebar" onclick="showTrace(checkSelectedFeatures())">Show</Button> -->
         <div id="selectfeature"></div>
       </div>
     </div>
