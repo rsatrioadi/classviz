@@ -13,13 +13,13 @@ TODO
 */
 import { $, $all, h, on, toJson, toText } from './shorthands.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+on('DOMContentLoaded', document, async () => {
 
 	cytoscape.warnings(false);
 
 	on('click', $("#btn-upload"),           fileUpload);
 	on('click', $("#btn-relayout"),         () => relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value));
-	on('click', $("#btn-highlight"),        () => highlight(document.getElementById('highlight').value));
+	on('click', $("#btn-highlight"),        () => highlight($('#highlight').value));
 	on('click', $("#btn-download"),         () => saveAsSvg('class-diagram.svg'));
 	on('click', $("#btn-popup"),            () => window.open(getSvgUrl(), '_blank'));
 	on('click', $("#btn-reset"),            () => highlight(''));
@@ -252,8 +252,6 @@ const abstractize = function (graphData) {
 		Array.isArray(topLevelPackages[0]) &&
 		topLevelPackages[0].length > 1
 	) {
-		// Show them (debug)
-		// console.log(topLevelPackages);
 
 		newContains = edges.contains
 			.filter((edge) => !topLevelClassSet.has(edge.source))
@@ -517,10 +515,14 @@ const initCy = async function (payload) {
 		ready: function () {
 			let api = this.expandCollapse(generateExpColOptions());
 
-			$("#collapseNodes")
-				.addEventListener("click", () => { api.collapseAll(); api.collapseAllEdges(generateExpColOptions()) });
-			$("#expandNodes")
-				.addEventListener("click", () => { api.expandAll(); api.expandAllEdges() });
+			on("click", $("#collapseNodes"), () => { 
+				api.collapseAll(); 
+				api.collapseAllEdges(generateExpColOptions()) 
+			});
+			on("click", $("#expandNodes"), () => { 
+				api.expandAll(); 
+				api.expandAllEdges() 
+			});
 		},
 		style,
 		wheelSensitivity: 0.25,
@@ -608,13 +610,13 @@ on("click", infoTitle, () => {
 
 const bindRouters = function () {
 	// Initiate cyExpandCollapseApi
-	let api = cy.expandCollapse("get");
+	cy.expandCollapse("get");
 
 	// right click dims the element
 	cy.on('cxttap', 'node,edge',
 		evt => {
 			evt.target.addClass("dimmed")
-			const interactions = [...document.querySelectorAll('input[name="showrels"]')]
+			const interactions = $all('input[name="showrels"]')
 				.filter(cb => cb.checked)
 				.map(cb => cb.value);
 
@@ -632,7 +634,7 @@ const bindRouters = function () {
 		to_activate.removeClass("dimmed");
 
 		// currently visible relationship types
-		const interactions = [...document.querySelectorAll('input[name="showrels"]')]
+		const interactions = $all('input[name="showrels"]')
 			.filter(cb => cb.checked)
 			.map(cb => cb.value);
 
@@ -652,23 +654,20 @@ const bindRouters = function () {
 	cy.on("mouseover", "node", (evt) => {
 		const { properties } = evt.target.data();
 		const { kind, roleStereotype } = properties;
-		const infoHeader = document.createElement("h3");
-		const infoSubeader = document.createElement("p");
-		const infoText = document.createElement("p");
+		const infoHeader = h('h3', {}, properties.simpleName);
+		const infoSubeader = h('p');
+		const infoText = h('p', {}, properties.description || "(no description)");
 
-		infoHeader.textContent = properties.simpleName;
-		infoText.textContent = properties.description || "(no description)";
-
-		if (evt.target.data().labels.includes('Structure')) {
+		if (evt.target.data("labels").includes('Structure')) {
 			const backgroundColor = (roleStereotype && (roleStereotype in role_stereotypes)) ? role_stereotypes[roleStereotype].color_light : "inherit";
-			infoSubeader.innerHTML = `<b><i>${kind}</i>${roleStereotype ? ` – ${roleStereotype}` : ""}</b>`;
+			infoSubeader.append(h('b', {}, [h('i', {}, kind), roleStereotype ? ` – ${roleStereotype}` : ""]));
 			infoBody.style.backgroundColor = backgroundColor;
-		} else if (evt.target.data().labels.includes("Container")) {
-			infoSubeader.innerHTML = `<b><i>${kind}</i></b>`;
+		} else if (evt.target.data("labels").includes("Container")) {
+			infoSubeader.append(h('b', {}, h('i', {}, kind)));
 			infoBody.style.backgroundColor = "inherit";
 		}
 
-		infoBody.innerHTML = "";
+		infoBody.textContent = "";
 		infoBody.append(infoHeader, infoSubeader, infoText);
 
 
@@ -741,7 +740,7 @@ const setLineBends = function (e) {
 const fileUpload = function () {
 	const fileSelector = $("#file-selector");
 	fileSelector.click();
-	fileSelector.addEventListener("change", (event) => {
+	on("change", fileSelector, (event) => {
 		const file = event.target.files[0];
 		const fileName = file.name;
 		$("#filename").textContent = `Software Visualization – ${fileName}`;
@@ -772,44 +771,38 @@ const toggleVisibility = function () {
 const fillRSFilter = function (_cy) {
 	const menuNodes = $("#menu-nodes");
 	const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
-	[...rsFilters].forEach((rsFilter) => menuNodes.removeChild(rsFilter))
+	Array.from(rsFilters).forEach((rsFilter) => menuNodes.removeChild(rsFilter))
 
-	const rsHeader = document.createElement("p");
-	rsHeader.innerHTML = "<b>Role Stereotypes</b>";
-
-	const containerDiv = document.createElement('div');
-	containerDiv.setAttribute('class', 'rs-filter-container');
-	containerDiv.appendChild(rsHeader);
-
-	Object.keys(role_stereotypes).forEach(key => {
-		const div = document.createElement("div");
-		const label = document.createElement("label");
-		label.setAttribute("for", `rs-${role_stereotypes[key].symbol}`);
-		label.setAttribute("class", "rslabel");
-		label.style.backgroundColor = role_stereotypes[key].color_light;
-
-		const checkbox = document.createElement("input");
-		checkbox.setAttribute("type", "checkbox");
-		checkbox.setAttribute("id", `rs-${role_stereotypes[key].symbol}`);
-		checkbox.setAttribute("name", "showrs");
-		checkbox.setAttribute("value", key);
+	const rsHeader = h('p', {}, h('b', {}, "Role Stereotypes"));
+	const divs = Object.keys(role_stereotypes).map(key => {
+		const checkbox = h("input", {
+			type: "checkbox",
+			id: `rs-${role_stereotypes[key].symbol}`,
+			name: "showrs",
+			value: key
+		});
 		checkbox.checked = true;
 		on('change', checkbox, (event) => showRS(event.target));
 
-		const labelText = document.createTextNode(role_stereotypes[key].label || key);
-		label.appendChild(checkbox);
-		label.appendChild(labelText);
-
-		div.appendChild(label);
-		containerDiv.appendChild(div);
+		const label = h("label",
+			{
+				for: `rs-${role_stereotypes[key].symbol}`,
+				class: "rslabel"
+			},
+			[checkbox, role_stereotypes[key].label || key]);
+		label.style.backgroundColor = role_stereotypes[key].color_light;
+		const div = h("div", {}, label);
+		return div;
 	});
+
+	const containerDiv = h('div', { class: 'rs-filter-container' }, [rsHeader, ...divs]);
 
 	menuNodes.appendChild(containerDiv);
 }
 
 const fillRelationshipToggles = function (_cy) {
 	const table = $("#reltab"); // Get the table element
-	table.innerHTML = "";
+	table.textContent = "";
 
 	// Create the thead element
 	const thead = document.createElement("thead");
@@ -911,7 +904,7 @@ const fillFeatureDropdown = function (_cy) {
 
 	// Get the dropdown element.
 	const dropdown = $("#selectfeature");
-	dropdown.innerHTML = "";
+	dropdown.textContent = "";
 
 	tracesList.forEach(trace => {
 		const div = document.createElement("div");
@@ -953,7 +946,7 @@ const fillBugsDropdown = function (_cy) {
 
 	// Get the dropdown element.
 	const dropdown = $("#tab-bugs");
-	dropdown.innerHTML = "";
+	dropdown.textContent = "";
 
 	bugList.forEach(bug => {
 		const div = document.createElement("div");
@@ -990,11 +983,11 @@ const highlight = function (text) {
 		cy.elements().addClass("dimmed");
 		cy.elements(".hidden").removeClass("hidden").addClass("hidden");
 
-		const cy_classes = cy.nodes().filter((node) => classes.includes(node.data('name')));
+		const cy_classes = cy.nodes().filter((node) => classes.includes(node.data('label')));
 		const cy_edges = cy_classes.edgesWith(cy_classes);
 		cy_classes.removeClass("dimmed");
 		cy_edges.removeClass("dimmed");
-		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"]').removeClass("dimmed");
+		cy.nodes('[properties.kind = "package"], [properties.kind = "folder"], [properties.kind="dummy"]').removeClass("dimmed");
 		cy.nodes('[properties.kind = "file"]').removeClass("dimmed");
 	} else {
 		cy.elements().removeClass("dimmed");
@@ -1060,7 +1053,6 @@ const showTrace = function (_evt) {
 				"background-gradient-stop-colors",
 				trc.map((t) => colorMap[t]).join(" ")
 			);
-			// console.log(trc.map((t) => colorMap[t]).join(" "));
 		});
 	} else {
 		cy.elements().removeClass("dimmed");
@@ -1072,17 +1064,17 @@ const showTrace = function (_evt) {
 
 const showBug = function (_evt) {
 
-	const bug_names = [...document.getElementsByName("showbugs")]
+	const bug_names = $all('[name="showbugs"]')
 		.filter((e) => e.checked)
 		.map((e) => e.value);
 
-	[...document.getElementsByClassName("buglabel")]
+	$all(".buglabel")
 		.forEach((e) => { e.style.backgroundColor = ""; });
 
 	if (bug_names.length > 0) {
 		const colorMap = {};
 		bug_names.forEach((bug, i) => {
-			const labelElement = document.querySelector(`label[for="bug-${bug}"]`);
+			const labelElement = $(`label[for="bug-${bug}"]`);
 			labelElement.style.backgroundColor = ft_colors[i];
 			colorMap[bug] = ft_colors[i];
 		});
@@ -1108,7 +1100,6 @@ const showBug = function (_evt) {
 		bug_nodes.forEach((node) => {
 			const trc = arrayIntersection(bug_names, node.data()["properties"]["vulnerabilities"].map((vul) => vul["analysis_name"]));
 			node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
-			// console.log(trc.map((t) => colorMap[t]).join(" "));
 		});
 	} else {
 		cy.elements().removeClass("dimmed");

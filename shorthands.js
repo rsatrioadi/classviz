@@ -1,37 +1,47 @@
 export const $ = (sel) => document.querySelector(sel);
-export const $all = (sel) => document.querySelectorAll(sel);
 
-export const h = function (tag, attrs, children) {
+export const $all = (sel) => Array.from(document.querySelectorAll(sel));
+
+export function h(tag, attrs = {}, children = []) {
+	// If 'attrs' is an array, treat it as children and reset attrs
+	if (Array.isArray(attrs)) {
+		children = attrs;
+		attrs = {};
+	}
+
 	const el = document.createElement(tag);
 
-	if (attrs != null && typeof attrs === typeof {}) {
-		Object.keys(attrs).forEach(function (key) {
-			const val = attrs[key];
+	// Set attributes
+	Object.entries(attrs).forEach(([key, val]) => el.setAttribute(key, val));
 
-			el.setAttribute(key, val);
-		});
-	} else if (typeof attrs === typeof []) {
-		children = attrs;
-	}
+	// Normalize children to an array
+	if (!Array.isArray(children)) children = [children];
 
-	if (children != null && typeof children === typeof []) {
-		children.forEach(function (child) {
+	// Append each child
+	children.forEach((child) => {
+		// If it's already a DOM node, append directly
+		if (child instanceof Node) {
 			el.appendChild(child);
-		});
-	} else if (children != null && typeof children === typeof '') {
-		el.appendChild(document.createTextNode(children));
-	}
+		} else {
+			// Otherwise, treat as text
+			el.appendChild(document.createTextNode(String(child)));
+		}
+	});
 
 	return el;
-};
+}
 
-export const on = function (event, obj, handler) {
-	if (obj && typeof obj.forEach === 'function') {
-		obj.forEach((o) => o.addEventListener(event, handler));
-	} else if (obj && typeof obj[Symbol.iterator] === 'function') {
-		for (const o of obj) o.addEventListener(event, handler);
+export function on(event, targets, handler) {
+	if (!targets) return;
+	if (typeof targets.forEach === 'function') {
+		// Array or NodeList
+		targets.forEach((t) => t.addEventListener(event, handler));
+	} else if (typeof targets[Symbol.iterator] === 'function') {
+		// Other iterables
+		for (const t of targets) t.addEventListener(event, handler);
 	} else {
-		obj.addEventListener(event, handler); 
+		// Single element
+		targets.addEventListener(event, handler);
 	}
 };
 

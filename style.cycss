@@ -66,7 +66,9 @@ node[properties.roleStereotype = "Structurer"] {
 node[properties.kind = "dummy"] {
   label: ;
   background-color: grey;
-  border-width: 0;
+  border-color: grey;
+  border-width: 3;
+  border-style: dashed;
 }
 
 node[properties.kind = "package"], node[properties.kind = "folder"] {
