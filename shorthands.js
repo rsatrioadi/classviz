@@ -3,8 +3,8 @@ export const $ = (sel) => document.querySelector(sel);
 export const $all = (sel) => Array.from(document.querySelectorAll(sel));
 
 export function h(tag, attrs = {}, children = []) {
-	// If 'attrs' is an array, treat it as children and reset attrs
-	if (Array.isArray(attrs)) {
+	// If attrs is not a plain object, treat it as children and reset attrs
+	if (!attrs || typeof attrs !== 'object' || Array.isArray(attrs)) {
 		children = attrs;
 		attrs = {};
 	}

@@ -63,7 +63,7 @@ node[properties.roleStereotype = "Structurer"] {
   background-color: #FFDBFF;
 }
 
-node[properties.kind = "dummy"] {
+node[properties.dummy = 1] {
   label: ;
   background-color: grey;
   border-color: grey;

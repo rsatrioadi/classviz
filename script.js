@@ -1,14 +1,9 @@
 /*
 TODO
-- role stereotypes DONE
-- filtering stereotypes DONE
-- remove bug tab DONE
-- try font sizing DONE
 - animate dynamic aspects
-- summaries to sidebar DONE
+- summaries to sidebar
 - architecture recovery/clustering
 - collapse the classes
-- more padding inside packages DONE
 - tweak klay parameters
 */
 import { $, $all, h, on, toJson, toText } from './shorthands.js';
@@ -43,8 +38,7 @@ on('DOMContentLoaded', document, async () => {
 		try {
 			const [rawGraph, style] = await Promise.all([
 				fetch(`data/${fileName}.json`).then(toJson),
-				fetch('style.cycss').then(toText)
-			]);
+				fetch('style.cycss').then(toText)]);
 
 			$("#filename").textContent = `Software Visualization: ${fileName}.json`;
 			initCy([prepareGraph(rawGraph), style]);
@@ -530,12 +524,14 @@ const initCy = async function (payload) {
 		wheelSensitivity: 0.25,
 	});
 
+	cy.startBatch();
+
 	setParents(parentRel, false);
 
 	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n) => n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
-	cy.nodes('[properties.kind = "package"], [properties.kind = "dummy"]').forEach((n) => {
+	cy.nodes('[properties.kind = "package"]').forEach((n) => {
 		const d = 146;
 		const l = 236;
 		const depth = n.ancestors().length;
@@ -568,6 +564,8 @@ const initCy = async function (payload) {
 		const grey = Math.max(l - ((max_ns_depth - depth) * 15), d);
 		n.style('background-color', `rgb(${grey},${grey},${grey})`);
 	});
+
+	cy.endBatch();
 
 	fillRSFilter(cy);
 	fillRelationshipToggles(cy);
@@ -654,21 +652,22 @@ const bindRouters = function () {
 	cy.on("mouseover", "node", (evt) => {
 		const { properties } = evt.target.data();
 		const { kind, roleStereotype } = properties;
-		const infoHeader = h('h3', {}, properties.simpleName);
-		const infoSubeader = h('p');
-		const infoText = h('p', {}, properties.description || "(no description)");
+		var infoSubheader = "";
 
 		if (evt.target.data("labels").includes('Structure')) {
 			const backgroundColor = (roleStereotype && (roleStereotype in role_stereotypes)) ? role_stereotypes[roleStereotype].color_light : "inherit";
-			infoSubeader.append(h('b', {}, [h('i', {}, kind), roleStereotype ? ` – ${roleStereotype}` : ""]));
+			infoSubheader = h('b', [h('i', [kind]), roleStereotype ? ` – ${roleStereotype}` : ""]);
 			infoBody.style.backgroundColor = backgroundColor;
 		} else if (evt.target.data("labels").includes("Container")) {
-			infoSubeader.append(h('b', {}, h('i', {}, kind)));
+			infoSubheader = h('b', [h('i', [kind])]);
 			infoBody.style.backgroundColor = "inherit";
 		}
 
 		infoBody.textContent = "";
-		infoBody.append(infoHeader, infoSubeader, infoText);
+		infoBody.append(
+			h('h3', [properties.simpleName]), 
+			h('p', [infoSubheader]), 
+			h('p', [properties.description || "(no description)"]));
 
 
 		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
@@ -773,7 +772,9 @@ const fillRSFilter = function (_cy) {
 	const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
 	Array.from(rsFilters).forEach((rsFilter) => menuNodes.removeChild(rsFilter))
 
-	const rsHeader = h('p', {}, h('b', {}, "Role Stereotypes"));
+	const rsHeader = h('p', 
+						[h('b', 
+							["Role Stereotypes"])]);
 	const divs = Object.keys(role_stereotypes).map(key => {
 		const checkbox = h("input", {
 			type: "checkbox",
@@ -785,13 +786,10 @@ const fillRSFilter = function (_cy) {
 		on('change', checkbox, (event) => showRS(event.target));
 
 		const label = h("label",
-			{
-				for: `rs-${role_stereotypes[key].symbol}`,
-				class: "rslabel"
-			},
-			[checkbox, role_stereotypes[key].label || key]);
+						{ for: `rs-${role_stereotypes[key].symbol}`, class: "rslabel" },
+						[checkbox, role_stereotypes[key].label || key]);
 		label.style.backgroundColor = role_stereotypes[key].color_light;
-		const div = h("div", {}, label);
+		const div = h("div", [label]);
 		return div;
 	});
 
@@ -806,13 +804,14 @@ const fillRelationshipToggles = function (_cy) {
 	table.textContent = "";
 
 	// Create the thead element
-	const thead = h("thead", {}, 
-		h("tr", {}, [
-			h("th", {}, "Connection"),
-			h("th", {}, "Ortho"),
-			h("th", {}, "Bezier"),
-		])
-	);
+	const thead = h("thead", 
+		[h("tr", [
+			h("th", 
+				["Connection"]),
+			h("th", 
+				["Ortho"]),
+			h("th", 
+				["Bezier"]),])]);
 
 	// Append the thead element to the table element
 	table.appendChild(thead);
@@ -823,37 +822,44 @@ const fillRelationshipToggles = function (_cy) {
 		.filter((v, i, s) => s.indexOf(v) === i)
 		.forEach((edgeLabel) => {
 
-			const checkbox = h("input", {
-				type: "checkbox",
-				id: edgeLabel,
-				name: "showrels",
-				value: edgeLabel,
-			});
+			const checkbox = h("input",
+				{
+					type: "checkbox",
+					id: edgeLabel,
+					name: "showrels",
+					value: edgeLabel,
+				});
 			checkbox.checked = ["calls"].includes(edgeLabel);
 			on('change', checkbox, (event) => setVisible(event.target));
 
-			const taxiRadio = h("input", {
-				type: "radio",
-				id: `${edgeLabel}-ort`,
-				name: edgeLabel,
-				value: "taxi",
-			});
+			const taxiRadio = h("input",
+				{
+					type: "radio",
+					id: `${edgeLabel}-ort`,
+					name: edgeLabel,
+					value: "taxi",
+				});
 			on('change', taxiRadio, (event) => setLineBends(event.target));
 
-			const bezierRadio = h("input", {
-				type: "radio",
-				id: `${edgeLabel}-bez`,
-				name: edgeLabel,
-				value: "bezier",
-			});
+			const bezierRadio = h("input",
+				{
+					type: "radio",
+					id: `${edgeLabel}-bez`,
+					name: edgeLabel,
+					value: "bezier",
+				});
 			bezierRadio.checked = true;
 			on('change', bezierRadio, (event) => setLineBends(event.target));
 
-			const row = h("tr", {}, [
-				h("td", {}, h("label", { for: edgeLabel }, [checkbox, edgeLabel])),
-				h("td", {}, taxiRadio),
-				h("td", {}, bezierRadio),
-			]);
+			const row = h("tr", [
+							h("td",
+								[h("label",
+									{ for: edgeLabel },
+									[checkbox, edgeLabel])]),
+							h("td",
+								[taxiRadio]),
+							h("td",
+								[bezierRadio])]);
 
 			// Append the row to the table
 			table.appendChild(row);
@@ -879,18 +885,19 @@ const fillFeatureDropdown = function (_cy) {
 
 	tracesList.forEach(trace => {
 
-		const checkbox = h("input", {});
-		checkbox.setAttribute("type", "checkbox");
-		checkbox.setAttribute("id", `feature-${trace}`);
-		checkbox.setAttribute("name", "showfeatures");
-		// checkbox.setAttribute("onchange", "showTrace(this)");
-		checkbox.setAttribute("value", trace);
+		const checkbox = h("input",
+			{
+				type: "checkbox",
+				id: `feature-${trace}`,
+				name: "showfeatures",
+				value: trace,
+			});
 		on('change', checkbox, (event) => showTrace(event.target));
 
-		const div = h("div", {}, h("label", {
-			for: `feature-${trace}`,
-			class: "featurelabel",
-		}, [checkbox, trace]));
+		const div = h("div",
+						[h("label",
+							{ for: `feature-${trace}`, class: "featurelabel" },
+							[checkbox, trace])]);
 
 		dropdown.appendChild(div);
 	});
@@ -917,18 +924,19 @@ const fillBugsDropdown = function (_cy) {
 
 	bugList.forEach(bug => {
 
-		const checkbox = h("input", {
-			type: "checkbox",
-			id: `bug-${bug}`,
-			name: "showbugs",
-			value: bug,
-		});
+		const checkbox = h("input",
+			{
+				type: "checkbox",
+				id: `bug-${bug}`,
+				name: "showbugs",
+				value: bug,
+			});
 		on('change', checkbox, (event) => showBug(event.target));
 
-		const div = h("div", {}, h("label", {
-			for: `bug-${bug}`,
-			class: "buglabel",
-		}, [checkbox, bug]));
+		const div = h("div",
+			[h("label",
+				{ for: `bug-${bug}`, class: "buglabel" },
+				[checkbox, bug])]);
 
 		dropdown.appendChild(div);
 	});
@@ -1125,7 +1133,7 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 				data: {
 					id: dummyId,
 					labels: ["Container"],
-					properties: { ...nodeMap.get(parentId).data.properties, kind: "dummy" }
+					properties: { ...nodeMap.get(parentId).data.properties, dummy: 1 }
 				}
 			});
 
@@ -1227,7 +1235,7 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 				data: {
 					id: dummyId,
 					labels: ["Container"],
-					properties: { ...nodeMap.get(parent).data.properties, kind: "dummy" }
+					properties: { ...nodeMap.get(node).data.properties, dummy: 1 }
 				}
 			});
 			edgeMap.set(edgeKey(currentParent, dummyId), {
@@ -1268,7 +1276,7 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 					data: {
 						id: superRoot,
 						labels: ["Container"],
-						properties: { kind: "dummy" }
+						properties: { ...node.properties, dummy: 1 }
 					}
 				});
 				roots.push(superRoot);
