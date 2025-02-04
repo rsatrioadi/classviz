@@ -1,10 +1,9 @@
 export const $ = (sel) => document.querySelector(sel);
-
 export const $all = (sel) => Array.from(document.querySelectorAll(sel));
 
 export function h(tag, attrs = {}, children = []) {
-	// If attrs is not a plain object, treat it as children and reset attrs
-	if (!attrs || typeof attrs !== 'object' || Array.isArray(attrs)) {
+	// If attrs is an array, treat it as children and reset attrs
+	if (Array.isArray(attrs)) {
 		children = attrs;
 		attrs = {};
 	}
@@ -43,7 +42,21 @@ export function on(event, targets, handler) {
 		// Single element
 		targets.addEventListener(event, handler);
 	}
-};
+}
+
+export function off(event, targets, handler) {
+	if (!targets) return;
+	if (typeof targets.forEach === 'function') {
+		targets.forEach((t) => t.removeEventListener(event, handler));
+	} else if (typeof targets[Symbol.iterator] === 'function') {
+		for (const t of targets) t.removeEventListener(event, handler);
+	} else {
+		targets.removeEventListener(event, handler);
+	}
+}
+
+export const pipe = (...fns) => (input) => fns.reduce((chain, func) => func(chain), input);
+export const pipeAsync = (...fns) => (input) => fns.reduce((chain, func) => chain.then(func), Promise.resolve(input));
 
 export const toJson = function (obj) { return obj.json(); };
 export const toText = function (obj) { return obj.text(); };

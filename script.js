@@ -6,7 +6,7 @@ TODO
 - collapse the classes
 - tweak klay parameters
 */
-import { $, $all, h, on, toJson, toText } from './shorthands.js';
+import { $, $all, h, on, pipe, toJson, toText } from './shorthands.js';
 
 on('DOMContentLoaded', document, async () => {
 
@@ -434,17 +434,100 @@ const prepareGraph = function (graphData) {
 	return graph;
 };
 
-const setParents = function (relationship, inverted) {
-	cy.edges("#parentRel").removeClass("parentRel");
+const shortenRoots = function(pCy) {
+	const containmentRoots = pCy.nodes((n) => 
+		n.data('labels').includes("Container") && 
+		n.incomers(e => e.data('label') === "contains").length===0
+	);
+	containmentRoots.forEach(cutRootRec);
 
-	cy.edges(`[interaction = "${relationship}"]`).forEach((edge) => {
+	function cutRootRec(node) {
+		const outgoers = node.outgoers(e => e.data('label') === "contains");
+		if (outgoers.length > 1) return;
+		const child = outgoers.target();
+		var name = "";
+		if (child.data('properties.qualifiedName')) {
+			name = child.data('properties.qualifiedName');
+		} else {
+			name = `${node.data('properties.simpleName')}/${child.data('properties.simpleName') }`;
+		}
+		child.data({
+			properties: {
+				...child.data('properties'),
+				simpleName: name
+			},
+			name: name,
+			label: name,
+		});
+		pCy.$(`#${node.id()}`).remove();
+		cutRootRec(child);
+	}
+}
+
+const setParents = function (pCy, relationship, inverted) {
+	pCy.edges("#parentRel").removeClass("parentRel");
+
+	pCy.edges(`[interaction = "${relationship}"]`).forEach((edge) => {
 		const child = inverted ? edge.source() : edge.target();
 		const parent = inverted ? edge.target() : edge.source();
 
 		child.move({ parent: parent.id() });
 	});
 
-	cy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
+	pCy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
+}
+
+const recolorContainers = function(pCy) {
+	const isContainer = (n) => n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
+	const max_pkg_depth = Math.max(...pCy.nodes(isContainer).map((n) => n.ancestors().length));
+
+	// Isolate nodes with kind equals to package
+	pCy.nodes(isContainer).forEach((n) => {
+		const d = 146;
+		const l = 236;
+		const depth = n.ancestors().length;
+		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
+		n.style('background-color', `rgb(${grey},${grey},${grey})`);
+		n.style('text-background-color', `rgb(${grey},${grey},${grey})`);
+	});
+}
+
+const liftEdges = function(pCy) {
+	const edges = pCy.edges((e) => 
+		e.source().data('labels').includes("Structure") && 
+		e.target().data('labels').includes("Structure") &&
+		e.target().parent() !== e.source().parent());
+	const newEdges = {};
+
+	edges.forEach((e) => {
+		const srcId = e.source().parent().id();
+		const tgtId = e.target().parent().id();
+		if (srcId && tgtId) {
+			const key = `${srcId}-${e.data('label')}-${tgtId}`;
+			if (!newEdges[key]) {
+				newEdges[key] = { group: "edges", data: {
+					source: srcId,
+					target: tgtId,
+					label: e.data('label'),
+					interaction: e.data('label'),
+					properties: {
+						...e.data('properties'),
+						weight: 0,
+						metaSrc: "lifting"
+					}
+				}};
+			}
+			newEdges[key].data.properties["weight"] += 1;
+		}
+	});
+	pCy.add(Object.values(newEdges));
+	edges.remove();
+}
+
+const adjustEdgeWidths = function(pCy) {
+	pCy.edges().forEach((e) => {
+		e.style('width', `${e.data('properties').weight}px`)
+	});
 }
 
 let parentRel = "contains";
@@ -503,87 +586,69 @@ const initCy = async function (payload) {
 	const graph = payload[0];
 	const style = payload[1];
 
-	window.cy = cytoscape({
-		container: $('#cy'),
+	// first create a headless graph
+	cytoscape({
+		headless: true,
 		elements: graph.abstract.elements,
-
-		// inititate cytoscape expand collapse
-		ready: function () {
-			let api = this.expandCollapse(generateExpColOptions());
-
-			on("click", $("#collapseNodes"), () => {
-				api.collapseAll();
-				api.collapseAllEdges(generateExpColOptions())
-			});
-			on("click", $("#expandNodes"), () => {
-				api.expandAll();
-				api.expandAllEdges()
-			});
-		},
-		style,
-		wheelSensitivity: 0.25,
+		ready: hcyReady
 	});
 
-	cy.startBatch();
+	function hcyReady(event) {
+		window.hcy = event.cy;
 
-	setParents(parentRel, false);
+		shortenRoots(hcy);
+		setParents(hcy, parentRel, false);
 
-	const max_pkg_depth = Math.max(...cy.nodes('[properties.kind = "package"]').map((n) => n.ancestors().length));
+		// then create a visualized graph
+		cytoscape({
+			container: $('#cy'),
+			elements: hcy.json().elements,
 
-	// Isolate nodes with kind equals to package
-	cy.nodes('[properties.kind = "package"]').forEach((n) => {
-		const d = 146;
-		const l = 236;
-		const depth = n.ancestors().length;
-		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
-		n.style('background-color', `rgb(${grey},${grey},${grey})`);
-		n.style('text-background-color', `rgb(${grey},${grey},${grey})`);
-	});
-
-	const max_folder_depth = Math.max(...cy.nodes('[properties.kind = "folder"]').map((n) => n.ancestors().length));
-
-	// Isolate nodes with kind equals to package
-	cy.nodes('[properties.kind = "folder"]').forEach((n) => {
-		const d = 150;
-		const l = 250;
-		const depth = n.ancestors().length;
-		const grey = Math.max(l - ((max_folder_depth - depth) * 10), d);
-		n.style({
-			'background-color': `rgb(${grey},${grey},${grey})`,
-			'text-valign': "top"
+			// inititate cytoscape expand collapse
+			ready: cyReady,
+			style,
+			wheelSensitivity: 0.25,
 		});
-	});
+	}
 
-	const max_ns_depth = Math.max(...cy.nodes('[properties.kind = "Namespace"]').map((n) => n.ancestors().length));
+	function cyReady(event) {
+		window.cy = event.cy;
 
-	// Isolate nodes with kind equals to Namespace
-	cy.nodes('[properties.kind = "Namespace"]').forEach((n) => {
-		const d = 146;
-		const l = 236;
-		const depth = n.ancestors().length;
-		const grey = Math.max(l - ((max_ns_depth - depth) * 15), d);
-		n.style('background-color', `rgb(${grey},${grey},${grey})`);
-	});
+		cy.startBatch();
 
-	cy.endBatch();
+		recolorContainers(cy);
+		liftEdges(cy);
+		adjustEdgeWidths(cy);
 
-	fillRSFilter(cy);
-	fillRelationshipToggles(cy);
-	fillFeatureDropdown(cy);
+		cy.endBatch();
 
-	bindRouters();
+		let api = this.expandCollapse(generateExpColOptions());
 
-	const cbShowPrimitives = $("#showPrimitives");
-	cbShowPrimitives.checked = false;
-	showPrimitives(cbShowPrimitives);
+		on("click", $("#collapseNodes"), () => {
+			api.collapseAll();
+			api.collapseAllEdges(generateExpColOptions())
+		});
+		on("click", $("#expandNodes"), () => {
+			api.expandAll();
+			api.expandAllEdges()
+		});
 
-	// const cbShowPackages = $("#showPackages");
-	// cbShowPackages.checked = true;
-	// showPackages(cbShowPackages);
+		fillRSFilter();
+		fillRelationshipToggles();
+		fillFeatureDropdown();
 
-	zoom.value = cy.zoom();
+		bindRouters();
 
-	return cy;
+		const cbShowPrimitives = $("#showPrimitives");
+		cbShowPrimitives.checked = false;
+		showPrimitives(cbShowPrimitives);
+
+		// const cbShowPackages = $("#showPackages");
+		// cbShowPackages.checked = true;
+		// showPackages(cbShowPackages);
+
+		zoom.value = cy.zoom();
+	}
 }
 
 // Get a reference to the div element
@@ -656,18 +721,22 @@ const bindRouters = function () {
 
 		if (evt.target.data("labels").includes('Structure')) {
 			const backgroundColor = (roleStereotype && (roleStereotype in role_stereotypes)) ? role_stereotypes[roleStereotype].color_light : "inherit";
-			infoSubheader = h('b', [h('i', [kind]), roleStereotype ? ` – ${roleStereotype}` : ""]);
+			infoSubheader = h('b', 
+								[h('i', 
+									[kind]), roleStereotype ? ` – ${roleStereotype}` : ""]);
 			infoBody.style.backgroundColor = backgroundColor;
 		} else if (evt.target.data("labels").includes("Container")) {
-			infoSubheader = h('b', [h('i', [kind])]);
+			infoSubheader = h('b', 
+								[h('i', 
+									[kind])]);
 			infoBody.style.backgroundColor = "inherit";
 		}
 
 		infoBody.textContent = "";
 		infoBody.append(
 			h('h3', [properties.simpleName]), 
-			h('p', [infoSubheader]), 
-			h('p', [properties.description || "(no description)"]));
+			h('p',  [infoSubheader]), 
+			h('p',  [properties.description || "(no description)"]));
 
 
 		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
@@ -678,7 +747,6 @@ const bindRouters = function () {
 		infoBox.style.minWidth = `${minWidth}px`;
 		infoBody.style.overflowWrap = "break-word";
 	});
-
 }
 
 /* Sidebar Utility Functions */
@@ -767,7 +835,7 @@ const toggleVisibility = function () {
 
 /* ======================================== */
 
-const fillRSFilter = function (_cy) {
+const fillRSFilter = function () {
 	const menuNodes = $("#menu-nodes");
 	const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
 	Array.from(rsFilters).forEach((rsFilter) => menuNodes.removeChild(rsFilter))
@@ -798,7 +866,7 @@ const fillRSFilter = function (_cy) {
 	menuNodes.appendChild(containerDiv);
 }
 
-const fillRelationshipToggles = function (_cy) {
+const fillRelationshipToggles = function () {
 
 	const table = $("#reltab"); // Get the table element
 	table.textContent = "";
@@ -816,8 +884,7 @@ const fillRelationshipToggles = function (_cy) {
 	// Append the thead element to the table element
 	table.appendChild(thead);
 
-	_cy
-		.edges()
+	cy.edges()
 		.map((e) => e.data("interaction"))
 		.filter((v, i, s) => s.indexOf(v) === i)
 		.forEach((edgeLabel) => {
@@ -868,9 +935,9 @@ const fillRelationshipToggles = function (_cy) {
 	$all('input[name="showrels"]').forEach(setVisible);
 };
 
-const fillFeatureDropdown = function (_cy) {
+const fillFeatureDropdown = function () {
 	let tracesSet = new Set();
-	_cy.nodes().forEach((e) => {
+	cy.nodes().forEach((e) => {
 		const traces = e.data("properties.traces");
 		if (traces) {
 			traces.forEach((trace) => tracesSet.add(trace));
@@ -903,9 +970,9 @@ const fillFeatureDropdown = function (_cy) {
 	});
 };
 
-const fillBugsDropdown = function (_cy) {
+const fillBugsDropdown = function () {
 	let bugsSet = new Set();
-	_cy.nodes().forEach((e) => {
+	cy.nodes().forEach((e) => {
 		if (e.data()["properties"]["vulnerabilities"]) {
 			e.data()["properties"]["vulnerabilities"]
 				.forEach((bug) => {
@@ -1231,13 +1298,18 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 		for (let i = 0; i < d; i++) {
 			dummyCount++;
 			const dummyId = `${parent}.${node}.dummy.${dummyCount}`;
-			newNodes.set(dummyId, {
+			const props = nodeMap.get(node)
+				? nodeMap.get(node).data.properties
+				: newNodes.get(node)
+					? newNodes.get(node).data.properties
+					: {};
+			const dummy = {
 				data: {
 					id: dummyId,
 					labels: ["Container"],
-					properties: { ...nodeMap.get(node).data.properties, dummy: 1 }
-				}
-			});
+					properties: { ...props, dummy: 1 }
+				}};
+			newNodes.set(dummyId, dummy);
 			edgeMap.set(edgeKey(currentParent, dummyId), {
 				data: {
 					source: currentParent,
