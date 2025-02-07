@@ -6,7 +6,10 @@ TODO
 - collapse the classes
 - tweak klay parameters
 */
-import { $, $all, h, on, pipe, toJson, toText } from './shorthands.js';
+import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_colors, role_stereotypes, whiten } from './src/colors.js';
+import { aggregateLayers, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
+import { clearInfo, displayInfo } from './src/infoPanel.js';
+import { $, $all, h, on, toJson, toText } from './src/shorthands.js';
 
 on('DOMContentLoaded', document, async () => {
 
@@ -27,7 +30,7 @@ on('DOMContentLoaded', document, async () => {
 
 		const selectedTab = event.target.getAttribute('data-tab');
 		$all('.sidebar-tab').forEach((t) => t.style.display = "none");
-		$(`#${selectedTab}`).style.display = "block";
+		$(`[id="${selectedTab}"]`).style.display = "block";
 	});
 
 	on('change', $('#showPrimitives'), () => showPrimitives($('#showPrimitives')));
@@ -41,6 +44,7 @@ on('DOMContentLoaded', document, async () => {
 				fetch('style.cycss').then(toText)]);
 
 			$("#filename").textContent = `Software Visualization: ${fileName}.json`;
+			clearInfo('#infobody');
 			initCy([prepareGraph(rawGraph), style]);
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -295,7 +299,7 @@ const abstractize = function (graphData) {
 	 * Build the "abstract" set of nodes (remove packages to remove)
 	 */
 	const abstractNodes = filterNodesByIds(
-		filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem"]),
+		filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem", "Script", "Operation", "Constructor", "Grouping"]),
 		packagesToRemove
 	);
 
@@ -352,6 +356,7 @@ const abstractize = function (graphData) {
 	 */
 	const abstractEdges = {
 		// Edges that the original code had
+		hasScript: edges.hasScript || [],
 		contains: newContains || [],
 		specializes: edges.specializes || [],
 		nests: nests || [],
@@ -360,6 +365,9 @@ const abstractize = function (graphData) {
 		holds: holds || [],
 		accepts: accepts || [],
 		returns: returns || [],
+
+		implements: edges.implements || [],
+		allowedDependency: edges.allowedDependency || [],
 
 		// The newly composed "accesses" edges
 		accesses,
@@ -397,7 +405,8 @@ const abstractize = function (graphData) {
 		},
 	};
 
-	return cleanEdges(abstractGraph);
+	const clean = cleanEdges(abstractGraph);
+	return clean;
 };
 
 const prepareGraph = function (graphData) {
@@ -406,6 +415,10 @@ const prepareGraph = function (graphData) {
 
 	// Create a deep clone of graphData
 	const originalGraph = JSON.parse(JSON.stringify(graphData));
+
+	originalGraph.elements.edges.forEach(edge => {
+		edge.data.label = edge.data.label || edge.data.labels?.join() || 'nolabel';
+	});
 
 	const graph = {
 		original: originalGraph,
@@ -427,55 +440,12 @@ const prepareGraph = function (graphData) {
 	});
 
 	graph.abstract.elements.edges.forEach(edge => {
-		edge.data.interaction = edge.data.label || edge.data.labels?.join() || 'nolabel';
-		edge.data.group = edge.data.interaction;
+		edge.data.interaction = edge.data.label;
+		edge.data.group = edge.data.label;
 	});
 
 	return graph;
 };
-
-const shortenRoots = function(pCy) {
-	const containmentRoots = pCy.nodes((n) => 
-		n.data('labels').includes("Container") && 
-		n.incomers(e => e.data('label') === "contains").length===0
-	);
-	containmentRoots.forEach(cutRootRec);
-
-	function cutRootRec(node) {
-		const outgoers = node.outgoers(e => e.data('label') === "contains");
-		if (outgoers.length > 1) return;
-		const child = outgoers.target();
-		var name = "";
-		if (child.data('properties.qualifiedName')) {
-			name = child.data('properties.qualifiedName');
-		} else {
-			name = `${node.data('properties.simpleName')}/${child.data('properties.simpleName') }`;
-		}
-		child.data({
-			properties: {
-				...child.data('properties'),
-				simpleName: name
-			},
-			name: name,
-			label: name,
-		});
-		pCy.$(`#${node.id()}`).remove();
-		cutRootRec(child);
-	}
-}
-
-const setParents = function (pCy, relationship, inverted) {
-	pCy.edges("#parentRel").removeClass("parentRel");
-
-	pCy.edges(`[interaction = "${relationship}"]`).forEach((edge) => {
-		const child = inverted ? edge.source() : edge.target();
-		const parent = inverted ? edge.target() : edge.source();
-
-		child.move({ parent: parent.id() });
-	});
-
-	pCy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
-}
 
 const recolorContainers = function(pCy) {
 	const isContainer = (n) => n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
@@ -524,42 +494,94 @@ const liftEdges = function(pCy) {
 	edges.remove();
 }
 
+const removeContainmentEdges = function(pCy) {
+	pCy.edges('[label="contains"]').remove();
+}
+
 const adjustEdgeWidths = function(pCy) {
 	pCy.edges().forEach((e) => {
-		e.style('width', `${e.data('properties').weight}px`)
+		e.style('width', `${Math.pow(e.data('properties').weight, 0.7)*2}px`)
 	});
 }
 
+const setLayerStyles = function(pCy) {
+	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind')==="architectural layer" && n.incomers(e => e.data('label')==="allowedDependency").empty());
+	const layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
+	var currentLayers = topLayers;
+	while (!currentLayers.empty()) {
+		const nextLayers = currentLayers.outgoers(e => e.data('label') === "allowedDependency").targets();
+		layers.push(...nextLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined"));
+		currentLayers = nextLayers;
+	}
+	layers.push("Undefined");
+	const layer_colors = layer_colors_from(layers);
+	// console.log(layer_colors);
+	pCy.nodes(".Container, .Structure").forEach(n => {
+		if (Object.keys({...n.data("properties.layers")}).length > 0) {
+			const isContainer = n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
+			const layer_percentages = counterToPercentage({...n.data("properties.layers")});
+			if (n.data('properties.simpleName')==="BoardFactory") {
+				console.log(n.id(), layer_percentages)
+				console.log(repeatMiddle(cumulative(layers.map(l => Math.floor(layer_percentages[l] * 100) || 0))).map(p => `${p}`).join(" "), layers.map(l => layer_colors[l]).map(hslString).map(c => `${c} ${c}`).join(" "));
+			}
+			// console.log(n, layer_percentages);
+			const style = {
+				'background-color': null,
+				'background-fill': 'linear-gradient',
+				'background-gradient-stop-positions': repeatMiddle(cumulative(layers.map(l => Math.floor(layer_percentages[l] * 100) || 0))).map(p => `${p}`).join(" "),
+			};
+			if (isContainer) {
+				style['background-gradient-direction'] = "to-bottom-right";
+				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(whiten(c, 0.7))).map(c => `${c} ${c}`).join(" ");
+			} else {
+				style['background-gradient-direction'] = "to-right";
+				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(blacken(c, 0.1))).map(c => `${c} ${c}`).join(" ");
+			}
+			// console.log(cy.$(`[id="${n.id()}"]`).id(), style);
+			cy.$(`[id="${n.id()}"]`).style(style);
+		}
+	});
+	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
+	structures.forEach((clasz) => {
+		const methods = clasz.outgoers(e => e.data('label') === "hasScript")
+			.targets()
+			.map(m => ({ ...m.data(), color: layer_colors[m.data('properties.layer')] }));
+		methods.sort((a, b) => a.properties['simpleName'].localeCompare(b.properties['simpleName']));
+		methods.sort((a, b) => layers.indexOf(a.properties['layer']) - layers.indexOf(b.properties['layer']));
+
+		clasz.scratch('_classviz', { methods });
+	});
+}
+
+function counterToPercentage(counter) {
+	const total = Object.values(counter).reduce((sum, count) => sum + count, 0);
+	const result = {};
+	for (const key in counter) {
+		result[key] = total ? counter[key] / total : 0;
+	}
+	return result;
+}
+
+function cumulative(arr) {
+	const result = [0];
+	for (let i = 0; i < arr.length; i++) {
+		result.push(result[result.length - 1] + arr[i]);
+	}
+	return result;
+}
+
+function repeatMiddle(arr) {
+	if (arr.length < 3) return arr; // No middle elements to repeat
+	return arr.flatMap((el, i) => (i > 0 && i < arr.length - 1 ? [el, el] : el));
+}
+
+const removeExtraNodes = function (pCy) {
+	const extras = pCy.nodes(n => !n.data('labels').includes("Container") && !n.data('labels').includes("Structure")
+		&& !n.data('labels').includes("Type") && !n.data('labels').includes("Primitive"));
+	extras.remove();
+}
+
 let parentRel = "contains";
-
-const role_stereotypes = {
-	"Controller": { symbol: "CT", color_dark: "#8B4293", color_light: "#EFDFFF" },
-	"Coordinator": { symbol: "CO", color_dark: "#50A848", color_light: "#CEEECE" },
-	"Information Holder": { symbol: "IH", color_dark: "#E53033", color_light: "#FFDEDE" },
-	"Interfacer": { symbol: "IT", color_dark: "#AA7F00", color_light: "#F6E5B2" },
-	"User Interfacer": { symbol: "ITu", color_dark: "#AA7F00", color_light: "#F6E5B2" },
-	"Internal Interfacer": { symbol: "ITi", color_dark: "#AA7F00", color_light: "#F6E5B2" },
-	"External Interfacer": { symbol: "ITe", color_dark: "#AA7F00", color_light: "#F6E5B2" },
-	"Service Provider": { symbol: "SP", color_dark: "#4274BF", color_light: "#D2E8FF" },
-	"Structurer": { symbol: "ST", color_dark: "#FF7FD2", color_light: "#FFDBFF" },
-	"*": { symbol: "UR", label: "Unreliable" },
-	"-": { symbol: "UD", label: "Undetermined" }
-};
-
-const ft_colors = [
-	"#8dd3c7",
-	"#ffffb3",
-	"#bebada",
-	"#fb8072",
-	"#80b1d3",
-	"#fdb462",
-	"#b3de69",
-	"#fccde5",
-	"#d9d9d9",
-	"#bc80bd",
-	"#ccebc5",
-	"#ffed6f",
-];
 
 function generateExpColOptions(_layoutName = "klay") {
 	let cyExpandCollapseOptions = {
@@ -598,6 +620,8 @@ const initCy = async function (payload) {
 
 		shortenRoots(hcy);
 		setParents(hcy, parentRel, false);
+		setStyleClasses(hcy);
+		aggregateLayers(hcy);
 
 		// then create a visualized graph
 		cytoscape({
@@ -614,13 +638,16 @@ const initCy = async function (payload) {
 	function cyReady(event) {
 		window.cy = event.cy;
 
-		cy.startBatch();
+		// cy.startBatch();
 
 		recolorContainers(cy);
 		liftEdges(cy);
+		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
+		setLayerStyles(cy);
+		removeExtraNodes(cy);
 
-		cy.endBatch();
+		// cy.endBatch();
 
 		let api = this.expandCollapse(generateExpColOptions());
 
@@ -651,49 +678,37 @@ const initCy = async function (payload) {
 	}
 }
 
-// Get a reference to the div element
-var infoBox = $("#infobox");
-var infoTitle = $("#infotitle");
-var infoBody = $("#infobody");
-
-// Add a click event listener to the div
-on("click", infoTitle, () => {
-	if (infoBody.style.display === "none") {
-		infoBody.style.display = "block";
-		infoTitle.style.borderBottomLeftRadius = 0;
-		infoTitle.style.borderBottomRightRadius = 0;
-		infoTitle.style.borderBottom = "1px solid #9b999b";
-	} else {
-		infoBody.style.display = "none";
-		infoTitle.style.borderBottomLeftRadius = "inherit";
-		infoTitle.style.borderBottomRightRadius = "inherit";
-		infoTitle.style.borderBottom = 0;
-	}
-});
-
 const bindRouters = function () {
 	// Initiate cyExpandCollapseApi
 	cy.expandCollapse("get");
 
-	// right click dims the element
-	cy.on('cxttap', 'node,edge',
-		evt => {
-			evt.target.addClass("dimmed")
-			const interactions = $all('input[name="showrels"]')
-				.filter(cb => cb.checked)
-				.map(cb => cb.value);
+	cy.on("select", "node", (event) => {
+		event.target.addClass("selected");
+		displayInfo('#infobody')(event.target);
+	});
 
-			const edges = evt.target.descendants().merge(evt.target)
-				.connectedEdges()
-				.filter((e) => interactions.includes(e.data("interaction")));
-			edges.addClass("dimmed");
-		});
+	cy.on("unselect", "node", (event) => {
+		event.target.removeClass("selected");
+		clearInfo('#infobody');
+	});
+
+	// right click dims the element
+	cy.on('cxttap', 'node,edge', (event) => {
+		event.target.addClass("dimmed")
+		const interactions = $all('input[name="showrels"]')
+			.filter(cb => cb.checked)
+			.map(cb => cb.value);
+
+		const edges = event.target.descendants().merge(event.target)
+			.connectedEdges()
+			.filter((e) => interactions.includes(e.data("interaction")));
+		edges.addClass("dimmed");
+	});
 
 	// left click highlights the node and its connected edges and nodes
-	cy.on("tap", "node", (evt) => {
+	cy.on("tap", "node", (event) => {
 
-		const to_activate = evt.target.descendants().merge(evt.target.ancestors()).merge(evt.target)
-
+		const to_activate = event.target.descendants().merge(event.target.ancestors()).merge(event.target)
 		to_activate.removeClass("dimmed");
 
 		// currently visible relationship types
@@ -701,11 +716,11 @@ const bindRouters = function () {
 			.filter(cb => cb.checked)
 			.map(cb => cb.value);
 
-		const edges = to_activate
+		const edges = event.target.descendants().merge(event.target)
 			.connectedEdges()
 			.filter((e) => interactions.includes(e.data("interaction")));
 		edges.removeClass("dimmed");
-		edges.connectedNodes().removeClass("dimmed");
+		edges.targets().merge(edges.targets().ancestors()).removeClass("dimmed");
 	});
 
 	// left click highlights the edge and its connected nodes
@@ -715,37 +730,7 @@ const bindRouters = function () {
 	});
 
 	cy.on("mouseover", "node", (evt) => {
-		const { properties } = evt.target.data();
-		const { kind, roleStereotype } = properties;
-		var infoSubheader = "";
 
-		if (evt.target.data("labels").includes('Structure')) {
-			const backgroundColor = (roleStereotype && (roleStereotype in role_stereotypes)) ? role_stereotypes[roleStereotype].color_light : "inherit";
-			infoSubheader = h('b', 
-								[h('i', 
-									[kind]), roleStereotype ? ` – ${roleStereotype}` : ""]);
-			infoBody.style.backgroundColor = backgroundColor;
-		} else if (evt.target.data("labels").includes("Container")) {
-			infoSubheader = h('b', 
-								[h('i', 
-									[kind])]);
-			infoBody.style.backgroundColor = "inherit";
-		}
-
-		infoBody.textContent = "";
-		infoBody.append(
-			h('h3', [properties.simpleName]), 
-			h('p',  [infoSubheader]), 
-			h('p',  [properties.description || "(no description)"]));
-
-
-		// Adjust the width of the infoBox based on the content length and add text-wrapping for really long descriptions
-		const maxWidth = 400;
-		const minWidth = 300;
-		infoBox.style.width = "auto";
-		infoBox.style.maxWidth = `${maxWidth}px`;
-		infoBox.style.minWidth = `${minWidth}px`;
-		infoBody.style.overflowWrap = "break-word";
 	});
 }
 
@@ -811,6 +796,7 @@ const fileUpload = function () {
 		const file = event.target.files[0];
 		const fileName = file.name;
 		$("#filename").textContent = `Software Visualization – ${fileName}`;
+		clearInfo('#infobody');
 		const reader = new FileReader();
 		reader.readAsText(file, "UTF-8");
 		reader.onload = function (e) {
@@ -853,11 +839,17 @@ const fillRSFilter = function () {
 		checkbox.checked = true;
 		on('change', checkbox, (event) => showRS(event.target));
 
-		const label = h("label",
-						{ for: `rs-${role_stereotypes[key].symbol}`, class: "rslabel" },
-						[checkbox, role_stereotypes[key].label || key]);
-		label.style.backgroundColor = role_stereotypes[key].color_light;
-		const div = h("div", [label]);
+		const div = h("div", [
+						h("label",
+							{
+								for: `rs-${role_stereotypes[key].symbol}`,
+								class: "rslabel",
+								style: `color: ${hslString(blacken(role_stereotype_colors[key], 0.1))}; font-weight: bold;`
+							},
+							[
+								checkbox, 
+								role_stereotypes[key].label || key
+							])]);
 		return div;
 	});
 
@@ -884,11 +876,11 @@ const fillRelationshipToggles = function () {
 	// Append the thead element to the table element
 	table.appendChild(thead);
 
-	cy.edges()
+	const edgeLabels = cy.edges()
 		.map((e) => e.data("interaction"))
-		.filter((v, i, s) => s.indexOf(v) === i)
-		.forEach((edgeLabel) => {
-
+		.filter((v, i, s) => s.indexOf(v) === i);
+	edgeLabels.sort((a, b) => a.localeCompare(b));
+	edgeLabels.forEach((edgeLabel) => {
 			const checkbox = h("input",
 				{
 					type: "checkbox",

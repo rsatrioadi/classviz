@@ -6,17 +6,43 @@
   display: none;
 }
 
-node {
+node.Container {
+  font-size: 16;
+  padding: 32px;
+  label: data(label);
+  border-color: grey;
+  border-width: 3;
+  background-color: #ececec;
+  text-halign: center;
+  text-valign: top;
+  text-margin-y: -8px;
+  text-background-color: #ececec;
+  text-background-shape: rectangle;
+  text-background-padding: 8;
+  text-background-opacity: 1;
+  text-border-color: grey;
+  text-border-width: 3;
+  text-border-opacity: 1;
+}
+
+node.Container[properties.dummy = 1] {
+  label: ;
+  border-style: dashed;
+}
+
+node.Structure {
+  font-size: 16;
+  padding: 16px;
   height: label;
   width: label;
-  padding: 16px;
-  border-color: black;
-  background-color: whitesmoke;
-  border-width: 1;
-  shape: rectangle;
   label: data(label);
+  border-color: grey;
+  background-color: whitesmoke;
+  border-width: 3;
+  shape: rectangle;
+  text-halign: center;
   text-valign: center;
-  text-wrap: wrap;
+  text-border-color: grey;
 }
 
 node[labels.1 = "vulnerable"]{
@@ -61,29 +87,6 @@ node[properties.roleStereotype = "Service Provider"] {
 node[properties.roleStereotype = "Structurer"] {
   border-color: #FF7FD2;
   background-color: #FFDBFF;
-}
-
-node[properties.dummy = 1] {
-  label: ;
-  background-color: grey;
-  border-color: grey;
-  border-width: 3;
-  border-style: dashed;
-}
-
-node[properties.kind = "package"], node[properties.kind = "folder"] {
-  text-valign: top;
-  border-color: grey;
-  border-width: 3;
-  background-color: #ececec;
-  text-background-color: #ececec;
-  text-background-shape: rectangle;
-  text-background-padding: 8;
-  text-background-opacity: 1;
-  text-border-color: grey;
-  text-border-width: 3;
-  text-border-opacity: 1;
-  padding: 32px;
 }
 
 node[properties.kind = "Namespace"] {
@@ -281,7 +284,12 @@ edge[interaction = "returns"] {
   text-opacity: 0;
 }
 
-
+node.selected {
+  underlay-color: orange;
+  underlay-padding: 12;
+  underlay-opacity: 1;
+  underlay-shape: round-rectangle;
+}
 
 .parentRel {
   display: none;

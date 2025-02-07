@@ -26,7 +26,7 @@ body {
   left: 270px;
   top: 36px;
   bottom: 0;
-  right: 0;
+  right: 270px;
   z-index: 1;
   background-color: beige;
 }
@@ -220,16 +220,17 @@ ul.tabs {
 }
 
 #infobox {
-  width: 270px;
   position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2;
-  /* padding: 4px; */
+  display: flex;
+  flex-direction: row;
+  right: 0;
+  top: 36px;
+  bottom: 0;
+  width: 270px;
   background-color: #fafafa;
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 11px 35px 2px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+  /* border-right: 1px solid #cacaca; */
+  box-shadow: 0px 0px 3px rgba(101, 101, 101, 0.5);
+  z-index: 9998;
 }
 
 #infotitle {
@@ -242,10 +243,59 @@ ul.tabs {
   border-top-right-radius: inherit;
 }
 
+.resizer {
+  width: 5px;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+}
+
 #infobody {
-  height: auto;
+  overflow-y: scroll;
+  width: 100%;
+  background-color: #fafafa;
+  padding: 12px 8px 12px 3px;
+  border-top: 1px solid #cacaca;
+}
+
+#infobody ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#infobody h2 {
+  font-size: 1.25em;
+  text-align: left;
+}
+
+#infobody ul li.info {
+  border-radius: 4px;
+  border: 1px solid #cacaca;
+  margin-bottom: 8px;
+}
+
+#infobody ul li h3.info {
+  font-size: 1em;
   padding: 4px;
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
-  display: block;
+  margin: 0;
+  background-image: linear-gradient(to bottom,
+      hsl(0, 0%, 95%),
+      hsl(0, 0%, 87%));
+  border-bottom: 1px solid #cacaca;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#infobody ul li div.info {
+  font-size: 1em;
+  padding: 4px;
+  margin-bottom: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space-collapse: collapse;
 }
