@@ -63,13 +63,15 @@ const prepareRenderData = (node) => {
 
 		renderData.properties.push({
 			key: "methods",
-			value: methods.map(m => {
+			value: methods.length > 0 ? methods.map(m => {
 				return h('div', [
 					h('h3', { class: 'info' },
 						[m['properties']['simpleName']]),
-					h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.5))};` },
-						[m.properties.description || "(no description)"])]);
-			})
+					h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.5))};` }, [
+						h('p', [h('b', ['description: ']), m.properties.description || "(no description)"]),
+						h('p', [h('b', ['docComment: ']), m.properties.docComment || "(no docComment)"]),
+					])]);
+			}) : h('div', {class:'info'}, ["No method information available."])
 		});
 	} else if (node.data('labels').includes("Container")) {
 
@@ -151,7 +153,7 @@ const prepareRenderData = (node) => {
 	return renderData;
 }
 
-export const clearInfo = (sel) => () => {
+export const clearInfo = (sel) => {
 	const element = $(sel);
 	element.textContent = "";
 }
