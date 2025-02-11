@@ -48,7 +48,7 @@ const prepareRenderData = (node) => {
 			const p = buildProp('roleStereotype');
 
 			if (role_stereotype_colors[p.value]) {
-				p['style'] = `color: ${hslString(blacken(role_stereotype_colors[p.value], 0.1))}; font-weight: bold;`;
+				p['style'] = `background-color: ${hslString(whiten(role_stereotype_colors[p.value], 0.75))};`;
 			}
 
 			return p;
