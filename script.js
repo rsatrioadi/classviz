@@ -9,18 +9,18 @@ TODO
 import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_colors, role_stereotypes, whiten } from './src/colors.js';
 import { aggregateLayers, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
 import { clearInfo, displayInfo } from './src/infoPanel.js';
-import { $, $all, h, on, toJson, toText } from './src/shorthands.js';
+import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
 on('DOMContentLoaded', document, async () => {
 
 	cytoscape.warnings(false);
 
-	on('click', $("#btn-upload"),           fileUpload);
-	on('click', $("#btn-relayout"),         () => relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value));
-	on('click', $("#btn-highlight"),        () => highlight($('#highlight').value));
-	on('click', $("#btn-download"),         () => saveAsSvg('class-diagram.svg'));
-	on('click', $("#btn-popup"),            () => window.open(getSvgUrl(), '_blank'));
-	on('click', $("#btn-reset"),            () => highlight(''));
+	on('click', $("#btn-upload"), fileUpload);
+	on('click', $("#btn-relayout"), () => relayout($('#selectlayout').options[$('#selectlayout').selectedIndex].value));
+	on('click', $("#btn-highlight"), () => highlight($('#highlight').value));
+	on('click', $("#btn-download"), () => saveAsSvg('class-diagram.svg'));
+	on('click', $("#btn-popup"), () => window.open(getSvgUrl(), '_blank'));
+	on('click', $("#btn-reset"), () => highlight(''));
 	on('click', $("#btn-toggleVisibility"), toggleVisibility);
 
 	const tablinks = $all(".tablink");
@@ -35,6 +35,8 @@ on('DOMContentLoaded', document, async () => {
 
 	on('change', $('#showPrimitives'), () => showPrimitives($('#showPrimitives')));
 	// on('change', $('#showPackages'),   () => showPackages($('#showPackages')));
+
+	on('change', $all('.coloringlabel'), colorNodes);
 
 	const fileName = new URLSearchParams(window.location.search).get('p');
 	if (fileName) {
@@ -51,6 +53,13 @@ on('DOMContentLoaded', document, async () => {
 		}
 	}
 });
+
+const colorNodes = function (event) {
+	cy.nodes().forEach((n) => {
+		const style = getScratch(n, event.target.value);
+		n.style(style);
+	});
+}
 
 const collectUniqueLabels = function (dataList) {
 	const uniqueLabels = new Set();
@@ -426,8 +435,8 @@ const prepareGraph = function (graphData) {
 	};
 
 	const makeDummyContainers = homogenizeForest(
-		e => e.data.label === "contains", 
-		n => n.data.labels.includes("Container"), 
+		e => e.data.label === "contains",
+		n => n.data.labels.includes("Container"),
 		n => n.data.labels.includes("Structure")
 	);
 
@@ -447,7 +456,17 @@ const prepareGraph = function (graphData) {
 	return graph;
 };
 
-const recolorContainers = function(pCy) {
+function addScratch(ele, key, value) {
+	if (!ele.scratch('_classviz')) ele.scratch('_classviz', {});
+	ele.scratch('_classviz')[key] = value;
+}
+
+function getScratch(ele, key) {
+	if (ele.scratch('_classviz')) return ele.scratch('_classviz')[key];
+	return null;
+}
+
+const recolorContainers = function (pCy) {
 	const isContainer = (n) => n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
 	const max_pkg_depth = Math.max(...pCy.nodes(isContainer).map((n) => n.ancestors().length));
 
@@ -462,9 +481,21 @@ const recolorContainers = function(pCy) {
 	});
 }
 
-const liftEdges = function(pCy) {
-	const edges = pCy.edges((e) => 
-		e.source().data('labels').includes("Structure") && 
+const cacheNodeStyles = function (pCy) {
+	pCy.nodes().forEach((n) => {
+		const style = n.style();
+		addScratch(n, 'style_default', {
+			'color': style['color'],
+			'border-color': style['border-color'],
+			'background-color': style['background-color'],
+			'background-fill': style['background-fill']
+		});
+	});
+}
+
+const liftEdges = function (pCy) {
+	const edges = pCy.edges((e) =>
+		e.source().data('labels').includes("Structure") &&
 		e.target().data('labels').includes("Structure") &&
 		e.target().parent() !== e.source().parent());
 	const newEdges = {};
@@ -475,17 +506,19 @@ const liftEdges = function(pCy) {
 		if (srcId && tgtId) {
 			const key = `${srcId}-${e.data('label')}-${tgtId}`;
 			if (!newEdges[key]) {
-				newEdges[key] = { group: "edges", data: {
-					source: srcId,
-					target: tgtId,
-					label: e.data('label'),
-					interaction: e.data('label'),
-					properties: {
-						...e.data('properties'),
-						weight: 0,
-						metaSrc: "lifting"
+				newEdges[key] = {
+					group: "edges", data: {
+						source: srcId,
+						target: tgtId,
+						label: e.data('label'),
+						interaction: e.data('label'),
+						properties: {
+							...e.data('properties'),
+							weight: 0,
+							metaSrc: "lifting"
+						}
 					}
-				}};
+				};
 			}
 			newEdges[key].data.properties["weight"] += 1;
 		}
@@ -494,18 +527,18 @@ const liftEdges = function(pCy) {
 	edges.remove();
 }
 
-const removeContainmentEdges = function(pCy) {
+const removeContainmentEdges = function (pCy) {
 	pCy.edges('[label="contains"]').remove();
 }
 
-const adjustEdgeWidths = function(pCy) {
+const adjustEdgeWidths = function (pCy) {
 	pCy.edges().forEach((e) => {
-		e.style('width', `${Math.pow(e.data('properties').weight, 0.7)*2}px`)
+		e.style('width', `${Math.pow(e.data('properties').weight, 0.7) * 2}px`)
 	});
 }
 
-const setLayerStyles = function(pCy) {
-	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind')==="architectural layer" && n.incomers(e => e.data('label')==="allowedDependency").empty());
+const setLayerStyles = function (pCy) {
+	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind') === "architectural layer" && n.incomers(e => e.data('label') === "allowedDependency").empty());
 	const layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
 	var currentLayers = topLayers;
 	while (!currentLayers.empty()) {
@@ -517,14 +550,9 @@ const setLayerStyles = function(pCy) {
 	const layer_colors = layer_colors_from(layers);
 	// console.log(layer_colors);
 	pCy.nodes(".Container, .Structure").forEach(n => {
-		if (Object.keys({...n.data("properties.layers")}).length > 0) {
+		if (Object.keys({ ...n.data("properties.layers") }).length > 0) {
 			const isContainer = n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
-			const layer_percentages = counterToPercentage({...n.data("properties.layers")});
-			if (n.data('properties.simpleName')==="BoardFactory") {
-				console.log(n.id(), layer_percentages)
-				console.log(repeatMiddle(cumulative(layers.map(l => Math.floor(layer_percentages[l] * 100) || 0))).map(p => `${p}`).join(" "), layers.map(l => layer_colors[l]).map(hslString).map(c => `${c} ${c}`).join(" "));
-			}
-			// console.log(n, layer_percentages);
+			const layer_percentages = counterToPercentage({ ...n.data("properties.layers") });
 			const style = {
 				'background-color': null,
 				'background-fill': 'linear-gradient',
@@ -538,7 +566,8 @@ const setLayerStyles = function(pCy) {
 				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(blacken(c, 0.1))).map(c => `${c} ${c}`).join(" ");
 			}
 			// console.log(cy.$(`[id="${n.id()}"]`).id(), style);
-			cy.$(`[id="${n.id()}"]`).style(style);
+			addScratch(n, 'style_layer', style);
+			// cy.$(`[id="${n.id()}"]`).style(style);
 		}
 	});
 	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
@@ -549,7 +578,21 @@ const setLayerStyles = function(pCy) {
 		methods.sort((a, b) => a.properties['simpleName'].localeCompare(b.properties['simpleName']));
 		methods.sort((a, b) => layers.indexOf(a.properties['layer']) - layers.indexOf(b.properties['layer']));
 
-		clasz.scratch('_classviz', { methods });
+		addScratch(clasz, 'methods', methods);
+	});
+}
+
+const setRsStyles = function (pCy) {
+
+	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
+	structures.forEach((clasz) => {
+		if (clasz.data('properties.roleStereotype')) {
+			addScratch(clasz, 'style_rs', {
+				'border-color': hslString(role_stereotype_colors[clasz.data('properties.roleStereotype')]),
+				'background-fill': "solid",
+				'background-color': hslString(whiten(role_stereotype_colors[clasz.data('properties.roleStereotype')], 0.75)),
+			});
+		}
 	});
 }
 
@@ -641,26 +684,28 @@ const initCy = async function (payload) {
 		// cy.startBatch();
 
 		recolorContainers(cy);
+		cacheNodeStyles(cy);
 		liftEdges(cy);
 		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
 		setLayerStyles(cy);
+		setRsStyles(cy);
 		removeExtraNodes(cy);
 
 		// cy.endBatch();
 
-		let api = this.expandCollapse(generateExpColOptions());
+		// let api = this.expandCollapse(generateExpColOptions());
 
-		on("click", $("#collapseNodes"), () => {
-			api.collapseAll();
-			api.collapseAllEdges(generateExpColOptions())
-		});
-		on("click", $("#expandNodes"), () => {
-			api.expandAll();
-			api.expandAllEdges()
-		});
+		// on("click", $("#collapseNodes"), () => {
+		// 	api.collapseAll();
+		// 	api.collapseAllEdges(generateExpColOptions())
+		// });
+		// on("click", $("#expandNodes"), () => {
+		// 	api.expandAll();
+		// 	api.expandAllEdges()
+		// });
 
-		fillRSFilter();
+		// fillRSFilter();
 		fillRelationshipToggles();
 		fillFeatureDropdown();
 
@@ -680,7 +725,7 @@ const initCy = async function (payload) {
 
 const bindRouters = function () {
 	// Initiate cyExpandCollapseApi
-	cy.expandCollapse("get");
+	// cy.expandCollapse("get");
 
 	cy.on("select", "node", (event) => {
 		event.target.addClass("selected");
@@ -708,7 +753,7 @@ const bindRouters = function () {
 	// left click highlights the node and its connected edges and nodes
 	cy.on("tap", "node", (event) => {
 
-		const to_activate = event.target.descendants().merge(event.target.ancestors()).merge(event.target)
+		const to_activate = event.target.children().union(event.target.ancestors()).merge(event.target)
 		to_activate.removeClass("dimmed");
 
 		// currently visible relationship types
@@ -716,7 +761,7 @@ const bindRouters = function () {
 			.filter(cb => cb.checked)
 			.map(cb => cb.value);
 
-		const edges = event.target.descendants().merge(event.target)
+		const edges = event.target.children().merge(event.target)
 			.connectedEdges()
 			.filter((e) => interactions.includes(e.data("interaction")));
 		edges.removeClass("dimmed");
@@ -749,7 +794,7 @@ const relayout = function (layout) {
 		},
 	}).run();
 	// Re set the expandCollapse options
-	cy.expandCollapse(generateExpColOptions(layout));
+	// cy.expandCollapse(generateExpColOptions(layout));
 };
 
 const saveAsSvg = function (filename) {
@@ -822,107 +867,86 @@ const toggleVisibility = function () {
 /* ======================================== */
 
 const fillRSFilter = function () {
-	const menuNodes = $("#menu-nodes");
-	const rsFilters = menuNodes.getElementsByClassName('rs-filter-container');
-	Array.from(rsFilters).forEach((rsFilter) => menuNodes.removeChild(rsFilter))
 
-	const rsHeader = h('p', 
-						[h('b', 
-							["Role Stereotypes"])]);
-	const divs = Object.keys(role_stereotypes).map(key => {
-		const checkbox = h("input", {
-			type: "checkbox",
-			id: `rs-${role_stereotypes[key].symbol}`,
-			name: "showrs",
-			value: key
-		});
-		checkbox.checked = true;
-		on('change', checkbox, (event) => showRS(event.target));
+	if (!$('#menu-nodes .rs-filter-container')) {
+		r('#menu-nodes', [h('div', { class: "rs-filter-container" })], false);
+	}
 
-		const div = h("div", [
-						h("label",
-							{
-								for: `rs-${role_stereotypes[key].symbol}`,
-								class: "rslabel",
-								style: `color: ${hslString(blacken(role_stereotype_colors[key], 0.1))}; font-weight: bold;`
-							},
-							[
-								checkbox, 
-								role_stereotypes[key].label || key
-							])]);
-		return div;
-	});
-
-	const containerDiv = h('div', { class: 'rs-filter-container' }, [rsHeader, ...divs]);
-
-	menuNodes.appendChild(containerDiv);
+	r('#menu-nodes .rs-filter-container', [
+		h('p', {}, [h('b', {}, ["Role Stereotypes"])]),
+		...Object.keys(role_stereotypes).map(key =>
+			h("div", {}, [
+				h("label", {
+					for: `rs-${role_stereotypes[key].symbol}`,
+					class: "rslabel",
+					style: `color: ${hslString(blacken(role_stereotype_colors[key], 0.1))}; font-weight: bold;`
+				}, [
+					h("input", {
+						type: "checkbox",
+						id: `rs-${role_stereotypes[key].symbol}`,
+						name: "showrs",
+						value: key
+					}, [], {
+						change: (event) => showRS(event.target)
+					}, (e) => e.checked = true),
+					role_stereotypes[key].label || key
+				])]))]);
 }
 
 const fillRelationshipToggles = function () {
-
-	const table = $("#reltab"); // Get the table element
-	table.textContent = "";
-
-	// Create the thead element
-	const thead = h("thead", 
-		[h("tr", [
-			h("th", 
-				["Connection"]),
-			h("th", 
-				["Ortho"]),
-			h("th", 
-				["Bezier"]),])]);
-
-	// Append the thead element to the table element
-	table.appendChild(thead);
 
 	const edgeLabels = cy.edges()
 		.map((e) => e.data("interaction"))
 		.filter((v, i, s) => s.indexOf(v) === i);
 	edgeLabels.sort((a, b) => a.localeCompare(b));
-	edgeLabels.forEach((edgeLabel) => {
-			const checkbox = h("input",
-				{
-					type: "checkbox",
-					id: edgeLabel,
-					name: "showrels",
-					value: edgeLabel,
-				});
-			checkbox.checked = ["calls"].includes(edgeLabel);
-			on('change', checkbox, (event) => setVisible(event.target));
 
-			const taxiRadio = h("input",
-				{
-					type: "radio",
-					id: `${edgeLabel}-ort`,
-					name: edgeLabel,
-					value: "taxi",
-				});
-			on('change', taxiRadio, (event) => setLineBends(event.target));
-
-			const bezierRadio = h("input",
-				{
-					type: "radio",
-					id: `${edgeLabel}-bez`,
-					name: edgeLabel,
-					value: "bezier",
-				});
-			bezierRadio.checked = true;
-			on('change', bezierRadio, (event) => setLineBends(event.target));
-
-			const row = h("tr", [
-							h("td",
-								[h("label",
-									{ for: edgeLabel },
-									[checkbox, edgeLabel])]),
-							h("td",
-								[taxiRadio]),
-							h("td",
-								[bezierRadio])]);
-
-			// Append the row to the table
-			table.appendChild(row);
-		});
+	r('#reltab', [
+		h("thead", {}, [
+			h("tr", {}, [
+				h("th", {},
+					["Connection"]),
+				h("th", {},
+					["Orthogonal"]),
+				h("th", {},
+					["Bezier"]),])]),
+		...edgeLabels.map((edgeLabel) =>
+			h("tr", {}, [
+				h("td", {}, [
+					h("label", {
+						for: edgeLabel
+					}, [
+						h("input", {
+							type: "checkbox",
+							id: edgeLabel,
+							name: "showrels",
+							value: edgeLabel,
+						}, [], {
+							change: (event) => setVisible(event.target)
+						}, (e) => {
+							e.checked = ["calls"].includes(edgeLabel);
+						}),
+						edgeLabel])]),
+				h("td", {}, [
+					h("input", {
+						type: "radio",
+						id: `${edgeLabel}-ort`,
+						name: edgeLabel,
+						value: "taxi",
+					}, [], {
+						change: (event) => setLineBends(event.target)
+					})
+				]),
+				h("td", {}, [
+					h("input", {
+						type: "radio",
+						id: `${edgeLabel}-bez`,
+						name: edgeLabel,
+						value: "bezier",
+					}, [], {
+						change: (event) => setLineBends(event.target)
+					}, (e) => {
+						e.checked = true;
+					})])]))]);
 
 	$all('input[name="showrels"]').forEach(setVisible);
 };
@@ -938,28 +962,24 @@ const fillFeatureDropdown = function () {
 
 	let tracesList = [...tracesSet];
 
-	// Get the dropdown element.
-	const dropdown = $("#selectfeature");
-	dropdown.textContent = "";
-
-	tracesList.forEach(trace => {
-
-		const checkbox = h("input",
-			{
-				type: "checkbox",
-				id: `feature-${trace}`,
-				name: "showfeatures",
-				value: trace,
-			});
-		on('change', checkbox, (event) => showTrace(event.target));
-
-		const div = h("div",
-						[h("label",
-							{ for: `feature-${trace}`, class: "featurelabel" },
-							[checkbox, trace])]);
-
-		dropdown.appendChild(div);
-	});
+	r("#selectfeature", tracesList.map(trace =>
+		h("div", {}, [
+			h("label", {
+				for: `feature-${trace}`,
+				class: "featurelabel"
+			}, [
+				h("input", {
+					type: "checkbox",
+					id: `feature-${trace}`,
+					name: "showfeatures",
+					value: trace,
+				}, [], {
+					change: (event) => showTrace(event.target)
+				}),
+				trace
+			])
+		])
+	));
 };
 
 const fillBugsDropdown = function () {
@@ -973,32 +993,24 @@ const fillBugsDropdown = function () {
 		}
 	});
 
-
 	let bugList = [...bugsSet]
 	// console.log(bugList)
 
-	// Get the dropdown element.
-	const dropdown = $("#tab-bugs");
-	dropdown.textContent = "";
-
-	bugList.forEach(bug => {
-
-		const checkbox = h("input",
-			{
-				type: "checkbox",
-				id: `bug-${bug}`,
-				name: "showbugs",
-				value: bug,
-			});
-		on('change', checkbox, (event) => showBug(event.target));
-
-		const div = h("div",
-			[h("label",
-				{ for: `bug-${bug}`, class: "buglabel" },
-				[checkbox, bug])]);
-
-		dropdown.appendChild(div);
-	});
+	r("#tab-bugs", bugList.map(bug =>
+		h("div", {}, [
+			h("label", {
+				for: `bug-${bug}`,
+				class: "buglabel"
+			}, [
+				h("input", {
+					type: "checkbox",
+					id: `bug-${bug}`,
+					name: "showbugs",
+					value: bug,
+				}, [], {
+					change: (event) => showBug(event.target)
+				}),
+				bug])])));
 };
 
 function arrayIntersection(arr1, arr2) {
@@ -1014,11 +1026,11 @@ const highlight = function (text) {
 		cy.elements().addClass("dimmed");
 		cy.elements(".hidden").removeClass("hidden").addClass("hidden");
 
-		const cy_classes = cy.nodes().filter((node) => classes.includes(node.data('label')));
+		const cy_classes = cy.nodes((node) => classes.includes(node.data('name')));
 		const cy_edges = cy_classes.edgesWith(cy_classes);
 		cy_classes.removeClass("dimmed");
 		cy_edges.removeClass("dimmed");
-		cy.nodes(n => n.data('labels').includes('Container')).removeClass("dimmed");
+		cy.nodes(n => n.data('labels').includes('Container') && !n.data('labels').includes('Structure')).removeClass("dimmed");
 	} else {
 		cy.elements().removeClass("dimmed");
 	}
@@ -1048,6 +1060,10 @@ const showTrace = function (_evt) {
 
 	$all(".featurelabel").forEach((e) => { e.style.backgroundColor = ""; });
 
+	cy.elements().removeClass("dimmed");
+	cy.elements().removeClass("feature_shown");
+	cy.elements().addClass("feature_reset");
+
 	if (trace_names.length > 0) {
 		const colorMap = {};
 		trace_names.forEach((trace, i) => {
@@ -1069,26 +1085,24 @@ const showTrace = function (_evt) {
 		feature_nodes.removeClass("dimmed");
 		feature_edges.removeClass("dimmed");
 		cy.nodes(n => n.data('labels').includes('Container')).removeClass("dimmed");
-		feature_nodes.removeClass("feature_reset");
-		feature_edges.removeClass("feature_reset");
-		feature_nodes.addClass("feature_shown");
-		feature_edges.addClass("feature_shown");
 
 		feature_nodes.forEach((node) => {
 			const trc = arrayIntersection(
 				trace_names,
 				node.data("properties.traces")
 			);
-			node.style(
-				"background-gradient-stop-colors",
-				trc.map((t) => colorMap[t]).join(" ")
-			);
+			node.style({
+				"background-fill": "linear-gradient",
+				"background-gradient-direction": "to-right",
+				"background-gradient-stop-positions": null,
+				"background-gradient-stop-colors": trc.map((t) => colorMap[t]).join(" "),
+			});
 		});
 	} else {
-		cy.elements().removeClass("dimmed");
-		cy.elements().removeClass("feature_shown");
-		cy.elements().addClass("feature_reset");
+		const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
+		colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
 	}
+
 	cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };
 
@@ -1300,7 +1314,8 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 					id: dummyId,
 					labels: ["Container"],
 					properties: { ...props, dummy: 1 }
-				}};
+				}
+			};
 			newNodes.set(dummyId, dummy);
 			edgeMap.set(edgeKey(currentParent, dummyId), {
 				data: {

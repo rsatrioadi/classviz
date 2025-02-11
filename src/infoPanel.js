@@ -1,5 +1,5 @@
 import { hslString, role_stereotype_colors, whiten, blacken } from './colors.js';
-import { $, h } from './shorthands.js';
+import { $, h, r } from './shorthands.js';
 
 const prepareRenderData = (node) => {
 	const renderData = {
@@ -19,9 +19,9 @@ const prepareRenderData = (node) => {
 	if (node.data('properties.description')) {
 		const d = h('div');
 		if (node.data('properties.title')) {
-			d.appendChild(h('p', [h('b', [node.data('properties.title')])]));
+			d.appendChild(h('p', {}, [h('b', {}, [node.data('properties.title')])]));
 		}
-		d.appendChild(h('p', [node.data('properties.description')
+		d.appendChild(h('p', {}, [node.data('properties.description')
 			.replace(/\./g, '.\u200B')
 			.replace(/([A-Z])/g, '\u200B$1')]));
 		renderData.properties.push({
@@ -59,19 +59,23 @@ const prepareRenderData = (node) => {
 
 	if (node.data('labels').includes("Structure")) {
 		const methods = node.scratch('_classviz')['methods'];
-		console.log(node.id(), node.scratch());
 
 		renderData.properties.push({
 			key: "methods",
 			value: methods.length > 0 ? methods.map(m => {
-				return h('div', [
-					h('h3', { class: 'info' },
-						[m['properties']['simpleName']]),
-					h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.5))};` }, [
-						h('p', [h('b', ['description: ']), m.properties.description || "(no description)"]),
-						h('p', [h('b', ['docComment: ']), m.properties.docComment || "(no docComment)"]),
-					])]);
-			}) : h('div', {class:'info'}, ["No method information available."])
+				return (
+					h('div', {}, [
+						h('h3', { class: 'info' },
+							[m['properties']['simpleName']]),
+						h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.5))};` }, [
+							h('p', {}, [
+								h('b', {}, ['description: ']),
+								m.properties.description || "(no description)"]),
+							h('p', {}, [], {}, (e) => {
+								e.innerHTML = "<b>docComment: </b>"+(m.properties.docComment || "(no docComment)");
+							}),
+						])]));
+			}) : h('div', { class: 'info' }, ["No method information available."])
 		});
 	} else if (node.data('labels').includes("Container")) {
 
@@ -154,8 +158,7 @@ const prepareRenderData = (node) => {
 }
 
 export const clearInfo = (sel) => {
-	const element = $(sel);
-	element.textContent = "";
+	r(sel);
 }
 
 export const displayInfo = (sel) => (node) => {
@@ -173,7 +176,7 @@ export const displayInfo = (sel) => (node) => {
 		const propChildren = [];
 		if (Array.isArray(prop.value)) {
 			// Nested list for arrays
-			propChildren.push(h('ul', prop.value.map(item => h('li', { class: 'info' }, [item]))));
+			propChildren.push(h('ul', {}, prop.value.map(item => h('li', { class: 'info' }, [item]))));
 		} else {
 			// Simple property value
 			propChildren.push(prop.value);
@@ -187,9 +190,9 @@ export const displayInfo = (sel) => (node) => {
 	});
 
 	// Render the properties
-	const ul = h("ul", ulContents);
+	const ul = h("ul", {}, ulContents);
 
 	element.textContent = "";
-	element.appendChild(h('h2', [renderData.title]));
+	element.appendChild(h('h2', {}, [renderData.title]));
 	element.appendChild(ul);
 }

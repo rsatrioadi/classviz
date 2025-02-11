@@ -50,44 +50,6 @@ node[labels.1 = "vulnerable"]{
   border-width: 4;
 }
 
-node[properties.roleStereotype = "Controller"] {
-  border-color: #8B4293;
-  background-color: #EFDFFF;
-}
-
-node[properties.roleStereotype = "Coordinator"] {
-  border-color: #50A848;
-  background-color: #CEEECE;
-}
-
-node[properties.roleStereotype = "Information Holder"] {
-  border-color: #E53033;
-  background-color: #FFDEDE;
-}
-
-node[properties.roleStereotype = "Interfacer"] {
-  border-color: #AA7F00;
-  background-color: #F6E5B2;
-}
-node[properties.roleStereotype="User Interfacer"] {
-	border-color: #AA7F00;
-	background-color: #F6E5B2;
-}node[properties.roleStereotype="Internal Interfacer"] {
-	border-color: #AA7F00;
-	background-color: #F6E5B2;
-}node[properties.roleStereotype="External Interfacer"] {
-	border-color: #AA7F00;
-	background-color: #F6E5B2;
-}
-node[properties.roleStereotype = "Service Provider"] {
-  border-color: #4274BF;
-  background-color: #D2E8FF;
-}
-
-node[properties.roleStereotype = "Structurer"] {
-  border-color: #FF7FD2;
-  background-color: #FFDBFF;
-}
 
 node[properties.kind = "Namespace"] {
   text-valign: top;
@@ -293,15 +255,6 @@ node.selected {
 
 .parentRel {
   display: none;
-}
-
-.feature_shown {
-  background-fill: linear-gradient;
-  background-gradient-direction: to-right;
-}
-
-.feature_reset {
-  background-color: whitesmoke;
 }
 
 .bug_shown{

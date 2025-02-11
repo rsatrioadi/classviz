@@ -91,6 +91,16 @@
           <input type="checkbox" id="showPackages" name="showPackages" value="showPackages" checked="checked" />
           Show packages
         </label> -->
+        <div class="coloring-mode">
+          <p><b>Node Coloring</b></p>
+          <div><label for="coloring-none" class="coloringlabel"><input type="radio"
+                id="coloring-none" name="coloring" value="style_default" checked="checked">None</label></div>
+          <div><label for="coloring-rs" class="coloringlabel"><input type="radio"
+                id="coloring-rs" name="coloring" value="style_rs">Role Stereotype</label></div>
+          <div><label for="coloring-layer" class="coloringlabel"><input type="radio"
+                id="coloring-layer" name="coloring" value="style_layer">Architectural Layer</label></div>
+          <div id="coloring-legend"></div>
+        </div>
       </div>
       <div class="menu" id="menu-edges">
         <h2>Relationships</h2>
