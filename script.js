@@ -6,12 +6,13 @@ TODO
 - collapse the classes
 - tweak klay parameters
 */
-import { blacken, ft_colors, hslString, role_stereotype_colors, role_stereotypes } from './src/colors.js';
+import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_colors, role_stereotypes } from './src/colors.js';
 import { clearInfo, displayInfo } from './src/infoPanel.js';
 import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
 import { aggregateLayers, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
-import { adjustEdgeWidths, applyColor, cacheNodeStyles, colorNodes, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles } from './src/visualTransformations.js';
+import { adjustEdgeWidths, cacheNodeStyles, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles } from './src/visualTransformations.js';
+import { getScratch } from './src/utils.js';
 
 on('DOMContentLoaded', document, async () => {
 
@@ -510,7 +511,10 @@ const initCy = async function (payload) {
 		liftEdges(cy);
 		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
-		setLayerStyles(cy);
+
+		determineLayerColors(cy);
+
+		setLayerStyles(cy, window.layers, window.layer_colors);
 		setRsStyles(cy);
 		removeExtraNodes(cy);
 
@@ -545,6 +549,31 @@ const initCy = async function (payload) {
 
 		zoom.value = cy.zoom();
 	}
+}
+
+function determineLayerColors(pCy) {
+	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind') === "architectural layer" && n.incomers(e => e.data('label') === "allowedDependency").empty());
+	window.layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
+	var currentLayers = topLayers;
+	while (!currentLayers.empty()) {
+		const nextLayers = currentLayers.outgoers(e => e.data('label') === "allowedDependency").targets();
+		layers.push(...nextLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined"));
+		currentLayers = nextLayers;
+	}
+	layers.push("Undefined");
+	window.layer_colors = layer_colors_from(layers);
+}
+
+const applyColor = function (pCy) {
+	const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
+	colorNodes(pCy)({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
+}
+
+const colorNodes = (pCy) => function (event) {
+	pCy.nodes().forEach((n) => {
+		const style = getScratch(n, event.target.value) || getScratch(n, 'style_default');
+		n.style(style);
+	});
 }
 
 const bindRouters = function () {

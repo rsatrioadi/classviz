@@ -1,6 +1,5 @@
-import { blacken, hslString, layer_colors_from, role_stereotype_colors, whiten } from "./colors.js";
-import { $all } from "./shorthands.js";
-import { addScratch, counterToPercentage, cumulative, getScratch, repeatMiddle } from "./utils.js";
+import { blacken, hslString, role_stereotype_colors, whiten } from "./colors.js";
+import { addScratch, counterToPercentage, cumulative, repeatMiddle } from "./utils.js";
 
 export const recolorContainers = function (pCy) {
 	const isContainer = (n) => n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
@@ -73,17 +72,8 @@ export const adjustEdgeWidths = function (pCy) {
 	});
 }
 
-export const setLayerStyles = function (pCy) {
-	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind') === "architectural layer" && n.incomers(e => e.data('label') === "allowedDependency").empty());
-	const layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
-	var currentLayers = topLayers;
-	while (!currentLayers.empty()) {
-		const nextLayers = currentLayers.outgoers(e => e.data('label') === "allowedDependency").targets();
-		layers.push(...nextLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined"));
-		currentLayers = nextLayers;
-	}
-	layers.push("Undefined");
-	const layer_colors = layer_colors_from(layers);
+export const setLayerStyles = function (pCy, layers, layer_colors) {
+
 	// console.log(layer_colors);
 	pCy.nodes(".Container, .Structure").forEach(n => {
 		if (Object.keys({ ...n.data("properties.layers") }).length > 0) {
@@ -137,16 +127,4 @@ export const removeExtraNodes = function (pCy) {
 	const extras = pCy.nodes(n => !n.data('labels').includes("Container") && !n.data('labels').includes("Structure")
 		&& !n.data('labels').includes("Type") && !n.data('labels').includes("Primitive"));
 	extras.remove();
-}
-
-export const applyColor = function (pCy) {
-	const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
-	colorNodes(pCy)({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
-}
-
-export const colorNodes = (pCy) => function (event) {
-	pCy.nodes().forEach((n) => {
-		const style = getScratch(n, event.target.value) || getScratch(n, 'style_default');
-		n.style(style);
-	});
 }
