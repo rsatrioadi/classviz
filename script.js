@@ -6,13 +6,14 @@ TODO
 - collapse the classes
 - tweak klay parameters
 */
-import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_colors, role_stereotypes } from './src/colors.js';
+import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_colors, role_stereotype_order, role_stereotypes } from './src/colors.js';
 import { clearInfo, displayInfo } from './src/infoPanel.js';
 import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
 import { aggregateLayers, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
 import { adjustEdgeWidths, cacheNodeStyles, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles } from './src/visualTransformations.js';
 import { getScratch } from './src/utils.js';
+import { displayLegend } from './src/legend.js';
 
 on('DOMContentLoaded', document, async () => {
 
@@ -51,6 +52,14 @@ on('DOMContentLoaded', document, async () => {
 		}
 	}
 });
+
+const colorMap = {
+	'style_default': {}
+};
+
+const colorOrder = {
+	'style_default': []
+}
 
 const collectUniqueLabels = function (dataList) {
 	const uniqueLabels = new Set();
@@ -512,13 +521,14 @@ const initCy = async function (payload) {
 		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
 
-		determineLayerColors(cy);
+		initLayerColors(cy);
+		initRsColors();
 
 		setLayerStyles(cy, window.layers, window.layer_colors);
 		setRsStyles(cy);
 		removeExtraNodes(cy);
 
-		applyColor(cy);
+		applyInitialColor(cy);
 
 		// cy.endBatch();
 
@@ -551,7 +561,7 @@ const initCy = async function (payload) {
 	}
 }
 
-function determineLayerColors(pCy) {
+function initLayerColors(pCy) {
 	const topLayers = pCy.nodes(n => n.data('labels').includes("Grouping") && n.data('properties.kind') === "architectural layer" && n.incomers(e => e.data('label') === "allowedDependency").empty());
 	window.layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
 	var currentLayers = topLayers;
@@ -562,18 +572,28 @@ function determineLayerColors(pCy) {
 	}
 	layers.push("Undefined");
 	window.layer_colors = layer_colors_from(layers);
+	colorMap['style_layer'] = window.layer_colors;
+	colorOrder['style_layer'] = window.layers;
 }
 
-const applyColor = function (pCy) {
+function initRsColors() {
+	colorMap['style_rs'] = role_stereotype_colors;
+	colorOrder['style_rs'] = role_stereotype_order;
+}
+
+const applyInitialColor = function (pCy) {
 	const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
 	colorNodes(pCy)({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
 }
 
 const colorNodes = (pCy) => function (event) {
+	const selectedColorMode = event.target.value;
 	pCy.nodes().forEach((n) => {
-		const style = getScratch(n, event.target.value) || getScratch(n, 'style_default');
+		const style = getScratch(n, selectedColorMode) || getScratch(n, 'style_default');
 		n.style(style);
 	});
+	console.log("color", colorMap, colorOrder);
+	displayLegend('#coloring-legend', colorMap[selectedColorMode], colorOrder[selectedColorMode]);
 }
 
 const bindRouters = function () {
@@ -922,11 +942,11 @@ const showTrace = function (_evt) {
 	cy.elements().addClass("feature_reset");
 
 	if (trace_names.length > 0) {
-		const colorMap = {};
+		const traceColorMap = {};
 		trace_names.forEach((trace, i) => {
 			const label = $(`label[for="feature-${trace}"]`);
 			label.style.backgroundColor = ft_colors[i];
-			colorMap[trace] = ft_colors[i];
+			traceColorMap[trace] = ft_colors[i];
 		});
 
 		const feature_nodes = cy.nodes().filter(function (node) {
@@ -952,11 +972,11 @@ const showTrace = function (_evt) {
 				"background-fill": "linear-gradient",
 				"background-gradient-direction": "to-right",
 				"background-gradient-stop-positions": null,
-				"background-gradient-stop-colors": trc.map((t) => colorMap[t]).join(" "),
+				"background-gradient-stop-colors": trc.map((t) => traceColorMap[t]).join(" "),
 			});
 		});
 	} else {
-		applyColor(cy);
+		applyInitialColor(cy);
 	}
 
 	cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
@@ -972,11 +992,11 @@ const showBug = function (_evt) {
 		.forEach((e) => { e.style.backgroundColor = ""; });
 
 	if (bug_names.length > 0) {
-		const colorMap = {};
+		const bugColorMap = {};
 		bug_names.forEach((bug, i) => {
 			const labelElement = $(`label[for="bug-${bug}"]`);
 			labelElement.style.backgroundColor = ft_colors[i];
-			colorMap[bug] = ft_colors[i];
+			bugColorMap[bug] = ft_colors[i];
 		});
 
 		const bug_nodes = cy.nodes().filter(function (node) {
@@ -999,7 +1019,7 @@ const showBug = function (_evt) {
 
 		bug_nodes.forEach((node) => {
 			const trc = arrayIntersection(bug_names, node.data()["properties"]["vulnerabilities"].map((vul) => vul["analysis_name"]));
-			node.style("background-gradient-stop-colors", trc.map((t) => colorMap[t]).join(" "));
+			node.style("background-gradient-stop-colors", trc.map((t) => bugColorMap[t]).join(" "));
 		});
 	} else {
 		cy.elements().removeClass("dimmed");

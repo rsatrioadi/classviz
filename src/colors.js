@@ -47,6 +47,20 @@ export const role_stereotype_colors = {
 	"-": { h: 0, s: 0, l: 0.5 },
 };
 
+export const role_stereotype_order = [
+	"Controller",
+	"Coordinator",
+	"Information Holder",
+	"Interfacer",
+	"User Interfacer",
+	"Internal Interfacer",
+	"External Interfacer",
+	"Service Provider",
+	"Structurer",
+	"*",
+	"-",
+];
+
 export const hslString = ({ h, s, l }) => `hsl(${h},${s * 100}%,${l * 100}%)`;
 
 export const ft_colors = [
