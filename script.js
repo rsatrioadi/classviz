@@ -33,11 +33,6 @@ on('DOMContentLoaded', document, async () => {
 		$(`[id="${selectedTab}"]`).style.display = "block";
 	});
 
-	on('change', $('#showPrimitives'), () => showPrimitives($('#showPrimitives')));
-	// on('change', $('#showPackages'),   () => showPackages($('#showPackages')));
-
-	on('change', $all('.coloringlabel'), colorNodes);
-
 	const fileName = new URLSearchParams(window.location.search).get('p');
 	if (fileName) {
 		try {
@@ -54,8 +49,8 @@ on('DOMContentLoaded', document, async () => {
 	}
 });
 
-const colorNodes = function (event) {
-	cy.nodes().forEach((n) => {
+const colorNodes = (pCy) => function (event) {
+	pCy.nodes().forEach((n) => {
 		const style = getScratch(n, event.target.value);
 		n.style(style);
 	});
@@ -596,6 +591,11 @@ const setRsStyles = function (pCy) {
 	});
 }
 
+const applyColor = function (pCy) {
+	const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
+	colorNodes(pCy)({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
+}
+
 function counterToPercentage(counter) {
 	const total = Object.values(counter).reduce((sum, count) => sum + count, 0);
 	const result = {};
@@ -692,6 +692,8 @@ const initCy = async function (payload) {
 		setRsStyles(cy);
 		removeExtraNodes(cy);
 
+		applyColor(cy);
+
 		// cy.endBatch();
 
 		// let api = this.expandCollapse(generateExpColOptions());
@@ -713,11 +715,11 @@ const initCy = async function (payload) {
 
 		const cbShowPrimitives = $("#showPrimitives");
 		cbShowPrimitives.checked = false;
-		showPrimitives(cbShowPrimitives);
+		showPrimitives(cy, cbShowPrimitives);
 
 		// const cbShowPackages = $("#showPackages");
 		// cbShowPackages.checked = true;
-		// showPackages(cbShowPackages);
+		// showPackages(cy, cbShowPackages);
 
 		zoom.value = cy.zoom();
 	}
@@ -726,6 +728,10 @@ const initCy = async function (payload) {
 const bindRouters = function () {
 	// Initiate cyExpandCollapseApi
 	// cy.expandCollapse("get");
+
+	on('change', $('#showPrimitives'), () => showPrimitives(cy, $('#showPrimitives')));
+	// on('change', $('#showPackages'),   () => showPackages(cy, $('#showPackages')));
+	on('change', $all('.coloringlabel'), colorNodes(cy));
 
 	cy.on("select", "node", (event) => {
 		event.target.addClass("selected");
@@ -809,14 +815,14 @@ const getSvgUrl = function () {
 	return URL.createObjectURL(blob);
 };
 
-const showPrimitives = function (e) {
-	cy.nodes()
+const showPrimitives = function (pCy, e) {
+	pCy.nodes()
 		.filter((n) => n.data("labels").includes("Primitive") || n.data("id") === "java.lang.String")
 		.style({ display: e.checked ? "element" : "none" });
 };
 
-// const showPackages = function (e) {
-// 	cy.nodes()
+// const showPackages = function (pCy, e) {
+// 	pCy.nodes()
 // 		.filter((n) => n.data("labels").includes("Container") && !n.data("labels").includes("Structure"))
 // 		.toggleClass("pkghidden", !e.checked);
 // };
@@ -1099,8 +1105,7 @@ const showTrace = function (_evt) {
 			});
 		});
 	} else {
-		const selectedColorMode = $all('[name = "coloring"]').filter((e) => e.checked)[0];
-		colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } });
+		applyColor(cy);
 	}
 
 	cy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
