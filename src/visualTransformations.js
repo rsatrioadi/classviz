@@ -87,10 +87,10 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 			};
 			if (isContainer) {
 				style['background-gradient-direction'] = "to-bottom-right";
-				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(whiten(c, 0.7))).map(c => `${c} ${c}`).join(" ");
+				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(whiten(c, 0.8))).map(c => `${c} ${c}`).join(" ");
 			} else {
 				style['background-gradient-direction'] = "to-right";
-				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(blacken(c, 0.1))).map(c => `${c} ${c}`).join(" ");
+				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(whiten(c, 0.5))).map(c => `${c} ${c}`).join(" ");
 			}
 			// console.log(cy.$(`[id="${n.id()}"]`).id(), style);
 			addScratch(n, 'style_layer', style);
@@ -115,9 +115,9 @@ export const setRsStyles = function (pCy) {
 	structures.forEach((clasz) => {
 		if (clasz.data('properties.roleStereotype')) {
 			addScratch(clasz, 'style_rs', {
-				'border-color': hslString(role_stereotype_colors[clasz.data('properties.roleStereotype')]),
+				'border-color': hslString(role_stereotype_colors[clasz.data('properties.roleStereotype'	)] || role_stereotype_colors['-']),
 				'background-fill': "solid",
-				'background-color': hslString(whiten(role_stereotype_colors[clasz.data('properties.roleStereotype')], 0.75)),
+				'background-color': hslString(whiten(role_stereotype_colors[clasz.data('properties.roleStereotype')] || role_stereotype_colors['-'], 0.75)),
 			});
 		}
 	});

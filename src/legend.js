@@ -9,7 +9,7 @@ export const displayLegend = (sel, colorMap = {}, colorOrder = []) => {
 			h('p', {}, [h('b', {}, "Node Color Legend")]),
 			...colorOrder.map((key) => h('div', {
 				class: 'legend',
-				style: `border-color: ${hslString(colorMap[key])}; background-color: ${hslString(whiten(colorMap[key], 0.75))}`
+				style: `border-color: ${hslString(colorMap[key])}; background-color: ${hslString(whiten(colorMap[key], 0.8))}`
 			}, [
 				key
 			]))

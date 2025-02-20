@@ -67,7 +67,7 @@ const prepareRenderData = (node) => {
 					h('div', {}, [
 						h('h3', { class: 'info' },
 							[m['properties']['simpleName']]),
-						h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.5))};` }, [
+						h('div', { class: 'info', style: `background-color: ${hslString(whiten(m.color, 0.75))};` }, [
 							h('p', {}, [
 								h('b', {}, ['description: ']),
 								m.properties.description || "(no description)"]),

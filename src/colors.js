@@ -79,8 +79,21 @@ export const ft_colors = [
 ];
 
 export const layer_colors_from = (layers) => {
-	const hues = [355, 10, 30, 37, 45, 85, 120, 135, 180, 200, 210, 240];
-	const layer_colors = getN(hues, layers.length).map(h => ({ h, s: 0.6, l: 0.8 }));
+	const color_list = [
+		{ h: 333, 	s: 0.7, 	l: 0.5  }, 
+		{ h:  11, 	s: 0.87, 	l: 0.49 }, 
+		{ h:  32, 	s: 1, 		l: 0.45 }, 
+		{ h:  39, 	s: 0.96, 	l: 0.49 }, 
+		{ h:  47, 	s: 1, 		l: 0.5  }, 
+		{ h:  83, 	s: 0.75, 	l: 0.41 }, 
+		{ h: 119, 	s: 0.62, 	l: 0.42 }, 
+		{ h: 143, 	s: 0.74, 	l: 0.49 }, 
+		{ h: 183, 	s: 1, 		l: 0.46 }, 
+		{ h: 195, 	s: 0.99, 	l: 0.43 }, 
+		{ h: 209, 	s: 0.9, 	l: 0.41 }, 
+		{ h: 238, 	s: 0.54, 	l: 0.49 }
+	];
+	const layer_colors = getN(color_list, layers.length);
 	return { ...arraysToObject(layers, layer_colors), Undefined: { h: 0, s: 0, l: 0.9 } };
 };
 
