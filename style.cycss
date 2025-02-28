@@ -1,5 +1,6 @@
 .dimmed {
   opacity: 0.1;
+  display: none;
 }
 
 .hidden {
@@ -13,6 +14,7 @@ node.Container {
   border-color: grey;
   border-width: 3;
   background-color: #ececec;
+  shape: rectangle;
   text-halign: center;
   text-valign: top;
   text-margin-y: -8px;

@@ -1,6 +1,15 @@
 import { hslString, role_stereotype_colors, whiten, blacken } from './colors.js';
 import { $, h, r } from './shorthands.js';
 
+const stringToNode = (s) => {
+	console.log(s);
+	const template = document.createElement('template');
+	template.innerHTML = s.trim();
+	console.log(template);
+	const node = template.content.firstChild;
+	return node;
+};
+
 const prepareRenderData = (node) => {
 	const renderData = {
 		title: `${node.data('properties.kind')}: ${node.data('properties.simpleName').replace(/([A-Z])/g, '\u200B$1')}`,
@@ -71,9 +80,10 @@ const prepareRenderData = (node) => {
 							h('p', {}, [
 								h('b', {}, ['description: ']),
 								m.properties.description || "(no description)"]),
-							h('p', {}, [], {}, (e) => {
-								e.innerHTML = "<b>docComment: </b>"+(m.properties.docComment || "(no docComment)");
-							}),
+							h('p', {}, [
+								h('b', {}, ['docComment: ']),
+								(m.properties.docComment || "(no docComment)")
+							]),
 						])]));
 			}) : h('div', { class: 'info' }, ["No method information available."])
 		});
@@ -177,8 +187,9 @@ export const displayInfo = (sel) => (node) => {
 		if (Array.isArray(prop.value)) {
 			// Nested list for arrays
 			propChildren.push(h('ul', {}, prop.value.map(item => h('li', { class: 'info' }, [item]))));
+		// } else if (typeof prop.value === 'string' || prop.value instanceof String) {
+		// 	propChildren.push(stringToNode(prop.value));
 		} else {
-			// Simple property value
 			propChildren.push(prop.value);
 		}
 

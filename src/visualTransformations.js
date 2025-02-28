@@ -1,12 +1,11 @@
 import { blacken, hslString, role_stereotype_colors, whiten } from "./colors.js";
-import { addScratch, counterToPercentage, cumulative, repeatMiddle } from "./utils.js";
+import { addScratch, counterToPercentage, cumulative, hasLabel, isPureContainer, repeatMiddle } from "./utils.js";
 
 export const recolorContainers = function (pCy) {
-	const isContainer = (n) => n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
-	const max_pkg_depth = Math.max(...pCy.nodes(isContainer).map((n) => n.ancestors().length));
+	const max_pkg_depth = Math.max(...pCy.nodes(isPureContainer).map((n) => n.ancestors().length));
 
 	// Isolate nodes with kind equals to package
-	pCy.nodes(isContainer).forEach((n) => {
+	pCy.nodes(isPureContainer).forEach((n) => {
 		const d = 146;
 		const l = 236;
 		const depth = n.ancestors().length;
@@ -77,7 +76,6 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 	// console.log(layer_colors);
 	pCy.nodes(".Container, .Structure").forEach(n => {
 		if (Object.keys({ ...n.data("properties.layers") }).length > 0) {
-			const isContainer = n.data('labels').includes("Container") && !n.data('labels').includes("Structure");
 			const layer_percentages = counterToPercentage({ ...n.data("properties.layers") });
 			const style = {
 				'border-color': "grey",
@@ -85,7 +83,7 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 				'background-fill': 'linear-gradient',
 				'background-gradient-stop-positions': repeatMiddle(cumulative(layers.map(l => Math.floor(layer_percentages[l] * 100) || 0))).map(p => `${p}`).join(" "),
 			};
-			if (isContainer) {
+			if (isPureContainer(n)) {
 				style['background-gradient-direction'] = "to-bottom-right";
 				style['background-gradient-stop-colors'] = layers.map(l => layer_colors[l]).map((c) => hslString(whiten(c, 0.8))).map(c => `${c} ${c}`).join(" ");
 			} else {
@@ -124,7 +122,7 @@ export const setRsStyles = function (pCy) {
 }
 
 export const removeExtraNodes = function (pCy) {
-	const extras = pCy.nodes(n => !n.data('labels').includes("Container") && !n.data('labels').includes("Structure")
-		&& !n.data('labels').includes("Type") && !n.data('labels').includes("Primitive"));
+	const extras = pCy.nodes(n => !hasLabel(n, "Container") && !hasLabel(n, "Structure")
+		&& !hasLabel(n, "Type") && !hasLabel(n, "Primitive"));
 	extras.remove();
 }

@@ -43,3 +43,17 @@ export function getScratch(ele, key) {
 	if (ele.scratch('_classviz') && key in ele.scratch('_classviz')) return ele.scratch('_classviz')[key];
 	return null;
 }
+
+export const hasLabel = (ele, label) => {
+	if (ele.data('labels')) return ele.data('labels').includes(label);
+	return ele.data('label') === label;
+};
+
+export function arrayIntersection(arr1, arr2) {
+	const set2 = new Set(arr2);
+	const result = arr1.filter(item => set2.has(item));
+	return result;
+}
+
+export const isPureContainer = (n) => hasLabel(n, "Container") && !hasLabel(n, "Structure");
+
