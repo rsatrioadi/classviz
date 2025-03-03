@@ -1,5 +1,5 @@
 
-import { counter, hasLabel, isPureContainer, mergeCounters } from './utils.js';
+import { counter, counterToPercentage, hasLabel, isPureContainer, mergeCounters } from './utils.js';
 
 export const shortenRoots = function(pCy) {
 	const containmentRoots = pCy.nodes((n) => 
@@ -83,7 +83,7 @@ export const aggregateLayers = function (pCy) {
 	containers.forEach((pkg) => {
 		const contains = pkg.outgoers(e => e.data('label') === "contains" && e.target().data('labels').includes('Structure'));
 		const classes = contains.targets();
-		const layerCounters = classes.map(c => c.data('properties.layers'));
+		const layerCounters = classes.map(c => counterToPercentage(c.data('properties.layers')));
 		pkg.data('properties')['layers'] = mergeCounters(...layerCounters);
 		pkg.addClass('layers');
 

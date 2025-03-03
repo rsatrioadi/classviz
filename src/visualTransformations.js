@@ -6,12 +6,12 @@ export const recolorContainers = function (pCy) {
 
 	// Isolate nodes with kind equals to package
 	pCy.nodes(isPureContainer).forEach((n) => {
-		const d = 146;
-		const l = 236;
+		const dark = 0.75;
+		const light = 0.9;
 		const depth = n.ancestors().length;
-		const grey = Math.max(l - ((max_pkg_depth - depth) * 15), d);
-		n.style('background-color', `rgb(${grey},${grey},${grey})`);
-		n.style('text-background-color', `rgb(${grey},${grey},${grey})`);
+		const l = light - (light-dark)*(max_pkg_depth-depth)/max_pkg_depth;
+		n.style('background-color', hslString({h:0,s:0,l}));
+		n.style('text-background-color', hslString({ h: 0, s: 0, l }));
 	});
 }
 

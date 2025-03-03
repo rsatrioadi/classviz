@@ -12,7 +12,7 @@ import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
 import { aggregateLayers, homogenizeDepths, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
 import { adjustEdgeWidths, cacheNodeStyles, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles } from './src/visualTransformations.js';
-import { arrayIntersection, getScratch, hasLabel } from './src/utils.js';
+import { arrayIntersection, getScratch, hasLabel, isPureContainer } from './src/utils.js';
 import { displayLegend } from './src/nodesPanel.js';
 import { fillFeatureDropdown } from './src/edgesPanel.js';
 import { highlight, relayout } from './src/graphPanel.js';
@@ -865,7 +865,7 @@ export const showTrace = function (event, pCy) {
 		pCy.elements(".hidden").removeClass("hidden").addClass("hidden");
 		featureNodes.removeClass("dimmed");
 		featureEdges.removeClass("dimmed");
-		pCy.nodes(n => n.data('labels').includes('Container')).removeClass("dimmed");
+		pCy.nodes(isPureContainer).removeClass("dimmed");
 
 		featureNodes.forEach((node) => {
 			const trc = arrayIntersection(
