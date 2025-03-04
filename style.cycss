@@ -12,7 +12,7 @@ node.Container {
   padding: 32px;
   label: data(label);
   border-color: grey;
-  border-width: 3;
+  border-width: 3px;
   background-color: #ececec;
   shape: rectangle;
   text-halign: center;
@@ -40,7 +40,7 @@ node.Structure {
   label: data(label);
   border-color: grey;
   background-color: whitesmoke;
-  border-width: 3;
+  border-width: 6px;
   shape: rectangle;
   text-halign: center;
   text-valign: center;
