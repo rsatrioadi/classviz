@@ -621,11 +621,29 @@ const bindRouters = function () {
 	cy.on("select", "node", (event) => {
 		event.target.addClass("selected");
 		displayInfo('#infobody')(event.target);
+		if ($('#infobox').style["display"] !== "flex") {
+			$('#infobox').style["display"] = "flex";
+			$('#cy').style["right"] = "270px";
+			cy.animate({
+				panBy: { x: -135 }
+			}, {
+				duration: 200
+			});
+		}
 	});
 
 	cy.on("unselect", "node", (event) => {
 		event.target.removeClass("selected");
-		clearInfo('#infobody');
+		if (cy.$("node:selected").length === 0) {
+			clearInfo('#infobody');
+			$('#infobox').style["display"] = "none";
+			$('#cy').style["right"] = "0px";
+			cy.animate({
+				panBy: { x: 135 }
+			}, {
+				duration: 200
+			});
+		}
 	});
 
 	// right click dims the element

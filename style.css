@@ -26,7 +26,7 @@ body {
   left: 270px;
   top: 36px;
   bottom: 0;
-  right: 270px;
+  right: 0px;
   z-index: 1;
   background-color: beige;
 }
@@ -221,7 +221,7 @@ ul.tabs {
 
 #infobox {
   position: fixed;
-  display: flex;
+  display: none;
   flex-direction: row;
   right: 0;
   top: 36px;
