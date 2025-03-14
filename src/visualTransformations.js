@@ -31,7 +31,9 @@ export const liftEdges = function (pCy) {
 	const edges = pCy.edges((e) =>
 		e.source().data('labels').includes("Structure") &&
 		e.target().data('labels').includes("Structure") &&
-		e.target().parent() !== e.source().parent());
+		e.target().parent() !== e.source().parent()).filter((e) => 
+			["calls","constructs"].includes(e.data('label'))
+		);
 	const newEdges = {};
 
 	edges.forEach((e) => {

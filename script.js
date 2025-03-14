@@ -618,14 +618,20 @@ const bindRouters = function () {
 	// on('change', $('#showPackages'),   () => showPackages(cy, $('#showPackages')));
 	on('change', $all('.coloringlabel'), colorNodes(cy));
 
+	const cy_div = $('#cy');
+
 	cy.on("select", "node", (event) => {
 		event.target.addClass("selected");
 		displayInfo('#infobody')(event.target);
 		if ($('#infobox').style["display"] !== "flex") {
 			$('#infobox').style["display"] = "flex";
-			$('#cy').style["right"] = "270px";
+			const w1 = cy_div.offsetWidth;
+			cy_div.style["right"] = "270px";
+			const w2 = cy_div.offsetWidth;
+			const z = cy.zoom();
+			const rw = (w2 - w1) / w1;
 			cy.animate({
-				panBy: { x: -135 }
+				panBy: { x: 135 * (rw/2) }
 			}, {
 				duration: 200
 			});
@@ -634,16 +640,22 @@ const bindRouters = function () {
 
 	cy.on("unselect", "node", (event) => {
 		event.target.removeClass("selected");
-		if (cy.$("node:selected").length === 0) {
-			clearInfo('#infobody');
-			$('#infobox').style["display"] = "none";
-			$('#cy').style["right"] = "0px";
-			cy.animate({
-				panBy: { x: 135 }
-			}, {
-				duration: 200
-			});
-		}
+		setTimeout(() => {
+			if (cy.$("node:selected").length === 0) {
+				clearInfo('#infobody');
+				$('#infobox').style["display"] = "none";
+				const w1 = cy_div.offsetWidth;
+				cy_div.style["right"] = "0px";
+				const w2 = cy_div.offsetWidth;
+				const z = cy.zoom();
+				const rw = (w2 - w1) / w1;
+				cy.animate({ 
+					panBy: { x: 135 }
+				}, {
+					duration: 200
+				});
+				}
+		}, 1);
 	});
 
 	// right click dims the element
@@ -672,9 +684,10 @@ const bindRouters = function () {
 
 		const edges = event.target.children().union(event.target)
 			.connectedEdges()
-			.filter((e) => interactions.includes(e.data("interaction")));
+			.filter((e) => interactions.includes(e.data("label")));
 		edges.removeClass("dimmed");
 		edges.targets().union(edges.targets().ancestors()).removeClass("dimmed");
+		edges.sources().union(edges.sources().ancestors()).removeClass("dimmed");
 	});
 
 	// left click highlights the edge and its connected nodes
