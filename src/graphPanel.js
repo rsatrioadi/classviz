@@ -1,5 +1,5 @@
 import { parentRel } from '../script.js';
-import { isPureContainer } from './utils.js';
+import { showNeighborhood } from './visualTransformations.js';
 
 /* Sidebar Utility Functions */
 export const relayout = function (pCy, layout) {
@@ -30,9 +30,14 @@ export const highlight = function (pCy, text) {
 		const edges = classes.edgesWith(classes);
 		classes.removeClass("dimmed");
 		edges.removeClass("dimmed");
-		pCy.nodes(isPureContainer).removeClass("dimmed");
+		// pCy.nodes(isPureContainer).removeClass("dimmed");
+
+		classes.addClass('highlight');
+
+		showNeighborhood(classes);
 	} else {
-		pCy.elements().removeClass("dimmed");
+		pCy.elements().removeClass('dimmed');
+		pCy.elements().removeClass('highlight');
 	}
 	pCy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
 };

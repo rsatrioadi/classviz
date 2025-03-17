@@ -7,41 +7,37 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" />
 
-  <script src="https://unpkg.com/cytoscape@3.31.0/dist/cytoscape.min.js"></script>
-  <!-- <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script> -->
-  <script src="https://unpkg.com/whatwg-fetch@3.0.0/dist/fetch.umd.js"></script>
+  <!-- External Libraries (Optimized Order) -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.31.0/dist/cytoscape.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-navigator@2.0.2/cytoscape-navigator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.js"></script>
 
-  <script src="https://unpkg.com/layout-base/layout-base.js"></script>
-  <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+  <!-- Required Dependencies for Layouts -->
+  <script src="https://cdn.jsdelivr.net/npm/layout-base/layout-base.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cose-base/cose-base.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/avsdf-base@1.0.0/avsdf-base.js"></script> <!-- Required for CISE -->
 
-  <script src="https://unpkg.com/webcola@3.4.0/WebCola/cola.js"></script>
-  <script src="https://unpkg.com/cytoscape-cola"></script>
+  <!-- Layout Engines (Load after dependencies) -->
+  <script src="https://cdn.jsdelivr.net/npm/webcola@3.4.0/WebCola/cola.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola/cytoscape-cola.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/klayjs@0.4.1/klay.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-klay@3.1.4/cytoscape-klay.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dagre@0.7.4/dist/dagre.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.4.0/cytoscape-dagre.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose/cytoscape-fcose.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent/cytoscape-cose-bilkent.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-euler@1.2.2/cytoscape-euler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cise@1.0.0/cytoscape-cise.min.js"></script>
 
-  <script src="https://unpkg.com/klayjs@0.4.1/klay.js"></script>
-  <script src="https://unpkg.com/cytoscape-klay@3.1.4/cytoscape-klay.js"></script>
+  <!-- Utility Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@1.3.8/FileSaver.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-svg/cytoscape-svg.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-popper/cytoscape-popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.min.js"></script>
 
-  <script src="https://unpkg.com/weaverjs@1.2.0/dist/weaver.js"></script>
-  <script src="https://unpkg.com/cytoscape-spread@3.0.0/cytoscape-spread.js"></script>
-
-  <script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
-  <script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
-
-  <script src="https://unpkg.com/cytoscape-fcose/cytoscape-fcose.js"></script>
-
-  <script src="https://unpkg.com/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script>
-
-  <script src="https://unpkg.com/cytoscape-euler@1.2.2/cytoscape-euler.js"></script>
-
-  <script src="https://unpkg.com/avsdf-base@1.0.0/avsdf-base.js"></script>
-  <script src="https://unpkg.com/cytoscape-cise@1.0.0/cytoscape-cise.js"></script>
-
-  <script src="https://unpkg.com/file-saver@1.3.8/FileSaver.js"></script>
-  <script src="https://unpkg.com/cytoscape-svg/cytoscape-svg.js"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
-  <script src="https://unpkg.com/tippy.js@6"></script>
-
-  <script src="https://unpkg.com/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.js"></script>
   <title>Class Diagram Visualization</title>
 </head>
 
@@ -68,42 +64,84 @@
     <div class="tab-bar">
       <ul class="tabs">
         <li>
-          <a class="tabs tablink active" data-tab="tab-basic">
+          <a class="tabs tablink active" data-tab="tab-general">
             General
           </a>
         </li>
         <li>
-          <a class="tabs tablink" data-tab="tab-features">
-            Features
+          <a class="tabs tablink" data-tab="tab-traces">
+            Traces
           </a>
-        </li>
       </ul>
     </div>
-    <div class="sidebar-tab" id="tab-basic">
+    <div class="sidebar-tab" id="tab-general">
+      <div class="menu" id="menu-layout">
+        <h2>Graph</h2>
+        <div>
+          <h3>Layout algorithm</h3>
+          <label for="selectlayout">
+            Select layout
+            <select class="dd" id="selectlayout" size="1">
+              <option value="cola">cola</option>
+              <option selected value="klay">klay</option>
+              <option value="fcose">fcose</option>
+              <option value="cose-bilkent">cose-bilkent</option>
+              <option value="euler">euler</option>
+              <option value="spread">spread (takes a while...)</option>
+              <option value="dagre">dagre</option>
+            </select>
+          </label>
+          <button class="sidebar" id="btn-relayout">
+            Relayout
+          </button>
+        </div>
+
+        <div>
+          <h3>Highlight nodes</h3>
+
+          <label for="highlight">Separate node names by comma, whitespace, or new line.</label>
+          <textarea id="highlight" name="highlight" rows="3"></textarea>
+          <button class="sidebar" id="btn-reset">Reset</button>
+          <button class="sidebar" id="btn-highlight">Highlight</button>
+          <p />
+          <button class="sidebar" id="btn-toggleVisibility">
+            Toggle visibility
+          </button>
+        </div>
+
+        <!-- <div>
+          <h3>Expand and Collapse</h2>
+            <button class="sidebar" id="expandNodes">Expand Nodes</button>
+            <button class="sidebar" id="collapseNodes">Collapse Nodes</button><br />
+            <button class="sidebar" id="collapseEdges">Collapse Edges</button>
+        </div> -->
+      </div>
+
       <div class="menu" id="menu-nodes">
         <h2>Nodes</h2>
-        <label for="showPrimitives">
-          <input type="checkbox" id="showPrimitives" name="showPrimitives" value="showPrimitives" checked="checked" />
-          Show primitives
-        </label>
+        <!-- <label for="showPrimitives">
+                      <input type="checkbox" id="showPrimitives" name="showPrimitives" value="showPrimitives" checked="checked" />
+                      Show primitives
+                    </label> -->
         <!-- <br />
-        <label for="showPackages">
-          <input type="checkbox" id="showPackages" name="showPackages" value="showPackages" checked="checked" />
-          Show packages
-        </label> -->
+                    <label for="showPackages">
+                      <input type="checkbox" id="showPackages" name="showPackages" value="showPackages" checked="checked" />
+                      Show packages
+                    </label> -->
         <div class="coloring-mode">
-          <p><b>Node Coloring</b></p>
-          <div><label for="coloring-none" class="coloringlabel"><input type="radio"
-                id="coloring-none" name="coloring" value="style_default" checked="checked">None</label></div>
-          <div><label for="coloring-rs" class="coloringlabel"><input type="radio"
-                id="coloring-rs" name="coloring" value="style_rs">Role Stereotype</label></div>
-          <div><label for="coloring-layer" class="coloringlabel"><input type="radio"
-                id="coloring-layer" name="coloring" value="style_layer">Architectural Layer</label></div>
+          <h3>Node Coloring</h3>
+          <div><label for="coloring-none" class="coloringlabel"><input type="radio" id="coloring-none" name="coloring"
+                value="style_default" checked="checked">None</label></div>
+          <div><label for="coloring-rs" class="coloringlabel"><input type="radio" id="coloring-rs" name="coloring"
+                value="style_rs">Role Stereotype</label></div>
+          <div><label for="coloring-layer" class="coloringlabel"><input type="radio" id="coloring-layer" name="coloring"
+                value="style_layer">Architectural Layer</label></div>
           <div id="coloring-legend"></div>
         </div>
       </div>
+
       <div class="menu" id="menu-edges">
-        <h2>Relationships</h2>
+        <h2>Edges</h2>
         <table style="width: 100%; text-align: left" id="reltab">
           <thead>
             <th>Connection</th>
@@ -114,50 +152,14 @@
         </table>
       </div>
 
-      <div class="menu" id="menu-layout">
-        <h2>Layout algorithm</h2>
-        <label for="selectlayout">
-          Select layout
-          <select class="dd" id="selectlayout" size="1">
-            <option value="cola">cola</option>
-            <option selected value="klay">klay</option>
-            <option value="fcose">fcose</option>
-            <option value="cose-bilkent">cose-bilkent</option>
-            <option value="euler">euler</option>
-            <option value="spread">spread (takes a while...)</option>
-            <option value="dagre">dagre</option>
-          </select>
-        </label>
-        <button class="sidebar" id="btn-relayout">
-          Relayout
-        </button>
-      </div>
 
-      <div class="menu">
-        <h2>Highlight nodes</h2>
-
-        <label for="highlight">Separate node names by comma, whitespace, or new line.</label>
-        <textarea id="highlight" name="highlight" rows="3"></textarea>
-        <button class="sidebar" id="btn-reset">Reset</button>
-        <button class="sidebar" id="btn-highlight">Highlight</button>
-        <p/>
-        <button class="sidebar" id="btn-toggleVisibility">
-          Toggle visibility
-        </button>
-      </div>
-
-      <div class="menu">
-        <h2>Expand and Collapse</h2>
-        <button class="sidebar" id="expandNodes">Expand Nodes</button>
-        <button class="sidebar" id="collapseNodes">Collapse Nodes</button><br />
-        <!--button class="sidebar" id="collapseEdges">Collapse Edges</button-->
-      </div>
     </div>
-    <div class="sidebar-tab" id="tab-features" style="display: none">
+    <div class="sidebar-tab" id="tab-traces" style="display: none">
       <div class="menu">
-        <h2>Feature highlight</h2>
+        <h2>Traces highlight</h2>
         <div id="selectfeature"></div>
       </div>
+
     </div>
     <!-- <div class="sidebar-tab" id="tab-bugs" style="display:none;"></div> -->
   </div>

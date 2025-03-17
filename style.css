@@ -51,6 +51,17 @@ h2 {
   border-top: 1px solid #cacaca;
 }
 
+.menu > div {
+  padding-bottom: 1em;
+}
+
+.menu h3 {font-size: 1em;
+  font-weight: bold;
+  text-align: start;
+  margin-top: 3px;
+  margin-bottom: 9px;
+}
+
 .notice {
   background-color: #ffffec;
   border-radius: 4px;

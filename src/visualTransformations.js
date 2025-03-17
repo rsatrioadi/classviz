@@ -1,4 +1,5 @@
 import { blacken, hslString, role_stereotype_colors, whiten } from "./colors.js";
+import { $all } from "./shorthands.js";
 import { addScratch, counterToPercentage, cumulative, hasLabel, isPureContainer, repeatMiddle } from "./utils.js";
 
 export const recolorContainers = function (pCy) {
@@ -127,4 +128,23 @@ export const removeExtraNodes = function (pCy) {
 	const extras = pCy.nodes(n => !hasLabel(n, "Container") && !hasLabel(n, "Structure")
 		&& !hasLabel(n, "Type") && !hasLabel(n, "Primitive"));
 	extras.remove();
-}
+};
+
+export const showNeighborhood = function (nodes) {
+
+	const to_check = nodes.children().union(nodes);
+	to_check.union(nodes.ancestors()).removeClass("dimmed");
+
+	// currently visible relationship types
+	const edge_labels = $all('input[name="showrels"]')
+		.filter(cb => cb.checked)
+		.map(cb => cb.value);
+
+	const edges = to_check.connectedEdges((e) => edge_labels.includes(e.data("label")));
+	edges
+		.union(edges.targets())
+		.union(edges.targets().ancestors())
+		.union(edges.sources())
+		.union(edges.sources().ancestors())
+		.removeClass("dimmed");
+};

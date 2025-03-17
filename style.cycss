@@ -248,6 +248,13 @@ edge[interaction = "returns"] {
   text-opacity: 0;
 }
 
+node.highlight {
+  underlay-color: #584FCB;
+  underlay-padding: 12;
+  underlay-opacity: 1;
+  underlay-shape: round-rectangle;
+}
+
 node.selected {
   underlay-color: orange;
   underlay-padding: 12;
@@ -267,5 +274,3 @@ node.selected {
 .bug_reset {
   background-color: whitesmoke;
 }
-
-/* Style for expanding and collapsing nodes */
