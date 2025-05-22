@@ -25,8 +25,9 @@ export const highlight = function (pCy, text) {
 		const classNames = text.split(/[,\s]+/);
 		pCy.elements().addClass("dimmed");
 		pCy.elements(".hidden").removeClass("hidden").addClass("hidden");
+		pCy.elements().removeClass("highlight");
 
-		const classes = pCy.nodes((node) => classNames.includes(node.data('name')));
+		const classes = pCy.nodes(node => classNames.some(cn => node.data('name').includes(cn)));
 		const edges = classes.edgesWith(classes);
 		classes.removeClass("dimmed");
 		edges.removeClass("dimmed");
@@ -35,6 +36,8 @@ export const highlight = function (pCy, text) {
 		classes.addClass('highlight');
 
 		showNeighborhood(classes);
+
+		pCy.center(classes);
 	} else {
 		pCy.elements().removeClass('dimmed');
 		pCy.elements().removeClass('highlight');
