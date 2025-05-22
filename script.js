@@ -10,7 +10,7 @@ import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_color
 import { clearInfo, displayInfo } from './src/infoPanel.js';
 import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
-import { aggregateLayers, homogenizeDepths, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
+import { aggregateLayers, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
 import { adjustEdgeWidths, cacheNodeStyles, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles, showNeighborhood } from './src/visualTransformations.js';
 import { arrayIntersection, getScratch, hasLabel, isPureContainer } from './src/utils.js';
 import { displayLegend } from './src/nodesPanel.js';
@@ -508,15 +508,16 @@ const initCy = async function (payload) {
 
 		hcy.endBatch();
 
+		const numEdges = hcy.edges().length;
+
 		// then create a visualized graph
 		cytoscape({
 			container: $('#cy'),
 			elements: hcy.json().elements,
-
-			// inititate cytoscape expand collapse
 			ready: cyReady,
 			style,
-			wheelSensitivity: 0.25,
+			textureOnViewport: numEdges > 5000 ? true : false,
+			// wheelSensitivity: 0.25,
 		});
 	}
 
@@ -527,7 +528,8 @@ const initCy = async function (payload) {
 
 		recolorContainers(cy);
 		cacheNodeStyles(cy);
-		liftEdges(cy);
+		liftEdges(cy, "calls");
+		liftEdges(cy, "constructs");
 		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
 
@@ -681,6 +683,7 @@ const bindRouters = function () {
 	cy.on("tap", "edge", (evt) => {
 		evt.target.removeClass("dimmed");
 		evt.target.connectedNodes().removeClass("dimmed");
+		console.log(getScratch(evt.target, 'bundle'));
 	});
 }
 
@@ -708,11 +711,21 @@ const showPrimitives = function (pCy, e) {
 // 		.toggleClass("pkghidden", !e.checked);
 // };
 
+const hiddenEdges = {};
 const setVisible = function (e) {
-	cy.edges(`[interaction = "${e.value}"]`).toggleClass(
-		"hidden",
-		!e.checked
-	);
+	if (!e.checked) {
+		hiddenEdges[e.value] = cy.edges(`[interaction = "${e.value}"]`);
+		hiddenEdges[e.value].remove();
+	} else {
+		if (hiddenEdges[e.value]) {
+			hiddenEdges[e.value].restore();
+			hiddenEdges[e.value] = null;
+		}
+	}
+	// cy.edges(`[interaction = "${e.value}"]`).toggleClass(
+	// 	"hidden",
+	// 	!e.checked
+	// );
 };
 
 const setLineBends = function (e) {
@@ -791,11 +804,13 @@ const fillRelationshipToggles = function (pCy) {
 		h("thead", {}, [
 			h("tr", {}, [
 				h("th", {},
-					["Connection"]),
+					["Edge Type"]),
 				h("th", {},
-					["Orthogonal"]),
+					["└"]),
 				h("th", {},
-					["Bezier"]),])]),
+					["╰"]),
+				h("th", {},
+					["Action"]),])]),
 		...edgeLabels.map((edgeLabel) =>
 			h("tr", {}, [
 				h("td", {}, [
@@ -833,7 +848,34 @@ const fillRelationshipToggles = function (pCy) {
 						change: (event) => setLineBends(event.target)
 					}, (e) => {
 						e.checked = true;
-					})])]))]);
+					})]),
+				h('td', {}, [
+					h('button', {
+						class: 'sidebar',
+						id: `${edgeLabel}-lift`,
+						value: edgeLabel
+					}, ["⬆"], {
+						click: (event) => liftEdges(cy, event.target.value)
+					}), ' ',
+					h('button', {
+						class: 'sidebar',
+						id: `${edgeLabel}-lower`,
+						value: edgeLabel
+					}, ["⬇"], {
+						click: (event) => {
+							const label = event.target.value;
+							cy.edges(`[label="${label}"]`).forEach((edge) => {
+								if (edge.data('properties')['bundle']) {
+									edge.data('properties')['bundle'].forEach((bundledEdge) => {
+										bundledEdge.restore();
+										bundledEdge.toggleClass('hidden', !$(`#${label}`).checked)
+									});
+									edge.remove();
+								}
+							});
+						}
+					}, (e) => e.disabled = true)
+				])]))]);
 
 	$all('input[name="showrels"]').forEach(setVisible);
 };

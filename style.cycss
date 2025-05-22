@@ -29,7 +29,8 @@ node.Container {
 
 node.Container[properties.dummy = 1] {
   label: ;
-  border-style: dashed;
+  padding: 4;
+  border-width: 1;
 }
 
 node.Structure {
@@ -255,7 +256,7 @@ node.highlight {
   underlay-shape: round-rectangle;
 }
 
-node.selected {
+.selected {
   underlay-color: orange;
   underlay-padding: 12;
   underlay-opacity: 1;

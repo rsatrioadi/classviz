@@ -28,12 +28,12 @@ export const cacheNodeStyles = function (pCy) {
 	});
 }
 
-export const liftEdges = function (pCy) {
+export const liftEdges = function (pCy, label) {
 	const edges = pCy.edges((e) =>
 		e.source().data('labels').includes("Structure") &&
 		e.target().data('labels').includes("Structure") &&
 		e.target().parent() !== e.source().parent()).filter((e) => 
-			["calls","constructs"].includes(e.data('label'))
+			label === e.data('label')
 		);
 	const newEdges = {};
 
@@ -52,12 +52,14 @@ export const liftEdges = function (pCy) {
 						properties: {
 							...e.data('properties'),
 							weight: 0,
+							bundle: [],
 							metaSrc: "lifting"
 						}
 					}
 				};
 			}
 			newEdges[key].data.properties["weight"] += 1;
+			newEdges[key].data.properties["bundle"].push(e);
 		}
 	});
 	pCy.add(Object.values(newEdges));
