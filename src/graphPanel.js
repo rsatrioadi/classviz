@@ -42,6 +42,6 @@ export const highlight = function (pCy, text) {
 		pCy.elements().removeClass('dimmed');
 		pCy.elements().removeClass('highlight');
 	}
-	pCy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
+	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
 };
 

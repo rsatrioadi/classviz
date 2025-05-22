@@ -670,7 +670,7 @@ const bindRouters = function () {
 
 		const edges = event.target.descendants().merge(event.target)
 			.connectedEdges()
-			.filter((e) => interactions.includes(e.data("interaction")));
+			.filter((e) => interactions.includes(e.data("label")));
 		edges.addClass("dimmed");
 	});
 
@@ -714,7 +714,7 @@ const showPrimitives = function (pCy, e) {
 const hiddenEdges = {};
 const setVisible = function (e) {
 	if (!e.checked) {
-		hiddenEdges[e.value] = cy.edges(`[interaction = "${e.value}"]`);
+		hiddenEdges[e.value] = cy.edges(`[label = "${e.value}"]`);
 		hiddenEdges[e.value].remove();
 	} else {
 		if (hiddenEdges[e.value]) {
@@ -730,7 +730,7 @@ const setVisible = function (e) {
 
 const setLineBends = function (e) {
 	if (e.checked) {
-		cy.edges(`[interaction = "${e.name}"]`).style("curve-style", e.value);
+		cy.edges(`[label = "${e.name}"]`).style("curve-style", e.value);
 	}
 };
 
@@ -796,7 +796,7 @@ const fillRSFilter = function () {
 const fillRelationshipToggles = function (pCy) {
 
 	const edgeLabels = pCy.edges()
-		.map((e) => e.data("interaction"))
+		.map((e) => e.data("label"))
 		.filter((v, i, s) => s.indexOf(v) === i);
 	edgeLabels.sort((a, b) => a.localeCompare(b));
 
@@ -864,17 +864,18 @@ const fillRelationshipToggles = function (pCy) {
 					}, ["⬇"], {
 						click: (event) => {
 							const label = event.target.value;
+							console.log(label)
 							cy.edges(`[label="${label}"]`).forEach((edge) => {
+								console.log(edge.data('properties')['bundle'])
 								if (edge.data('properties')['bundle']) {
 									edge.data('properties')['bundle'].forEach((bundledEdge) => {
 										bundledEdge.restore();
-										bundledEdge.toggleClass('hidden', !$(`#${label}`).checked)
 									});
 									edge.remove();
 								}
 							});
 						}
-					}, (e) => e.disabled = true)
+					})
 				])]))]);
 
 	$all('input[name="showrels"]').forEach(setVisible);
@@ -943,7 +944,7 @@ export const showTrace = function (event, pCy) {
 		applyInitialColor(pCy);
 	}
 
-	pCy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
+	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
 };
 
 export const showBug = function (event, pCy) {
@@ -990,7 +991,7 @@ export const showBug = function (event, pCy) {
 		pCy.elements().removeClass("bug_shown");
 		pCy.elements().addClass("bug_reset");
 	}
-	pCy.edges(`[interaction = "${parentRel}"]`).style("display", "none");
+	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
 };
 
 // EXPERIMENTAL!!!!!!!!!!!!!
@@ -1232,3 +1233,17 @@ var homogenizeForest = (isContainment, isTreeNode, isLeaf) => ({ elements: { nod
 
 	return { elements: { nodes: finalNodes, edges: finalEdges }, ...rest };
 };
+
+window.addEventListener("keydown", (e) => {
+	if (e.key === "Control") {
+		cy.boxSelectionEnabled(false);
+		cy.nodes().panify();
+	}
+});
+
+window.addEventListener("keyup", (e) => {
+	if (e.key === "Control") {
+		cy.nodes().unpanify();
+		cy.boxSelectionEnabled(true);
+	}
+});

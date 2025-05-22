@@ -36,14 +36,14 @@ export const shortenRoots = function(pCy) {
 export const setParents = function (pCy, relationship, inverted) {
 	pCy.edges("#parentRel").removeClass("parentRel");
 
-	pCy.edges(`[interaction = "${relationship}"]`).forEach((edge) => {
+	pCy.edges(`[label = "${relationship}"]`).forEach((edge) => {
 		const child = inverted ? edge.source() : edge.target();
 		const parent = inverted ? edge.target() : edge.source();
 
 		child.move({ parent: parent.id() });
 	});
 
-	pCy.edges(`[interaction = "${relationship}"]`).addClass("parentRel");
+	pCy.edges(`[label = "${relationship}"]`).addClass("parentRel");
 }
 
 export const setStyleClasses = function (pCy) {
