@@ -58,12 +58,14 @@ export const liftEdges = function (pCy, label) {
 					}
 				};
 			}
-			newEdges[key].data.properties["weight"] += 1;
+			newEdges[key].data.properties["weight"] += e.data('properties').weight;
 			newEdges[key].data.properties["bundle"].push(e);
 		}
 	});
 	pCy.add(Object.values(newEdges));
 	edges.remove();
+
+	adjustEdgeWidths(pCy);
 }
 
 export const removeContainmentEdges = function (pCy) {
