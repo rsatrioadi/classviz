@@ -1,4 +1,4 @@
-import { hslString, role_stereotype_colors, whiten, blacken } from './colors.js';
+import { hslString, role_stereotype_colors, whiten } from './colors.js';
 import { $, h, r } from './shorthands.js';
 
 const stringToNode = (s) => {
@@ -66,7 +66,7 @@ const prepareRenderData = (node) => {
 	];
 	props.forEach((p) => renderData.properties.push(p));
 
-	if (node.data('labels').includes("Structure")) {
+	if (node.data('labels').includes("Type")) {
 		const methods = node.scratch('_classviz')['methods'];
 
 		renderData.properties.push({
@@ -87,7 +87,7 @@ const prepareRenderData = (node) => {
 						])]));
 			}) : h('div', { class: 'info' }, ["No method information available."])
 		});
-	} else if (node.data('labels').includes("Container")) {
+	} else if (node.data('labels').includes("Scope")) {
 
 		// 	const incoming_tmp = node.sources("dependsOn");
 		// 	const outgoing_tmp = node.targets("dependsOn");

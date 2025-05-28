@@ -10,7 +10,7 @@ import { blacken, ft_colors, hslString, layer_colors_from, role_stereotype_color
 import { clearInfo, displayInfo } from './src/infoPanel.js';
 import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
 
-import { aggregateLayers, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots } from './src/headlessTransformations.js';
+import { aggregateLayers, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots, adoptOrphans, removePrimitives, collectRoleStereotypes } from './src/headlessTransformations.js';
 import { adjustEdgeWidths, cacheNodeStyles, liftEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles, showNeighborhood } from './src/visualTransformations.js';
 import { arrayIntersection, getScratch, hasLabel, isPureContainer } from './src/utils.js';
 import { displayLegend } from './src/nodesPanel.js';
@@ -73,7 +73,73 @@ const collectUniqueLabels = function (dataList) {
 	return Array.from(uniqueLabels);
 }
 
-const abstractize = function (graphData) {
+const upgradeV1ToV2 = function (graphData) {
+	const newGraphData = {...graphData};
+	newGraphData.elements.nodes.forEach((node) => {
+		if (node.data.labels.includes('Container')) {
+			node.data.labels.push('Scope');
+			node.data.labels.splice(node.data.labels.indexOf('Container'), 1);
+		}
+		if (node.data.labels.includes('Structure')) {
+			node.data.labels.push('Type');
+			node.data.labels.splice(node.data.labels.indexOf('Structure'), 1);
+		}
+		if (node.data.labels.includes('Grouping')) {
+			node.data.labels.push('Category');
+			node.data.labels.splice(node.data.labels.indexOf('Grouping'), 1);
+		}
+		if (node.data.labels.includes('Script')) {
+			if (!node.data.labels.includes('Operation')) {
+				node.data.labels.push('Operation');
+			}
+			node.data.labels.splice(node.data.labels.indexOf('Script'), 1);
+		}
+		if (node.data.labels.includes('Constructor')) {
+			if (!node.data.labels.includes('Operation')) {
+				node.data.labels.push('Operation');
+			}
+			node.data.labels.splice(node.data.labels.indexOf('Constructor'), 1);
+			node.data.properties['kind'] = "constructor";
+		}
+		if (node.data.labels.includes('Primitive')) {
+			if (!node.data.labels.includes('Type')) {
+				node.data.labels.push('Type');
+			}
+			node.data.labels.splice(node.data.labels.indexOf('Primitive'), 1);
+			node.data.properties['kind'] = "primitive";
+		}
+	});
+	newGraphData.elements.edges.forEach((edge) => {
+		if (edge.data.label === 'contains') {
+			edge.data.label = 'encloses';
+		}
+		if (edge.data.label === 'hasScript') {
+			edge.data.label = 'encapsulates';
+		}
+		if (edge.data.label === 'hasVariable') {
+			edge.data.label = 'encapsulates';
+		}
+		if (edge.data.label === 'hasParameter') {
+			const src = edge.data.source;
+			const tgt = edge.data.target;
+			edge.data.source = tgt;
+			edge.data.target = src;
+			edge.data.label = 'parameterizes';
+		}
+		if (edge.data.label === 'returnType') {
+			edge.data.label = 'returns';
+		}
+		if (edge.data.label === 'type') {
+			edge.data.label = 'typed';
+		}
+		if (edge.data.label === 'allowedDependency') {
+			edge.data.label = 'succeeds';
+		}
+	});
+	return newGraphData;
+}
+
+const abstractizeV2 = function (graphData) {
 	// Build a node dictionary and an edge dictionary from graphData
 	const nodes = Object.fromEntries(graphData.elements.nodes.map((node) => [node.data.id, node.data]));
 	const edges = {};
@@ -155,19 +221,19 @@ const abstractize = function (graphData) {
 	/**
 	 * Original logic: calls, constructs, holds, accepts, returns
 	 */
-	const calls = lift(edges.hasScript, edges.invokes, "calls").filter(
+	const calls = lift(edges['encapsulates'], edges['invokes'], "calls").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const constructs = compose(edges.hasScript, edges.instantiates, "constructs").filter(
+	const constructs = compose(edges['encapsulates'], edges['instantiates'], "constructs").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const holds = compose(edges.hasVariable, edges.type, "holds").filter(
+	const holds = compose(edges['encapsulates'], edges['typed'], "holds").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const accepts = compose(edges.hasScript, compose(edges.hasParameter, edges.type), "accepts").filter(
+	const accepts = compose(edges['encapsulates'], compose(invert(edges['parameterizes']), edges['typed']), "accepts").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const returns = compose(edges.hasScript, edges.returnType, "returns").filter(
+	const returns = compose(edges['encapsulates'], edges['returns'], "returns").filter(
 		(edge) => edge.source !== edge.target
 	);
 
@@ -175,13 +241,13 @@ const abstractize = function (graphData) {
 	 * Identify top-level classes by analyzing "contains" edges
 	 */
 	const nestedClassSet = new Set(
-		(edges.contains || [])
-			.filter((edge) => nodes[edge.source]?.labels.includes("Structure"))
+		(edges['encloses'] || [])
+			.filter((edge) => nodes[edge.source]?.labels.includes("Type"))
 			.map((edge) => edge.target)
 	);
 
 	const topLevelClasses = Object.entries(nodes)
-		.filter(([_, node]) => node.labels.includes("Structure"))
+		.filter(([_, node]) => node.labels.includes("Type"))
 		.map(([id]) => id)
 		.filter((id) => !nestedClassSet.has(id));
 	const topLevelClassSet = new Set(topLevelClasses);
@@ -239,27 +305,27 @@ const abstractize = function (graphData) {
 	 * Identify top-level packages and remove them from "contains" if needed
 	 */
 	const pkgWithClasses = new Set(
-		(edges.contains || [])
+		(edges['encloses'] || [])
 			.filter(
 				(edge) =>
-					nodes[edge.source].labels.includes("Container") &&
-					nodes[edge.target].labels.includes("Structure")
+					nodes[edge.source].labels.includes("Scope") &&
+					nodes[edge.target].labels.includes("Type")
 			)
 			.map((edge) => edge.source)
 	);
 
-	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges.contains, pkgId));
+	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges['encloses'], pkgId));
 	const topLevelPackages = extractTopLevelPackages(pkgPaths);
 	const packagesToRemove = topLevelPackages.flatMap((pkg) => pkg.slice(0, -1));
 
-	let newContains = edges.contains;
+	let newContains = edges['encloses'];
 	if (
 		topLevelPackages &&
 		Array.isArray(topLevelPackages[0]) &&
 		topLevelPackages[0].length > 1
 	) {
 
-		newContains = edges.contains
+		newContains = edges['encloses']
 			.filter((edge) => !topLevelClassSet.has(edge.source))
 			.filter(
 				(edge) =>
@@ -276,8 +342,8 @@ const abstractize = function (graphData) {
 	 * If there's no "nests" edge, build it for top-level classes
 	 */
 	const nests =
-		edges.nests ??
-		(edges.contains || [])
+		edges['nests'] ??
+		(edges['encloses'] || [])
 			.filter((edge) => topLevelClassSet.has(edge.source))
 			.map((edge) => ({ ...edge, label: "nests" }));
 
@@ -309,15 +375,15 @@ const abstractize = function (graphData) {
 	 * Build the "abstract" set of nodes (remove packages to remove)
 	 */
 	const abstractNodes = filterNodesByIds(
-		filterNodesByLabels(nodes, ["Container", "Structure", "Primitive", "Problem", "Script", "Operation", "Constructor", "Grouping"]),
+		filterNodesByLabels(nodes, ["Scope", "Type", "Problem", "Operation", "Category"]),
 		packagesToRemove
 	);
 
-	// Remove "contains" edges if the source node has the label "Structure"
+	// Remove "contains" edges if the source node has the label "Type"
 	newContains = newContains.filter((edge) => {
 		const sourceNode = abstractNodes[edge.source];
-		// Keep the edge only if the source node doesn't exist in abstractNodes or doesn't have "Structure"
-		return !sourceNode || !sourceNode.labels.includes("Structure");
+		// Keep the edge only if the source node doesn't exist in abstractNodes or doesn't have "Type"
+		return !sourceNode || !sourceNode.labels.includes("Type");
 	});
 
 	// Object.values(abstractNodes).forEach((node) => {
@@ -331,27 +397,27 @@ const abstractize = function (graphData) {
 	 *  (1) and (2) NEW LOGIC for edges derived from "uses":
 	 *  
 	 *   (1) (s1)-[:uses]->(v1:Variable)<-[:hasVariable]-(s2) => (s1)-[:accesses]->(s2)
-	 *   (2) (s1)-[:uses]->(o1:Operation)<-[:hasScript]-(s2) => (s1)-[:calls]->(s2)
+	 *   (2) (s1)-[:uses]->(o1:Operation)<-[:encapsulates]-(s2) => (s1)-[:calls]->(s2)
 	 *
 	 *   Then filter them to ensure both s1 and s2 are Structures.
 	 * -----------------------------------------------------------------
 	 */
 
 	// "accesses" edges
-	const usesHasVarInverted = invert(edges.hasVariable || []);
-	const accesses = compose(edges.uses || [], usesHasVarInverted, "accesses").filter(
+	const usesHasVarInverted = invert(edges['encapsulates'] || []);
+	const accesses = compose(edges['uses'] || [], usesHasVarInverted, "accesses").filter(
 		(edge) =>
-			nodes[edge.source]?.labels.includes("Structure") &&
-			nodes[edge.target]?.labels.includes("Structure") &&
+			nodes[edge.source]?.labels.includes("Type") &&
+			nodes[edge.target]?.labels.includes("Type") &&
 			edge.source !== edge.target
 	);
 
 	// "calls" edges (from s1 uses an Operation that belongs to s2)
-	const usesHasScriptInverted = invert(edges.hasScript || []);
-	const usesToCalls = compose(edges.uses || [], usesHasScriptInverted, "calls").filter(
+	const usesHasScriptInverted = invert(edges['encapsulates'] || []);
+	const usesToCalls = compose(edges['uses'] || [], usesHasScriptInverted, "calls").filter(
 		(edge) =>
-			nodes[edge.source]?.labels.includes("Structure") &&
-			nodes[edge.target]?.labels.includes("Structure") &&
+			nodes[edge.source]?.labels.includes("Type") &&
+			nodes[edge.target]?.labels.includes("Type") &&
 			edge.source !== edge.target
 	);
 
@@ -366,9 +432,9 @@ const abstractize = function (graphData) {
 	 */
 	const abstractEdges = {
 		// Edges that the original code had
-		hasScript: edges.hasScript || [],
-		contains: newContains || [],
-		specializes: edges.specializes || [],
+		encapsulates: edges['encapsulates'] || [],
+		encloses: newContains || [],
+		specializes: edges['specializes'] || [],
 		nests: nests || [],
 		calls: [...(calls || []), ...usesToCalls], // combine old + new "calls"
 		constructs: constructs || [],
@@ -376,8 +442,8 @@ const abstractize = function (graphData) {
 		accepts: accepts || [],
 		returns: returns || [],
 
-		implements: edges.implements || [],
-		allowedDependency: edges.allowedDependency || [],
+		implements: edges['implements'] || [],
+		succeeds: edges['succeeds'] || [],
 
 		// The newly composed "accesses" edges
 		accesses,
@@ -419,9 +485,19 @@ const abstractize = function (graphData) {
 	return clean;
 };
 
-const prepareGraph = function (graphData) {
+const determineSchemaVersion = function (graphData) {
+	if (graphData.properties && graphData.properties.schemaVersion) {
+		return graphData.properties.schemaVersion;
+	}
 	const nodeLabels = collectUniqueLabels(graphData.elements.nodes);
 	const graphContainsScripts = nodeLabels.some(label => ['Operation', 'Constructor', 'Script'].includes(label));
+	if (graphContainsScripts) {
+		return '1.2.0';
+	}
+	return '1.0.0';
+}
+
+const prepareGraph = function (graphData) {
 
 	// Create a deep clone of graphData
 	const originalGraph = JSON.parse(JSON.stringify(graphData));
@@ -430,9 +506,14 @@ const prepareGraph = function (graphData) {
 		edge.data.label = edge.data.label || edge.data.labels?.join() || 'nolabel';
 	});
 
+	const schemaVersion = determineSchemaVersion(originalGraph);
 	const graph = {
 		original: originalGraph,
-		abstract: graphContainsScripts ? abstractize(graphData) : graphData
+		abstract: schemaVersion.startsWith('2.0') ? 
+				abstractizeV2(graphData) : 
+				schemaVersion.startsWith('1.2') ? 
+				abstractizeV2(upgradeV1ToV2(graphData)) : 
+				upgradeV1ToV2(graphData)
 	};
 
 	// const makeDummyContainers = homogenizeForest(
@@ -457,7 +538,7 @@ const prepareGraph = function (graphData) {
 	return graph;
 };
 
-export let parentRel = "contains";
+export let parentRel = "encloses";
 
 function generateExpColOptions(_layoutName = "klay") {
 	let cyExpandCollapseOptions = {
@@ -493,15 +574,18 @@ const initCy = async function (payload) {
 
 	function hcyReady(event) {
 		window.hcy = event.cy;
-1
+
 		hcy.startBatch();
 
 		homogenizeDepthsOptimized(hcy, 
-			e => hasLabel(e, "contains"),
-			n => hasLabel(n, "Container"),
-			n => hasLabel(n, "Structure"));
+			e => hasLabel(e, "encloses"),
+			n => hasLabel(n, "Scope"),
+			n => hasLabel(n, "Type"));
 		// console.log(hcy.json());
 		shortenRoots(hcy);
+		removePrimitives(hcy);
+		adoptOrphans(hcy);
+		collectRoleStereotypes(hcy);
 		setParents(hcy, parentRel, false);
 		setStyleClasses(hcy);
 		aggregateLayers(hcy);
@@ -559,10 +643,6 @@ const initCy = async function (payload) {
 
 		bindRouters();
 
-		// const cbShowPrimitives = $("#showPrimitives");
-		// cbShowPrimitives.checked = false;
-		showPrimitives(cy, {checked: false});
-
 		if (cy.edges().length < 5000) relayout(cy, $('#selectlayout').options[$('#selectlayout').selectedIndex].value);
 
 		cy.endBatch();
@@ -576,16 +656,32 @@ const initCy = async function (payload) {
 }
 
 function initLayerColors(pCy) {
-	const topLayers = pCy.nodes(n => hasLabel(n, "Grouping") && n.data('properties.kind') === "architectural layer" && n.incomers(e => hasLabel(e, "allowedDependency")).empty());
+	const topLayers = pCy.nodes(n => 
+		hasLabel(n, "Category") && 
+		n.data('properties.kind') === "architectural layer" && 
+		n.incomers(e => hasLabel(e, "succeeds")).empty() &&
+		!n.outgoers(e => hasLabel(e, "succeeds")).empty() 
+	);
 	window.layers = [...topLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined")];
 	var currentLayers = topLayers;
 	while (!currentLayers.empty()) {
-		const nextLayers = currentLayers.outgoers(e => e.data('label') === "allowedDependency").targets();
+		const nextLayers = currentLayers.outgoers(e => e.data('label') === "succeeds").targets();
 		layers.push(...nextLayers.map(n => n.data('properties.simpleName')).filter(n => n).map(n => n || "Undefined"));
 		currentLayers = nextLayers;
 	}
-	layers.push("Undefined");
-	window.layer_colors = layer_colors_from(layers);
+	const orphans = pCy.nodes(n =>
+		hasLabel(n, "Category") &&
+		n.data('properties.kind') === "architectural layer" &&
+		n.incomers(e => hasLabel(e, "succeeds")).empty() &&
+		n.outgoers(e => hasLabel(e, "succeeds")).empty()
+	);
+	orphans.forEach((node) => {
+		layers.push(node.data('properties.simpleName'));
+	});
+	if (!layers.includes('Undetermined')) {
+		layers.push('Undetermined');
+	}
+	window.layer_colors = layer_colors_from(layers, ["Undetermined"]);
 	colorMap['style_layer'] = window.layer_colors;
 	colorOrder['style_layer'] = window.layers;
 }
@@ -618,7 +714,6 @@ const bindRouters = function () {
 	on('click', $("#btn-relayout"), () => relayout(cy, $('#selectlayout').options[$('#selectlayout').selectedIndex].value));
 	on('click', $("#btn-highlight"), () => highlight(cy, $('#highlight').value));
 
-	// on('change', $('#showPrimitives'), () => showPrimitives(cy, $('#showPrimitives')));
 	// on('change', $('#showPackages'),   () => showPackages(cy, $('#showPackages')));
 	on('change', $all('.coloringlabel'), colorNodes(cy));
 
@@ -685,7 +780,7 @@ const bindRouters = function () {
 	cy.on("tap", "edge", (evt) => {
 		evt.target.removeClass("dimmed");
 		evt.target.connectedNodes().removeClass("dimmed");
-		console.log(getScratch(evt.target, 'bundle'));
+		// console.log(getScratch(evt.target, 'bundle'));
 	});
 }
 
@@ -699,12 +794,6 @@ const getSvgUrl = function () {
 	const svgContent = cy.svg({ scale: 1, full: true, bg: 'beige' });
 	const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
 	return URL.createObjectURL(blob);
-};
-
-const showPrimitives = function (pCy, e) {
-	pCy.nodes()
-		.filter((n) => n.data("labels").includes("Primitive") || n.data("id") === "java.lang.String")
-		.style({ display: e.checked ? "element" : "none" });
 };
 
 // const showPackages = function (pCy, e) {

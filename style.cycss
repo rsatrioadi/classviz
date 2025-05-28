@@ -7,7 +7,7 @@
   display: none;
 }
 
-node.Container {
+node.Scope {
   font-size: 16;
   padding: 32px;
   label: data(label);
@@ -27,13 +27,13 @@ node.Container {
   text-border-opacity: 1;
 }
 
-node.Container[properties.dummy = 1] {
+node.Scope[properties.dummy = 1] {
   label: ;
   padding: 4;
   border-width: 1;
 }
 
-node.Structure {
+node.Type {
   font-size: 16;
   padding: 16px;
   height: label;
@@ -120,7 +120,7 @@ edge {
   arrow-scale: 1.5;
 }
 
-edge[interaction = "contains"] {
+edge[label = "encloses"] {
   source-arrow-shape: none;
   target-arrow-shape: none;
   display: none;
@@ -130,7 +130,7 @@ edge[interaction = "contains"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "calls"] {
+edge[label = "calls"] {
   source-arrow-color: #000080;
   line-fill: linear-gradient;
   line-gradient-stop-colors: #CCFF66 #000080;
@@ -142,7 +142,7 @@ edge[interaction = "calls"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "constructs"] {
+edge[label = "constructs"] {
   target-arrow-color: #A61340;
   line-fill: linear-gradient;
   line-gradient-stop-colors: #FFFF66 #A61340;
@@ -154,7 +154,7 @@ edge[interaction = "constructs"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "accepts"] {
+edge[label = "accepts"] {
   target-arrow-color: #800000;
   line-fill: linear-gradient;
   line-gradient-stop-colors: #66FF66 #800000;
@@ -165,7 +165,7 @@ edge[interaction = "accepts"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "holds"] {
+edge[label = "holds"] {
   source-arrow-color: #400080;
   line-fill: linear-gradient;
   line-gradient-stop-colors: #66FFCC #400080;
@@ -177,7 +177,7 @@ edge[interaction = "holds"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "specializes"] {
+edge[label = "specializes"] {
   source-arrow-color: #804000;
   line-fill: linear-gradient;
   line-gradient-stop-colors: #66FFFF #804000;
@@ -191,7 +191,7 @@ edge[interaction = "specializes"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "realizes"] {
+edge[label = "realizes"] {
   target-arrow-color: #000;
   source-arrow-shape: none;
   target-arrow-shape: triangle;
@@ -202,7 +202,7 @@ edge[interaction = "realizes"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "aggregates"] {
+edge[label = "aggregates"] {
   source-arrow-color: #e78ac3;
   line-color: #e78ac3;
   source-arrow-shape: diamond;
@@ -211,7 +211,7 @@ edge[interaction = "aggregates"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "composites"] {
+edge[label = "composites"] {
   source-arrow-color: #e78ac3;
   line-color: #e78ac3;
   source-arrow-shape: diamond;
@@ -221,7 +221,7 @@ edge[interaction = "composites"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "accesses"] {
+edge[label = "accesses"] {
   target-arrow-color: #e5c494;
   line-color: #e5c494;
   source-arrow-shape: none;
@@ -231,7 +231,7 @@ edge[interaction = "accesses"] {
   taxi-turn: -32px;
 }
 
-edge[interaction = "returns"] {
+edge[label = "returns"] {
   line-fill: linear-gradient;
   line-gradient-stop-colors: #66CCFF #800080;
   line-gradient-stop-positions: 0% 100%;

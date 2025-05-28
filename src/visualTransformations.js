@@ -1,4 +1,4 @@
-import { blacken, hslString, role_stereotype_colors, whiten } from "./colors.js";
+import { hslString, role_stereotype_colors, whiten } from "./colors.js";
 import { $all } from "./shorthands.js";
 import { addScratch, counterToPercentage, cumulative, hasLabel, isPureContainer, repeatMiddle } from "./utils.js";
 
@@ -30,8 +30,8 @@ export const cacheNodeStyles = function (pCy) {
 
 export const liftEdges = function (pCy, label) {
 	const edges = pCy.edges((e) =>
-		e.source().data('labels').includes("Structure") &&
-		e.target().data('labels').includes("Structure") &&
+		e.source().data('labels').includes("Type") &&
+		e.target().data('labels').includes("Type") &&
 		e.target().parent() !== e.source().parent()).filter((e) => 
 			label === e.data('label')
 		);
@@ -69,7 +69,7 @@ export const liftEdges = function (pCy, label) {
 }
 
 export const removeContainmentEdges = function (pCy) {
-	pCy.edges('[label="contains"]').remove();
+	pCy.edges('[label="encloses"]').remove();
 }
 
 export const adjustEdgeWidths = function (pCy) {
@@ -81,7 +81,7 @@ export const adjustEdgeWidths = function (pCy) {
 export const setLayerStyles = function (pCy, layers, layer_colors) {
 
 	// console.log(layer_colors);
-	pCy.nodes(".Container, .Structure").forEach(n => {
+	pCy.nodes(".Scope, .Type").forEach(n => {
 		if (Object.keys({ ...n.data("properties.layers") }).length > 0) {
 			const layer_percentages = counterToPercentage({ ...n.data("properties.layers") });
 			const style = {
@@ -102,10 +102,10 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 			// cy.$(`[id="${n.id()}"]`).style(style);
 		}
 	});
-	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
+	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
 	structures.forEach((clasz) => {
-		const methods = clasz.outgoers(e => e.data('label') === "hasScript")
-			.targets()
+		const methods = clasz.outgoers(e => e.data('label') === "encapsulates")
+			.targets(n => n.data('labels').includes('Operation'))
 			.map(m => ({ ...m.data(), color: layer_colors[m.data('properties.layer')] }));
 		methods.sort((a, b) => a.properties['simpleName'].localeCompare(b.properties['simpleName']));
 		methods.sort((a, b) => layers.indexOf(a.properties['layer']) - layers.indexOf(b.properties['layer']));
@@ -116,7 +116,7 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 
 export const setRsStyles = function (pCy) {
 
-	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
+	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
 	structures.forEach((clasz) => {
 		if (clasz.data('properties.roleStereotype')) {
 			addScratch(clasz, 'style_rs', {
@@ -129,7 +129,7 @@ export const setRsStyles = function (pCy) {
 }
 
 export const removeExtraNodes = function (pCy) {
-	const extras = pCy.nodes(n => !hasLabel(n, "Container") && !hasLabel(n, "Structure")
+	const extras = pCy.nodes(n => !hasLabel(n, "Scope") 
 		&& !hasLabel(n, "Type") && !hasLabel(n, "Primitive"));
 	extras.remove();
 };

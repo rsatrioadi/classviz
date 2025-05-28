@@ -55,5 +55,5 @@ export function arrayIntersection(arr1, arr2) {
 	return result;
 }
 
-export const isPureContainer = (n) => hasLabel(n, "Container") && !hasLabel(n, "Structure");
+export const isPureContainer = (n) => hasLabel(n, "Scope") && !hasLabel(n, "Type");
 

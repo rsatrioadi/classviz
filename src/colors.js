@@ -78,7 +78,7 @@ export const ft_colors = [
 	"#ffed6f",
 ];
 
-export const layer_colors_from = (layers) => {
+export const layer_colors_from = (layers, ignore=[]) => {
 	const color_list = [
 		{ h: 333, 	s: 0.7, 	l: 0.5  }, 
 		{ h:  11, 	s: 0.87, 	l: 0.49 }, 
@@ -93,8 +93,16 @@ export const layer_colors_from = (layers) => {
 		{ h: 209, 	s: 0.9, 	l: 0.41 }, 
 		{ h: 238, 	s: 0.54, 	l: 0.49 }
 	];
-	const layer_colors = getN(color_list, layers.length);
-	return { ...arraysToObject(layers, layer_colors), Undefined: { h: 0, s: 0, l: 0.9 } };
+	var l = [...layers];
+	const greys = {};
+	ignore.forEach((item) => {
+		if (l.includes(item)) {
+			l.splice(l.indexOf(item), 1);
+			greys[item] = { h: 0, s: 0, l: 0.9 };
+		}
+	});
+	const layer_colors = getN(color_list, l.length);
+	return { ...arraysToObject(l, layer_colors), ...greys };
 };
 
 function getN(arr, N) {

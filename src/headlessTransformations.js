@@ -1,18 +1,17 @@
-
-import { counter, counterToPercentage, hasLabel, isPureContainer, mergeCounters } from './utils.js';
+import { counter, counterToPercentage, isPureContainer, mergeCounters } from './utils.js';
 
 export const shortenRoots = function(pCy) {
 	const containmentRoots = pCy.nodes((n) => 
-		n.data('labels').includes("Container") && !n.data('labels').includes("Structure") && 
-		n.incomers(e => e.data('label') === "contains").length===0
+		n.data('labels').includes("Scope") && !n.data('labels').includes("Type") && 
+		n.incomers(e => e.data('label') === "encloses").length===0
 	);
 	containmentRoots.forEach(cutRootRec);
 
 	function cutRootRec(node) {
-		const outgoers = node.outgoers(e => e.data('label') === "contains");
+		const outgoers = node.outgoers(e => e.data('label') === "encloses");
 		if (outgoers.length > 1) return;
 		const child = outgoers.target();
-		if (child && !child.data('labels').includes("Structure")) {
+		if (child && !child.data('labels').includes("Type")) {
 			var name = "";
 			if (child.data('properties.qualifiedName')) {
 				name = child.data('properties.qualifiedName');
@@ -31,6 +30,56 @@ export const shortenRoots = function(pCy) {
 			cutRootRec(child);
 		}
 	}
+}
+
+export const removePrimitives = function(pCy) {
+	pCy.nodes()
+		.filter((n) => (n.data("labels").includes("Type") && n.data('properties')['kind'] === "primitive") || n.data("id") === "java.lang.String")
+		.remove();
+}
+
+export const adoptOrphans = function(pCy) {
+	const orphans = pCy.nodes((n) =>
+		n.data('labels').includes('Type') &&
+		n.incomers((e) => e.data('label') === 'encloses').sources((n) => n.data('labels').includes('Scope')).empty()
+	);
+	if (orphans.empty()) return;
+	pCy.add({
+		group: 'nodes',
+		data: {
+			id: 'scope:unnamed-default',
+			labels: ['Scope'],
+			properties: {
+				qualifiedName: "(default)",
+				simpleName: "(default)",
+				kind: "dummy",
+				metaSrc: "classviz"
+			}
+		}
+	});
+	orphans.forEach((n) => {
+		pCy.add({
+			group: 'edges',
+			data: {
+				source: 'scope:unnamed-default',
+				target: n.data('id'),
+				label: 'encloses',
+				properties: {
+					weight: 1,
+					metaSrc: 'classviz'
+				}
+			}
+		})
+	});
+}
+
+export const collectRoleStereotypes = function (pCy) {
+	pCy.nodes((n) => n.data('labels').includes('Type')).forEach((n) => {
+		const outgoers = n.outgoers((e) => e.data('label') === 'implements').targets((n) => n.data('properties.kind') === 'role stereotype');
+		if (!outgoers.empty()) {
+			n.data('properties')['roleStereotype'] = outgoers.data('properties.simpleName');
+		}
+	});
 }
 
 export const setParents = function (pCy, relationship, inverted) {
@@ -55,22 +104,22 @@ export const setStyleClasses = function (pCy) {
 			ele.data('labels').forEach(label => ele.addClass(label));
 		}
 	});
-	pCy.$('.Structure').removeClass("Container");
+	pCy.$('.Type').removeClass("Scope");
 	// pCy.$('.Structure').addClass("dimmed");
 }
 
 export const aggregateLayers = function (pCy) {
-	const structures = pCy.nodes(n => n.data('labels').includes("Structure"));
+	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
 	structures.forEach((clasz) => {
-		const methods = clasz.outgoers(e => e.data('label') === "hasScript").targets();
+		const methods = clasz.outgoers(e => e.data('label') === "encapsulates").targets(n => n.data('labels').includes('Operation'));
 
 		const layers = [];
 		
 		layers.push(...methods.map((method) => method.outgoers(e => e.data('label') === "implements").targets().data('properties.simpleName'))
-			.map(s => s || 'Undefined'));
+			.map(s => s || 'Undetermined'));
 
 		if (layers.length === 0) {
-			layers.push("Undefined");
+			layers.push("Undetermined");
 		}
 
 		methods.forEach((method,i) => method.data('properties').layer = layers[i]);
@@ -79,9 +128,9 @@ export const aggregateLayers = function (pCy) {
 		clasz.addClass('layers');
 	});
 
-	const containers = pCy.nodes(n => n.data('labels').includes("Container") && !n.data('labels').includes("Structure"));
+	const containers = pCy.nodes(n => n.data('labels').includes("Scope") && !n.data('labels').includes("Type"));
 	containers.forEach((pkg) => {
-		const contains = pkg.outgoers(e => e.data('label') === "contains" && e.target().data('labels').includes('Structure'));
+		const contains = pkg.outgoers(e => e.data('label') === "encloses" && e.target().data('labels').includes('Type'));
 		const classes = contains.targets();
 		const layerCounters = classes.map(c => counterToPercentage(c.data('properties.layers')));
 		pkg.data('properties')['layers'] = mergeCounters(...layerCounters);
@@ -130,7 +179,7 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 				group: 'nodes',
 				data: {
 					id: dummyId,
-					labels: ['Container'],
+					labels: ['Scope'],
 					name,
 					label: name,
 					properties: { ...parent.data('properties'), dummy: 1 }
@@ -140,8 +189,8 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 				data: {
 					source: parent.id(),
 					target: dummyId,
-					label: 'contains',
-					interaction: 'contains',
+					label: 'encloses',
+					interaction: 'encloses',
 					properties: {}
 				}
 			}, ...leafKids.map(child => ({ // edges from dummy node to leaf kids
@@ -149,8 +198,8 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 				data: {
 					source: dummyId,
 					target: child.id(),
-					label: 'contains',
-					interaction: 'contains',
+					label: 'encloses',
+					interaction: 'encloses',
 					properties: {}
 				}
 			}))]);
@@ -217,7 +266,7 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 				group: 'nodes',
 				data: {
 					id: dummyId,
-					labels: ['Container'],
+					labels: ['Scope'],
 					name,
 					label: name,
 					properties: { ...props, dummy: 1 }
@@ -227,8 +276,8 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 				data: {
 					source: current.id(),
 					target: dummyId,
-					label: 'contains',
-					interaction: 'contains',
+					label: 'encloses',
+					interaction: 'encloses',
 					properties: {}
 				}
 			}]);
@@ -246,8 +295,8 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 			data: {
 				source: current.id(),
 				target: node.id(),
-				label: 'contains',
-				interaction: 'contains',
+				label: 'encloses',
+				interaction: 'encloses',
 				properties: {}
 			}
 		});
@@ -280,7 +329,7 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 						group: 'nodes',
 						data: {
 							id: superId,
-							labels: ['Container'],
+							labels: ['Scope'],
 							name: name,
 							label: name,
 							properties: { ...(node.data('properties') || {}), dummy: 1 }
