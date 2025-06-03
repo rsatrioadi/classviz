@@ -450,6 +450,7 @@ const fillRelationshipToggles = function (pCy) {
 						id: `${edgeLabel}-ort`,
 						name: edgeLabel,
 						value: "taxi",
+						title: "Orthogonal"
 					}, [], {
 						change: (event) => setLineBends(event.target)
 					})
@@ -460,6 +461,7 @@ const fillRelationshipToggles = function (pCy) {
 						id: `${edgeLabel}-bez`,
 						name: edgeLabel,
 						value: "bezier",
+						title: "Bezier"
 					}, [], {
 						change: (event) => setLineBends(event.target)
 					}, (e) => {
@@ -469,14 +471,16 @@ const fillRelationshipToggles = function (pCy) {
 					h('button', {
 						class: 'sidebar',
 						id: `${edgeLabel}-lift`,
-						value: edgeLabel
+						value: edgeLabel,
+						title: "Lift edges"
 					}, ["⬆"], {
 						click: (event) => liftEdges(cy, event.target.value)
 					}), ' ',
 					h('button', {
 						class: 'sidebar',
 						id: `${edgeLabel}-lower`,
-						value: edgeLabel
+						value: edgeLabel,
+						title: "Lower edges"
 					}, ["⬇"], {
 						click: (event) => lowerEdges(cy, event.target.value)
 					})
