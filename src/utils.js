@@ -44,10 +44,8 @@ export function getScratch(ele, key) {
 	return null;
 }
 
-export const hasLabel = (ele, label) => {
-	if (ele.data('labels')) return ele.data('labels').includes(label);
-	return ele.data('label') === label;
-};
+export const nodeHasLabel = (n, x) => n.data('labels').includes(x);
+export const edgeHasLabel = (e, x) => e.data('label') === x;
 
 export function arrayIntersection(arr1, arr2) {
 	const set2 = new Set(arr2);
@@ -55,5 +53,5 @@ export function arrayIntersection(arr1, arr2) {
 	return result;
 }
 
-export const isPureContainer = (n) => hasLabel(n, "Scope") && !hasLabel(n, "Type");
+export const isPureContainer = (n) => nodeHasLabel(n, "Scope") && !nodeHasLabel(n, "Type");
 

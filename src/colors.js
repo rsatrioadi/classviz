@@ -19,7 +19,7 @@ export const saturate = ({ h, s, l }, p) => ({
 	l
 });
 
-export const role_stereotypes = {
+export const roleStereotypes = {
 	"Controller": { symbol: "CT" },
 	"Coordinator": { symbol: "CO" },
 	"Information Holder": { symbol: "IH" },
@@ -33,7 +33,7 @@ export const role_stereotypes = {
 	"-": { symbol: "UD", label: "Undetermined" }
 };
 
-export const role_stereotype_colors = {
+export const roleStereotypeColors = {
 	"Controller": { h: 294, s: 0.38, l: 0.42 },
 	"Coordinator": { h: 115, s: 0.4, l: 0.47 },
 	"Information Holder": { h: 359, s: 0.78, l: 0.54 },
@@ -47,7 +47,7 @@ export const role_stereotype_colors = {
 	"-": { h: 0, s: 0, l: 0.5 },
 };
 
-export const role_stereotype_order = [
+export const roleStereotypeOrder = [
 	"Controller",
 	"Coordinator",
 	"Information Holder",
@@ -78,8 +78,8 @@ export const ft_colors = [
 	"#ffed6f",
 ];
 
-export const layer_colors_from = (layers, ignore=[]) => {
-	const color_list = [
+export const layerColorsFrom = (layers, ignore=[]) => {
+	const colorList = [
 		{ h: 333, 	s: 0.7, 	l: 0.5  }, 
 		{ h:  11, 	s: 0.87, 	l: 0.49 }, 
 		{ h:  32, 	s: 1, 		l: 0.45 }, 
@@ -101,8 +101,8 @@ export const layer_colors_from = (layers, ignore=[]) => {
 			greys[item] = { h: 0, s: 0, l: 0.9 };
 		}
 	});
-	const layer_colors = getN(color_list, l.length);
-	return { ...arraysToObject(l, layer_colors), ...greys };
+	const layerColors = getN(colorList, l.length);
+	return { ...arraysToObject(l, layerColors), ...greys };
 };
 
 function getN(arr, N) {

@@ -1,6 +1,6 @@
-import { hslString, role_stereotype_colors, whiten } from "./colors.js";
+import { hslString, roleStereotypeColors, whiten } from "./colors.js";
 import { $all } from "./shorthands.js";
-import { addScratch, counterToPercentage, cumulative, hasLabel, isPureContainer, repeatMiddle } from "./utils.js";
+import { addScratch, counterToPercentage, cumulative, nodeHasLabel, isPureContainer, repeatMiddle, edgeHasLabel } from "./utils.js";
 
 export const recolorContainers = function (pCy) {
 	const max_pkg_depth = Math.max(...pCy.nodes(isPureContainer).map((n) => n.ancestors().length));
@@ -30,16 +30,17 @@ export const cacheNodeStyles = function (pCy) {
 
 export const liftEdges = function (pCy, label) {
 	const edges = pCy.edges((e) =>
-		e.source().data('labels').includes("Type") &&
-		e.target().data('labels').includes("Type") &&
 		e.target().parent() !== e.source().parent()).filter((e) => 
-			label === e.data('label')
+			edgeHasLabel(e, label)
 		);
 	const newEdges = {};
 
 	edges.forEach((e) => {
 		const srcId = e.source().parent().id();
 		const tgtId = e.target().parent().id();
+		if (!('level' in e.data('properties'))) {
+			e.data('properties')['level'] = 0;
+		}
 		if (srcId && tgtId) {
 			const key = `${srcId}-${e.data('label')}-${tgtId}`;
 			if (!newEdges[key]) {
@@ -51,6 +52,7 @@ export const liftEdges = function (pCy, label) {
 						interaction: e.data('label'),
 						properties: {
 							...e.data('properties'),
+							level: e.data('properties.level')+1,
 							weight: 0,
 							bundle: [],
 							metaSrc: "lifting"
@@ -58,7 +60,7 @@ export const liftEdges = function (pCy, label) {
 					}
 				};
 			}
-			newEdges[key].data.properties["weight"] += e.data('properties').weight;
+			newEdges[key].data.properties["weight"] += e.data('properties.weight');
 			newEdges[key].data.properties["bundle"].push(e);
 		}
 	});
@@ -68,13 +70,31 @@ export const liftEdges = function (pCy, label) {
 	adjustEdgeWidths(pCy);
 }
 
+export const lowerEdges = function (pCy, label) {
+	const maxLevel = Math.max(...cy.edges(`[label="${label}"]`)
+		.map((e) => e.data('properties.level'))
+		.filter((l) => Number.isFinite(l)));
+	cy.edges(`[label="${label}"]`)
+		.filter((e) => e.data('properties.level') === maxLevel)
+		.forEach((edge) => {
+			// console.log(edge.data('properties')['bundle'])
+			if ('bundle' in edge.data('properties')) {
+				edge.data('properties.bundle').forEach((bundledEdge) => {
+					bundledEdge.restore();
+				});
+				edge.remove();
+			}
+		});
+	adjustEdgeWidths(pCy);
+};
+
 export const removeContainmentEdges = function (pCy) {
 	pCy.edges('[label="encloses"]').remove();
 }
 
 export const adjustEdgeWidths = function (pCy) {
 	pCy.edges().forEach((e) => {
-		e.style('width', `${Math.pow(e.data('properties').weight, 0.7) * 2}px`)
+		e.style('width', `${Math.pow(e.data('properties.weight'), 0.7) * 2}px`)
 	});
 }
 
@@ -102,10 +122,10 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 			// cy.$(`[id="${n.id()}"]`).style(style);
 		}
 	});
-	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
+	const structures = pCy.nodes(n => nodeHasLabel(n, 'Type'));
 	structures.forEach((clasz) => {
-		const methods = clasz.outgoers(e => e.data('label') === "encapsulates")
-			.targets(n => n.data('labels').includes('Operation'))
+		const methods = clasz.outgoers(e => edgeHasLabel(e, "encapsulates"))
+			.targets(n => nodeHasLabel(n, 'Operation'))
 			.map(m => ({ ...m.data(), color: layer_colors[m.data('properties.layer')] }));
 		methods.sort((a, b) => a.properties['simpleName'].localeCompare(b.properties['simpleName']));
 		methods.sort((a, b) => layers.indexOf(a.properties['layer']) - layers.indexOf(b.properties['layer']));
@@ -116,21 +136,23 @@ export const setLayerStyles = function (pCy, layers, layer_colors) {
 
 export const setRsStyles = function (pCy) {
 
-	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
+	const structures = pCy.nodes(n => nodeHasLabel(n, 'Type'));
 	structures.forEach((clasz) => {
 		if (clasz.data('properties.roleStereotype')) {
 			addScratch(clasz, 'style_rs', {
-				'border-color': hslString(role_stereotype_colors[clasz.data('properties.roleStereotype'	)] || role_stereotype_colors['-']),
+				'border-color': hslString(roleStereotypeColors[clasz.data('properties.roleStereotype'	)] || roleStereotypeColors['-']),
 				'background-fill': "solid",
-				'background-color': hslString(whiten(role_stereotype_colors[clasz.data('properties.roleStereotype')] || role_stereotype_colors['-'], 0.75)),
+				'background-color': hslString(whiten(roleStereotypeColors[clasz.data('properties.roleStereotype')] || roleStereotypeColors['-'], 0.75)),
 			});
 		}
 	});
 }
 
 export const removeExtraNodes = function (pCy) {
-	const extras = pCy.nodes(n => !hasLabel(n, "Scope") 
-		&& !hasLabel(n, "Type") && !hasLabel(n, "Primitive"));
+	const extras = pCy.nodes(n => 
+		!nodeHasLabel(n, "Scope") && 
+		!nodeHasLabel(n, "Type") && 
+		!nodeHasLabel(n, "Primitive"));
 	extras.remove();
 };
 
@@ -152,3 +174,4 @@ export const showNeighborhood = function (nodes) {
 		.union(edges.sources().ancestors())
 		.removeClass("dimmed");
 };
+

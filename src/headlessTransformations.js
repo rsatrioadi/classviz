@@ -1,17 +1,17 @@
-import { counter, counterToPercentage, isPureContainer, mergeCounters } from './utils.js';
+import { counter, counterToPercentage, isPureContainer, mergeCounters, nodeHasLabel, edgeHasLabel } from './utils.js';
 
 export const shortenRoots = function(pCy) {
 	const containmentRoots = pCy.nodes((n) => 
-		n.data('labels').includes("Scope") && !n.data('labels').includes("Type") && 
-		n.incomers(e => e.data('label') === "encloses").length===0
+		isPureContainer(n) && 
+		n.incomers(e => edgeHasLabel(e, "encloses")).length === 0
 	);
 	containmentRoots.forEach(cutRootRec);
 
 	function cutRootRec(node) {
-		const outgoers = node.outgoers(e => e.data('label') === "encloses");
+		const outgoers = node.outgoers(e => edgeHasLabel(e, "encloses"));
 		if (outgoers.length > 1) return;
 		const child = outgoers.target();
-		if (child && !child.data('labels').includes("Type")) {
+		if (child && !nodeHasLabel(child, 'Type')) {
 			var name = "";
 			if (child.data('properties.qualifiedName')) {
 				name = child.data('properties.qualifiedName');
@@ -34,14 +34,14 @@ export const shortenRoots = function(pCy) {
 
 export const removePrimitives = function(pCy) {
 	pCy.nodes()
-		.filter((n) => (n.data("labels").includes("Type") && n.data('properties')['kind'] === "primitive") || n.data("id") === "java.lang.String")
+		.filter((n) => (nodeHasLabel(n, 'Type') && n.data('properties.kind') === "primitive") || n.data("id") === "java.lang.String")
 		.remove();
 }
 
 export const adoptOrphans = function(pCy) {
 	const orphans = pCy.nodes((n) =>
-		n.data('labels').includes('Type') &&
-		n.incomers((e) => e.data('label') === 'encloses').sources((n) => n.data('labels').includes('Scope')).empty()
+		nodeHasLabel(n, 'Type') &&
+		n.incomers((e) => edgeHasLabel(e, 'encloses')).sources((n2) => nodeHasLabel(n2, 'Scope')).empty()
 	);
 	if (orphans.empty()) return;
 	pCy.add({
@@ -74,8 +74,8 @@ export const adoptOrphans = function(pCy) {
 }
 
 export const collectRoleStereotypes = function (pCy) {
-	pCy.nodes((n) => n.data('labels').includes('Type')).forEach((n) => {
-		const outgoers = n.outgoers((e) => e.data('label') === 'implements').targets((n) => n.data('properties.kind') === 'role stereotype');
+	pCy.nodes((n) => nodeHasLabel(n, 'Type')).forEach((n) => {
+		const outgoers = n.outgoers((e) => edgeHasLabel(e, 'implements')).targets((n) => n.data('properties.kind') === 'role stereotype');
 		if (!outgoers.empty()) {
 			n.data('properties')['roleStereotype'] = outgoers.data('properties.simpleName');
 		}
@@ -109,28 +109,28 @@ export const setStyleClasses = function (pCy) {
 }
 
 export const aggregateLayers = function (pCy) {
-	const structures = pCy.nodes(n => n.data('labels').includes("Type"));
+	const structures = pCy.nodes(n => nodeHasLabel(n, 'Type'));
 	structures.forEach((clasz) => {
-		const methods = clasz.outgoers(e => e.data('label') === "encapsulates").targets(n => n.data('labels').includes('Operation'));
+		const methods = clasz.outgoers(e => edgeHasLabel(e, 'encapsulates')).targets(n => nodeHasLabel(n, 'Operation'));
 
 		const layers = [];
 		
-		layers.push(...methods.map((method) => method.outgoers(e => e.data('label') === "implements").targets().data('properties.simpleName'))
+		layers.push(...methods.map((method) => method.outgoers(e => edgeHasLabel(e, 'implements')).targets().data('properties.simpleName'))
 			.map(s => s || 'Undetermined'));
 
 		if (layers.length === 0) {
 			layers.push("Undetermined");
 		}
 
-		methods.forEach((method,i) => method.data('properties').layer = layers[i]);
+		methods.forEach((method,i) => method.data('properties')['layer'] = layers[i]);
 
 		clasz.data('properties')['layers'] = counter(layers);
 		clasz.addClass('layers');
 	});
 
-	const containers = pCy.nodes(n => n.data('labels').includes("Scope") && !n.data('labels').includes("Type"));
+	const containers = pCy.nodes(n => isPureContainer(n));
 	containers.forEach((pkg) => {
-		const contains = pkg.outgoers(e => e.data('label') === "encloses" && e.target().data('labels').includes('Type'));
+		const contains = pkg.outgoers(e => edgeHasLabel(e, 'encloses') && nodeHasLabel(e.target(), 'Type'));
 		const classes = contains.targets();
 		const layerCounters = classes.map(c => counterToPercentage(c.data('properties.layers')));
 		pkg.data('properties')['layers'] = mergeCounters(...layerCounters);

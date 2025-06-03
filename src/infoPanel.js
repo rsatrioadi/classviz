@@ -1,4 +1,4 @@
-import { hslString, role_stereotype_colors, whiten } from './colors.js';
+import { hslString, roleStereotypeColors, whiten } from './colors.js';
 import { $, h, r } from './shorthands.js';
 
 const stringToNode = (s) => {
@@ -56,8 +56,8 @@ const prepareRenderData = (node) => {
 		(() => {
 			const p = buildProp('roleStereotype');
 
-			if (role_stereotype_colors[p.value]) {
-				p['style'] = `background-color: ${hslString(whiten(role_stereotype_colors[p.value], 0.75))};`;
+			if (roleStereotypeColors[p.value]) {
+				p['style'] = `background-color: ${hslString(whiten(roleStereotypeColors[p.value], 0.75))};`;
 			}
 
 			return p;
