@@ -1,5 +1,5 @@
-import { parentRel } from '../script.js';
-import { showNeighborhood } from './visualTransformations.js';
+import { parentRel } from '../../script.js';
+import { showNeighborhood } from '../graphProcessing/visualTransformations.js';
 
 /* Sidebar Utility Functions */
 export const relayout = function (pCy, layout) {
@@ -41,6 +41,7 @@ export const highlight = function (pCy, text) {
 	} else {
 		pCy.elements().removeClass('dimmed');
 		pCy.elements().removeClass('highlight');
+		pCy.fit();
 	}
 	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
 };

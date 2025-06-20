@@ -1,11 +1,11 @@
-import { hslString, roleStereotypeColors, whiten } from "./colors.js";
-import { $all } from "./shorthands.js";
-import { addScratch, counterToPercentage, cumulative, nodeHasLabel, isPureContainer, repeatMiddle, edgeHasLabel } from "./utils.js";
+import { hslString, roleStereotypeColors, whiten } from "../utilities/colors.js";
+import { $all } from "../utilities/shorthands.js";
+import { addScratch, counterToPercentage, cumulative, nodeHasLabel, isPureContainer, repeatMiddle, edgeHasLabel } from "../utilities/utils.js";
 
 export const recolorContainers = function (pCy) {
 	const max_pkg_depth = Math.max(...pCy.nodes(isPureContainer).map((n) => n.ancestors().length));
 
-	// Isolate nodes with kind equals to package
+	// Isolate containers
 	pCy.nodes(isPureContainer).forEach((n) => {
 		const dark = 0.75;
 		const light = 0.9;

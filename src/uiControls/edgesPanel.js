@@ -1,4 +1,4 @@
-import { r, h } from './shorthands.js';
+import { r, h } from '../utilities/shorthands.js';
 
 
 export const fillFeatureDropdown = function (pCy, action) {

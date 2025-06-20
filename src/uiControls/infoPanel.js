@@ -1,5 +1,5 @@
-import { hslString, roleStereotypeColors, whiten } from './colors.js';
-import { $, h, r } from './shorthands.js';
+import { hslString, roleStereotypeColors, whiten } from '../utilities/colors.js';
+import { $, h, r } from '../utilities/shorthands.js';
 
 const stringToNode = (s) => {
 	console.log(s);

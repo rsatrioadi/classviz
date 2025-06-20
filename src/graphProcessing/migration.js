@@ -8,14 +8,16 @@ export const prepareGraph = function (graphData) {
 	});
 
 	const schemaVersion = determineSchemaVersion(originalGraph);
+	console.log('schema version', schemaVersion);
 	const graph = {
 		original: originalGraph,
 		abstract: schemaVersion.startsWith('2.0') ?
-			abstractizeV2(graphData) :
+			abstractizeV2(JSON.parse(JSON.stringify(originalGraph))) :
 			schemaVersion.startsWith('1.2') ?
-				abstractizeV2(upgradeV1ToV2(graphData)) :
-				upgradeV1ToV2(graphData)
+				abstractizeV2(upgradeV1ToV2(JSON.parse(JSON.stringify(originalGraph)))) :
+				upgradeV1ToV2(JSON.parse(JSON.stringify(originalGraph)))
 	};
+	// console.log('abstracted', graph);
 
 	// const makeDummyContainers = homogenizeForest(
 	// 	e => e.data.label === "contains",
@@ -125,7 +127,7 @@ const abstractizeV2 = function (graphData) {
 	/**
 	 * Helper: invert each edge in edgeList (reverse source & target).
 	 */
-	const invert = (edgeList) => edgeList.map(({ source, target, label, ...rest }) => ({
+	const invert = (edgeList) => (edgeList || []).map(({ source, target, label, ...rest }) => ({
 		source: target,
 		target: source,
 		label: `inv_${label}`,
@@ -190,19 +192,19 @@ const abstractizeV2 = function (graphData) {
 	/**
 	 * Original logic: calls, constructs, holds, accepts, returns
 	 */
-	const calls = lift(edges['encapsulates'], edges['invokes'], "calls").filter(
+	const calls = lift(edges['encapsulates'] || [], edges['invokes'] || [], "calls").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const constructs = compose(edges['encapsulates'], edges['instantiates'], "constructs").filter(
+	const constructs = compose(edges['encapsulates'] || [], edges['instantiates'] || [], "constructs").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const holds = compose(edges['encapsulates'], edges['typed'], "holds").filter(
+	const holds = compose(edges['encapsulates'] || [], edges['typed'] || [], "holds").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const accepts = compose(edges['encapsulates'], compose(invert(edges['parameterizes']), edges['typed']), "accepts").filter(
+	const accepts = compose(edges['encapsulates'] || [], compose(invert(edges['parameterizes'] || []), edges['typed'] || []), "accepts").filter(
 		(edge) => edge.source !== edge.target
 	);
-	const returns = compose(edges['encapsulates'], edges['returns'], "returns").filter(
+	const returns = compose(edges['encapsulates'] || [], edges['returns'] || [], "returns").filter(
 		(edge) => edge.source !== edge.target
 	);
 
@@ -226,11 +228,11 @@ const abstractizeV2 = function (graphData) {
 	 */
 	function extractTopLevelPackages(data) {
 		// Remove the last element from each tuple -> get prefix
-		const uniquePrefixes = new Set(data.map((item) => item.slice(0, -1).toString()));
+		const uniquePrefixes = new Set(data.map((item) => item.length > 1 ? item.slice(0, -1) : item));
+		console.log(uniquePrefixes)
 
 		// Convert set to array and sort by length of the split arrays
 		const sortedPrefixes = Array.from(uniquePrefixes)
-			.map((item) => item.split(","))
 			.sort((a, b) => a.length - b.length);
 
 		const results = [];
@@ -276,15 +278,23 @@ const abstractizeV2 = function (graphData) {
 	const pkgWithClasses = new Set(
 		(edges['encloses'] || [])
 			.filter(
-				(edge) => nodes[edge.source].labels.includes("Scope") &&
-					nodes[edge.target].labels.includes("Type")
+				(edge) => {
+					// console.log(nodes[edge.source], nodes[edge.target])
+					return nodes[edge.source].labels.includes("Scope") &&
+					nodes[edge.target].labels.includes("Type");
+				}
 			)
 			.map((edge) => edge.source)
 	);
 
+	console.log('pkgWithClasses', pkgWithClasses);
+
 	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges['encloses'], pkgId));
+	console.log('pkgPaths', pkgPaths);
 	const topLevelPackages = extractTopLevelPackages(pkgPaths);
+	console.log('topLevelPackages', topLevelPackages);
 	const packagesToRemove = topLevelPackages.flatMap((pkg) => pkg.slice(0, -1));
+	console.log('packagesToRemove', packagesToRemove);
 
 	let newContains = edges['encloses'];
 	if (topLevelPackages &&
@@ -412,17 +422,17 @@ const abstractizeV2 = function (graphData) {
 	 * Finally, remove edges referencing nodes we have removed (if any),
 	 * to keep the final graph consistent.
 	 */
-	function cleanEdges(cytoscapeJson) {
-		const { nodes, edges } = cytoscapeJson.elements;
-		const nodeIds = new Set(nodes.map((n) => n.data.id));
-		const validEdges = edges.filter(
+	function cleanEdges(cyJson) {
+		const { nodes: myNodes, edges: myEdges } = cyJson.elements;
+		const nodeIds = new Set(myNodes.map((n) => n.data.id));
+		const validEdges = myEdges.filter(
 			(e) => nodeIds.has(e.data.source) && nodeIds.has(e.data.target)
 		);
 
 		return {
-			...cytoscapeJson,
+			...cyJson,
 			elements: {
-				nodes,
+				nodes: myNodes,
 				edges: validEdges,
 			},
 		};
@@ -441,7 +451,10 @@ const abstractizeV2 = function (graphData) {
 	};
 
 	const clean = cleanEdges(abstractGraph);
-	return clean;
+	console.log(abstractNodes, abstractEdges, abstractGraph);
+	console.log('clean', clean);
+
+	return JSON.parse(JSON.stringify(clean));
 };
 
 const determineSchemaVersion = function (graphData) {

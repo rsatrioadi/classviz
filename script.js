@@ -6,17 +6,17 @@ TODO
 - collapse the classes
 - tweak klay parameters
 */
-import { blacken, ft_colors, hslString, layerColorsFrom, roleStereotypeColors, roleStereotypeOrder, roleStereotypes } from './src/colors.js';
-import { clearInfo, displayInfo } from './src/infoPanel.js';
-import { $, $all, h, on, r, toJson, toText } from './src/shorthands.js';
+import { blacken, ft_colors, hslString, layerColorsFrom, roleStereotypeColors, roleStereotypeOrder, roleStereotypes } from './src/utilities/colors.js';
+import { clearInfo, displayInfo } from './src/uiControls/infoPanel.js';
+import { $, $all, h, on, r, toJson, toText } from './src/utilities/shorthands.js';
 
-import { aggregateLayers, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots, adoptOrphans, removePrimitives, collectRoleStereotypes } from './src/headlessTransformations.js';
-import { adjustEdgeWidths, cacheNodeStyles, liftEdges, lowerEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles, showNeighborhood } from './src/visualTransformations.js';
-import { arrayIntersection, getScratch, nodeHasLabel, edgeHasLabel, isPureContainer } from './src/utils.js';
-import { displayLegend } from './src/nodesPanel.js';
-import { fillFeatureDropdown } from './src/edgesPanel.js';
-import { highlight, relayout } from './src/graphPanel.js';
-import { prepareGraph } from './src/migration.js';
+import { aggregateLayers, homogenizeDepthsOptimized, setParents, setStyleClasses, shortenRoots, adoptOrphans, removePrimitives, collectRoleStereotypes } from './src/graphProcessing/headlessTransformations.js';
+import { adjustEdgeWidths, cacheNodeStyles, liftEdges, lowerEdges, recolorContainers, removeContainmentEdges, removeExtraNodes, setLayerStyles, setRsStyles, showNeighborhood } from './src/graphProcessing/visualTransformations.js';
+import { arrayIntersection, getScratch, nodeHasLabel, edgeHasLabel, isPureContainer } from './src/utilities/utils.js';
+import { displayLegend } from './src/uiControls/nodesPanel.js';
+import { fillFeatureDropdown } from './src/uiControls/edgesPanel.js';
+import { highlight, relayout } from './src/uiControls/graphPanel.js';
+import { prepareGraph } from './src/graphProcessing/migration.js';
 
 window.state = 0;
 
@@ -138,6 +138,8 @@ const initCy = async function (payload) {
 		recolorContainers(cy);
 		cacheNodeStyles(cy);
 		liftEdges(cy, "calls");
+		liftEdges(cy, "calls");
+		liftEdges(cy, "constructs");
 		liftEdges(cy, "constructs");
 		removeContainmentEdges(cy);
 		adjustEdgeWidths(cy);
@@ -150,17 +152,6 @@ const initCy = async function (payload) {
 		removeExtraNodes(cy);
 
 		applyInitialColor(cy);
-
-		// let api = this.expandCollapse(generateExpColOptions());
-
-		// on("click", $("#collapseNodes"), () => {
-		// 	api.collapseAll();
-		// 	api.collapseAllEdges(generateExpColOptions())
-		// });
-		// on("click", $("#expandNodes"), () => {
-		// 	api.expandAll();
-		// 	api.expandAllEdges()
-		// });
 
 		// fillRSFilter();
 		fillRelationshipToggles(cy);
@@ -307,6 +298,15 @@ const bindRouters = function () {
 		evt.target.connectedNodes().removeClass("dimmed");
 		// console.log(getScratch(evt.target, 'bundle'));
 	});
+
+	cy.on('mouseover', 'node', (evt) => {
+		if (cy.zoom() < 0.75) showTooltip(evt.target.data('properties.qualifiedName'), evt.originalEvent);
+	});
+	cy.on('mousemove', 'node', (evt) => {
+		if (cy.zoom() < 0.75) moveTooltip(evt.originalEvent);
+		else hideTooltip();
+	});
+	cy.on('mouseout', 'node', () => hideTooltip());
 }
 
 const saveAsSvg = function (filename) {
@@ -602,16 +602,48 @@ export const showBug = function (event, pCy) {
 	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
 };
 
-window.addEventListener("keydown", (e) => {
+on("keydown", window, (e) => {
 	if (e.key === "Control") {
 		cy.boxSelectionEnabled(false);
 		cy.nodes().panify();
 	}
 });
 
-window.addEventListener("keyup", (e) => {
+on("keyup", window, (e) => {
 	if (e.key === "Control") {
 		cy.nodes().unpanify();
 		cy.boxSelectionEnabled(true);
 	}
 });
+
+function showTooltip(text, event) {
+	const tooltip = $('#tooltip');
+	moveTooltip(event);
+	tooltip.textContent = text;
+	tooltip.style.display = 'block';
+}
+
+function moveTooltip(event) {
+	const tooltip = $('#tooltip');
+
+	const tooltipRect = tooltip.getBoundingClientRect();
+	const targetRect = event.target.getBoundingClientRect();
+
+	let tooltipX = event.clientX;
+	let tooltipY = event.clientY - tooltipRect.height;
+
+	if (tooltipX + tooltipRect.width > targetRect.right) {
+		tooltipX = targetRect.right - tooltipRect.width - 5;
+	}
+	if (tooltipY < targetRect.top) {
+		tooltipY = targetRect.top + 5;
+	}
+
+	tooltip.style.left = `${tooltipX}px`;
+	tooltip.style.top = `${tooltipY}px`;
+}
+
+function hideTooltip() {
+	const tooltip = $('#tooltip');
+	tooltip.style.display = 'none';
+}

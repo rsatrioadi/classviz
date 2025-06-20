@@ -317,3 +317,17 @@ ul.tabs {
   border-width: 1px;
   border-style: solid;
 }
+
+#tooltip {
+  position: absolute;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  z-index: 1000;
+  display: none;
+  pointer-events: none;
+}

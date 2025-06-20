@@ -53,34 +53,17 @@ export function r(sel, children = [], replace = true) {
 }
 
 export function on(event, targets, handler) {
-	if (targets instanceof Node) {
-		targets.addEventListener(event, handler);
-	} else {
-		const len = targets.length;
-		for (let i = 0; i < len; i++) {
-			targets[i].addEventListener(event, handler);
-		}
-	}
+	(Array.isArray(targets) ? targets : [targets])
+		.forEach(t => t.addEventListener(event, handler));
 }
 
 export function off(event, targets, handler) {
-	if (targets instanceof Node) {
-		targets.removeEventListener(event, handler);
-	} else {
-		const len = targets.length;
-		for (let i = 0; i < len; i++) {
-			targets[i].removeEventListener(event, handler);
-		}
-	}
+	(Array.isArray(targets) ? targets : [targets])
+		.forEach(t => t.removeEventListener(event, handler));
 }
 
-export const pipe = (...fns) => input => {
-	let acc = input;
-	for (let i = 0, len = fns.length; i < len; i++) {
-		acc = fns[i](acc);
-	}
-	return acc;
-};
+export const pipe = (...fns) => input =>
+	fns.reduce((acc, fn) => fn(acc), input);
 
 export const pipeAsync = (...fns) => input =>
 	fns.reduce((chain, fn) => chain.then(fn), Promise.resolve(input));

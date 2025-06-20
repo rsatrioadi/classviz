@@ -1,5 +1,5 @@
-import { hslString, whiten } from "./colors.js";
-import { h, r } from "./shorthands.js";
+import { hslString, whiten } from "../utilities/colors.js";
+import { h, r } from "../utilities/shorthands.js";
 
 export const displayLegend = (sel, colorMap = {}, colorOrder = []) => {
 	if (Object.keys(colorMap).length === 0) {

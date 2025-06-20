@@ -1,10 +1,11 @@
-import { counter, counterToPercentage, isPureContainer, mergeCounters, nodeHasLabel, edgeHasLabel } from './utils.js';
+import { counter, counterToPercentage, isPureContainer, mergeCounters, nodeHasLabel, edgeHasLabel } from '../utilities/utils.js';
 
 export const shortenRoots = function(pCy) {
-	const containmentRoots = pCy.nodes((n) => 
+	const containmentRoots = pCy.nodes((n) =>
 		isPureContainer(n) && 
 		n.incomers(e => edgeHasLabel(e, "encloses")).length === 0
 	);
+	// console.log('roots', containmentRoots);
 	containmentRoots.forEach(cutRootRec);
 
 	function cutRootRec(node) {
@@ -342,7 +343,8 @@ export function homogenizeDepthsOptimized(pCy, isContainment, isTreeNode, isLeaf
 					insertDummyChain(parent, node, diff);
 				}
 				// BFS shift
-				computeNodeDepths(node, nodeDepths.get(node.id()) + diff, nodeDepths);
+				// computeNodeDepths(node, nodeDepths.get(node.id()) + diff, nodeDepths);
+				computeNodeDepths([node], nodeDepths.get(node.id()) + diff);
 			}
 			(containmentTargets.get(node.id())||[]).forEach(child => stack.push(child));
 		}
