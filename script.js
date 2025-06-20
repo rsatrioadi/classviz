@@ -48,7 +48,8 @@ on('DOMContentLoaded', document, async () => {
 
 			$("#filename").textContent = `Software Visualization: ${fileName}.json`;
 			clearInfo('#infobody');
-			initCy([prepareGraph(rawGraph), style]);
+			const graphData = prepareGraph(rawGraph);
+			initCy([graphData, style]);
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}

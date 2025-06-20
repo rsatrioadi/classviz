@@ -12,10 +12,10 @@ export const prepareGraph = function (graphData) {
 	const graph = {
 		original: originalGraph,
 		abstract: schemaVersion.startsWith('2.0') ?
-			abstractizeV2(JSON.parse(JSON.stringify(originalGraph))) :
+			abstractizeV2(originalGraph) :
 			schemaVersion.startsWith('1.2') ?
-				abstractizeV2(upgradeV1ToV2(JSON.parse(JSON.stringify(originalGraph)))) :
-				upgradeV1ToV2(JSON.parse(JSON.stringify(originalGraph)))
+				abstractizeV2(upgradeV1ToV2(originalGraph)) :
+				upgradeV1ToV2(originalGraph)
 	};
 	// console.log('abstracted', graph);
 
@@ -46,7 +46,7 @@ function collectUniqueNodeLabels(nodeList) {
 }
 
 const upgradeV1ToV2 = function (graphData) {
-	const newGraphData = { ...graphData };
+	const newGraphData = JSON.parse(JSON.stringify(graphData));
 	newGraphData.elements.nodes.forEach((node) => {
 		if (node.data.labels.includes('Container')) {
 			node.data.labels.push('Scope');
@@ -111,7 +111,8 @@ const upgradeV1ToV2 = function (graphData) {
 	return newGraphData;
 };
 
-const abstractizeV2 = function (graphData) {
+const abstractizeV2 = function (pGraphData) {
+	const graphData = JSON.parse(JSON.stringify(pGraphData));
 	// Build a node dictionary and an edge dictionary from graphData
 	const nodes = Object.fromEntries(graphData.elements.nodes.map((node) => [node.data.id, node.data]));
 	const edges = {};
@@ -229,7 +230,7 @@ const abstractizeV2 = function (graphData) {
 	function extractTopLevelPackages(data) {
 		// Remove the last element from each tuple -> get prefix
 		const uniquePrefixes = new Set(data.map((item) => item.length > 1 ? item.slice(0, -1) : item));
-		console.log(uniquePrefixes)
+		// console.log(uniquePrefixes)
 
 		// Convert set to array and sort by length of the split arrays
 		const sortedPrefixes = Array.from(uniquePrefixes)
@@ -279,15 +280,12 @@ const abstractizeV2 = function (graphData) {
 		(edges['encloses'] || [])
 			.filter(
 				(edge) => {
-					// console.log(nodes[edge.source], nodes[edge.target])
 					return nodes[edge.source].labels.includes("Scope") &&
 					nodes[edge.target].labels.includes("Type");
 				}
 			)
 			.map((edge) => edge.source)
 	);
-
-	console.log('pkgWithClasses', pkgWithClasses);
 
 	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges['encloses'], pkgId));
 	console.log('pkgPaths', pkgPaths);
@@ -451,10 +449,8 @@ const abstractizeV2 = function (graphData) {
 	};
 
 	const clean = cleanEdges(abstractGraph);
-	console.log(abstractNodes, abstractEdges, abstractGraph);
-	console.log('clean', clean);
 
-	return JSON.parse(JSON.stringify(clean));
+	return clean;
 };
 
 const determineSchemaVersion = function (graphData) {
