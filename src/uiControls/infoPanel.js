@@ -2,10 +2,10 @@ import { hslString, roleStereotypeColors, whiten } from '../utilities/colors.js'
 import { $, h, r } from '../utilities/shorthands.js';
 
 const stringToNode = (s) => {
-	console.log(s);
+	// console.log(s);
 	const template = document.createElement('template');
 	template.innerHTML = s.trim();
-	console.log(template);
+	// console.log(template);
 	const node = template.content.firstChild;
 	return node;
 };

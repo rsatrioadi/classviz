@@ -79,10 +79,14 @@ export const lowerEdges = function (pCy, label) {
 		.forEach((edge) => {
 			// console.log(edge.data('properties')['bundle'])
 			if ('bundle' in edge.data('properties')) {
-				edge.data('properties.bundle').forEach((bundledEdge) => {
-					bundledEdge.restore();
-				});
-				edge.remove();
+				try {
+					edge.data('properties.bundle').forEach((bundledEdge) => {
+						bundledEdge.restore();
+					});
+					edge.remove();
+				} finally {
+					;
+				}
 			}
 		});
 	adjustEdgeWidths(pCy);

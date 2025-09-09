@@ -288,11 +288,11 @@ const abstractizeV2 = function (pGraphData) {
 	);
 
 	const pkgPaths = Array.from(pkgWithClasses).map((pkgId) => findPathFromRoot(edges['encloses'], pkgId));
-	console.log('pkgPaths', pkgPaths);
+	// console.log('pkgPaths', pkgPaths);
 	const topLevelPackages = extractTopLevelPackages(pkgPaths);
-	console.log('topLevelPackages', topLevelPackages);
+	// console.log('topLevelPackages', topLevelPackages);
 	const packagesToRemove = topLevelPackages.flatMap((pkg) => pkg.slice(0, -1));
-	console.log('packagesToRemove', packagesToRemove);
+	// console.log('packagesToRemove', packagesToRemove);
 
 	let newContains = edges['encloses'];
 	if (topLevelPackages &&

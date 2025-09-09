@@ -28,6 +28,9 @@ on('DOMContentLoaded', document, async () => {
 	on('click', $("#btn-download"), () => saveAsSvg('class-diagram.svg'));
 	on('click', $("#btn-popup"), () => window.open(getSvgUrl(), '_blank'));
 	on('click', $("#btn-toggleVisibility"), toggleVisibility);
+	
+	on('click', $("#btn-hideClasses"), () => cy.nodes(n => nodeHasLabel(n, 'Type')).emit('cxttap'));
+	on('click', $("#btn-showClasses"), () => cy.nodes(n => nodeHasLabel(n, 'Type')).emit('tap'));
 
 	const tablinks = $all(".tablink");
 	on('click', tablinks, (event) => {
@@ -329,7 +332,7 @@ const getSvgUrl = function () {
 // };
 
 const hiddenEdges = {};
-const setVisible = function (e) {
+const setEdgeVisibility = function (e) {
 	if (!e.checked) {
 		hiddenEdges[e.value] = cy.edges(`[label = "${e.value}"]`);
 		hiddenEdges[e.value].remove();
@@ -439,8 +442,9 @@ const fillRelationshipToggles = function (pCy) {
 							id: edgeLabel,
 							name: "showrels",
 							value: edgeLabel,
+							class: 'edgeLabels',
 						}, [], {
-							change: (event) => setVisible(event.target)
+							change: (event) => setEdgeVisibility(event.target)
 						}, (e) => {
 							e.checked = ["calls"].includes(edgeLabel);
 						}),
@@ -487,7 +491,7 @@ const fillRelationshipToggles = function (pCy) {
 					})
 				])]))]);
 
-	$all('input[name="showrels"]').forEach(setVisible);
+	$all('input[name="showrels"]').forEach(setEdgeVisibility);
 };
 
 const showRS = function (event, pCy) {
