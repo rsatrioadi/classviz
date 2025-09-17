@@ -178,7 +178,10 @@ const initCy = async function (payload) {
 function initLayerColors(pCy) {
 	const topLayers = pCy.nodes(n => 
 		nodeHasLabel(n, "Category") && 
-		n.data('properties.kind') === "architectural layer" && 
+		((n.data('properties.kind') === "architectural layer") || (n.connectedEdges(e =>
+			e.data('label') === "implements" &&
+			e.target().data('properties.qualifiedName')?.toLowerCase().includes("layer")
+		).nonempty())) && 
 		n.incomers(e => edgeHasLabel(e, "succeeds")).empty() &&
 		!n.outgoers(e => edgeHasLabel(e, "succeeds")).empty() 
 	);
@@ -191,7 +194,10 @@ function initLayerColors(pCy) {
 	}
 	const orphans = pCy.nodes(n =>
 		nodeHasLabel(n, "Category") &&
-		n.data('properties.kind') === "architectural layer" &&
+		((n.data('properties.kind') === "architectural layer") || (n.connectedEdges(e =>
+			e.data('label') === "implements" &&
+			e.target().data('properties.qualifiedName')?.toLowerCase().includes("layer")
+		).nonempty())) &&
 		n.incomers(e => edgeHasLabel(e, "succeeds")).empty() &&
 		n.outgoers(e => edgeHasLabel(e, "succeeds")).empty()
 	);

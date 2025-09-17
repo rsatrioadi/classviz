@@ -116,7 +116,7 @@ export const aggregateLayers = function (pCy) {
 
 		const layers = [];
 		
-		layers.push(...methods.map((method) => method.outgoers(e => edgeHasLabel(e, 'implements')).targets().data('properties.simpleName'))
+		layers.push(...methods.map((method) => method.outgoers(e => edgeHasLabel(e, 'implements') && e.target().data('properties.qualifiedName')?.toLowerCase().includes("layer")).targets().data('properties.simpleName'))
 			.map(s => s || 'Undetermined'));
 
 		if (layers.length === 0) {
