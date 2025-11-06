@@ -627,6 +627,18 @@ on("keyup", window, (e) => {
 	}
 });
 
+on("blur", window, () => {
+	cy.nodes().unpanify();
+	cy.boxSelectionEnabled(true);
+});
+
+on("visibilitychange", document, () => {
+	if (document.visibilityState !== 'visible') {
+		cy.nodes().unpanify();
+		cy.boxSelectionEnabled(true);
+	}
+});
+
 function showTooltip(text, event) {
 	const tooltip = $('#tooltip');
 	moveTooltip(event);
