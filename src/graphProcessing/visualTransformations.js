@@ -29,10 +29,8 @@ export const cacheNodeStyles = function (pCy) {
 }
 
 export const liftEdges = function (pCy, label) {
-	const edges = pCy.edges((e) =>
-		e.target().parent() !== e.source().parent()).filter((e) => 
-			edgeHasLabel(e, label)
-		);
+	const edges = pCy.edges((e) => e.target().parent() && e.source().parent() && (e.target().parent() !== e.source().parent()))
+		.filter((e) => edgeHasLabel(e, label));
 	const newEdges = {};
 
 	edges.forEach((e) => {
