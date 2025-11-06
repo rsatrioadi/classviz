@@ -29,13 +29,14 @@ export const cacheNodeStyles = function (pCy) {
 }
 
 export const liftEdges = function (pCy, label) {
-	const edges = pCy.edges((e) => (e.target().parent() !== e.source().parent()))
+	const edges = pCy.edges((e) => (e.target().parent().id() || e.source().parent().id()) && (e.target().parent().id() !== e.source().parent().id()))
 		.filter((e) => edgeHasLabel(e, label));
 	const newEdges = {};
 
 	edges.forEach((e) => {
-		const srcId = e.source().parent() ? e.source().parent().id() : e.source().id();
-		const tgtId = e.target().parent() ? e.target().parent().id() : e.target().id();
+		console.log(e.source().id(), e.source().parent().id(), e.target().id(), e.target().parent().id());
+		const srcId = e.source().parent().id() ? e.source().parent().id() : e.source().id();
+		const tgtId = e.target().parent().id() ? e.target().parent().id() : e.target().id();
 		if (!('level' in e.data('properties'))) {
 			e.data('properties')['level'] = 0;
 		}
