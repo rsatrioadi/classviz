@@ -69,12 +69,12 @@ const prepareRenderData = (node) => {
 	if (node.data('labels').includes("Type")) {
 		const methods = node.scratch('_classviz')['methods'];
 
-		console.log(methods);
+		// console.log(methods);
 
 		renderData.properties.push({
 			key: "methods",
 			value: methods.length > 0 ? methods.map(m => {
-				console.log(m);
+				// console.log(m);
 				return (
 					h('div', {}, [
 						h('h3', { class: 'info' },

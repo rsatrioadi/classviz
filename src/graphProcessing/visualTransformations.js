@@ -34,7 +34,6 @@ export const liftEdges = function (pCy, label) {
 	const newEdges = {};
 
 	edges.forEach((e) => {
-		console.log(e.source().id(), e.source().parent().id(), e.target().id(), e.target().parent().id());
 		const srcId = e.source().parent().id() ? e.source().parent().id() : e.source().id();
 		const tgtId = e.target().parent().id() ? e.target().parent().id() : e.target().id();
 		if (!('level' in e.data('properties'))) {
