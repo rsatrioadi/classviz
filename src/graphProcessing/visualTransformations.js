@@ -29,8 +29,13 @@ export const cacheNodeStyles = function (pCy) {
 }
 
 export const liftEdges = function (pCy, label) {
-	const edges = pCy.edges((e) => (e.target().parent().id() || e.source().parent().id()) && (e.target().parent().id() !== e.source().parent().id()))
-		.filter((e) => edgeHasLabel(e, label));
+	const edges = pCy
+		.edges((e) => edgeHasLabel(e, label))
+		.filter((e) => {
+			const srcId = e.source().parent().id() ? e.source().parent().id() : e.source().id();
+			const tgtId = e.target().parent().id() ? e.target().parent().id() : e.target().id();
+			return srcId !== tgtId;
+		});
 	const newEdges = {};
 
 	edges.forEach((e) => {
@@ -39,28 +44,26 @@ export const liftEdges = function (pCy, label) {
 		if (!('level' in e.data('properties'))) {
 			e.data('properties')['level'] = 0;
 		}
-		if (srcId && tgtId) {
-			const key = `${srcId}-${e.data('label')}-${tgtId}`;
-			if (!newEdges[key]) {
-				newEdges[key] = {
-					group: "edges", data: {
-						source: srcId,
-						target: tgtId,
-						label: e.data('label'),
-						interaction: e.data('label'),
-						properties: {
-							...e.data('properties'),
-							level: e.data('properties.level')+1,
-							weight: 0,
-							bundle: [],
-							metaSrc: "lifting"
-						}
+		const key = `${srcId}-${e.data('label')}-${tgtId}`;
+		if (!newEdges[key]) {
+			newEdges[key] = {
+				group: "edges", data: {
+					source: srcId,
+					target: tgtId,
+					label: e.data('label'),
+					interaction: e.data('label'),
+					properties: {
+						...e.data('properties'),
+						level: e.data('properties.level')+1,
+						weight: 0,
+						bundle: [],
+						metaSrc: "lifting"
 					}
-				};
-			}
-			newEdges[key].data.properties["weight"] += e.data('properties.weight');
-			newEdges[key].data.properties["bundle"].push(e);
+				}
+			};
 		}
+		newEdges[key].data.properties["weight"] += e.data('properties.weight');
+		newEdges[key].data.properties["bundle"].push(e);
 	});
 	pCy.add(Object.values(newEdges));
 	edges.remove();
