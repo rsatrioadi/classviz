@@ -61,9 +61,9 @@ A `Dockerfile` is included for containerised deployment. It uses `nginx:alpine` 
    ```
 
    Now visit:
-   *[http://localhost:8080/](http://localhost:8080/)*
+   [http://localhost:8080/](http://localhost:8080/)
 
-   To pre-load data files, mount your local `data/` directory into the container:
+   Optionally, you may want to mount your local `data/` directory into the container (untested):
 
    ```bash
    docker run --rm -p 8080:80 \
