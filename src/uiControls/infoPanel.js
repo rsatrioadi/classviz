@@ -73,7 +73,7 @@ const prepareRenderData = (node) => {
 
 		renderData.properties.push({
 			key: "methods",
-			value: methods.length > 0 ? methods.map(m => {
+			value: (methods && methods.length > 0) ? methods.map(m => {
 				// console.log(m);
 				return (
 					h('div', {}, [

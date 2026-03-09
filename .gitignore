@@ -1,0 +1,3 @@
+# Ignore all dot-files and dot-directories (e.g., .idea, .DS_Store, etc.)
+.*
+!/.gitignore

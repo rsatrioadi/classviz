@@ -1,4 +1,4 @@
-import { parentRel } from '../../script.js';
+import { PARENT_REL } from '../app/constants.js';
 import { showNeighborhood } from '../graphProcessing/visualTransformations.js';
 
 /* Sidebar Utility Functions */
@@ -43,6 +43,5 @@ export const highlight = function (pCy, text) {
 		pCy.elements().removeClass('highlight');
 		pCy.fit();
 	}
-	pCy.edges(`[label = "${parentRel}"]`).style("display", "none");
+	pCy.edges(`[label = "${PARENT_REL}"]`).style("display", "none");
 };
-

@@ -3471,6 +3471,139 @@
             "Structure"
           ]
         }
+      },
+      {
+        "data": {
+          "id": "dimension:role_stereotype",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Role Stereotype",
+            "dimensionKey": "role_stereotype",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "direct",
+            "appliesTo": [
+              "Type"
+            ],
+            "aggregationPath": [
+              "Type",
+              "Scope"
+            ],
+            "palette": "roles"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:architectural_layer",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Architectural Layer",
+            "dimensionKey": "architectural_layer",
+            "kind": "categorical-ordered",
+            "coloringStrategy": "aggregate",
+            "appliesTo": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:secdfd_type",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "SecDFD Type",
+            "dimensionKey": "secdfd_type",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "hybrid",
+            "appliesTo": [
+              "Variable",
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "categorical"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:information_holder",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Information Holder",
+            "kind": "role stereotype",
+            "categoryKey": "information_holder",
+            "order": 2,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:service_provider",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Service Provider",
+            "kind": "role stereotype",
+            "categoryKey": "service_provider",
+            "order": 7,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:structurer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Structurer",
+            "kind": "role stereotype",
+            "categoryKey": "structurer",
+            "order": 8,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:interfacer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Interfacer",
+            "kind": "role stereotype",
+            "categoryKey": "interfacer",
+            "order": 3,
+            "isDefault": false
+          }
+        }
       }
     ],
     "edges": [
@@ -27377,6 +27510,1190 @@
             "weight": 1
           },
           "target": "boolean"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_information_holder:dimension_role_stereotype",
+          "source": "category:role_stereotype:information_holder",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_standarddrawingview:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.StandardDrawingView",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_colormap:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.ColorMap",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_service_provider:dimension_role_stereotype",
+          "source": "category:role_stereotype:service_provider",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_elbowconnection:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ElbowConnection",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_standarddrawing:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.StandardDrawing",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_toolbutton:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.ToolButton",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_nothing_nothingapp:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.nothing.NothingApp",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_polylinefigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.PolyLineFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_aligncommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.AlignCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_sendtobackcommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.SendToBackCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_paletteicon:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.PaletteIcon",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_textfigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.TextFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_abstractconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.AbstractConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_bufferedupdatestrategy:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.BufferedUpdateStrategy",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_arrowtip:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ArrowTip",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_structurer:dimension_role_stereotype",
+          "source": "category:role_stereotype:structurer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_attributefigure:category_role_stereotype_structurer",
+          "source": "CH.ifa.draw.figures.AttributeFigure",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_creationtool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.CreationTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_figurechangeeventmulticaster:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.FigureChangeEventMulticaster",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_groupcommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.GroupCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_changeattributecommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.ChangeAttributeCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_togglegridcommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.ToggleGridCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_deletecommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.DeleteCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_texttool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.TextTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_figureenumerator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.FigureEnumerator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_palettebutton:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.PaletteButton",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_copycommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.CopyCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_reversefigureenumerator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ReverseFigureEnumerator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_duplicatecommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.DuplicateCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_drawingchangeevent:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.framework.DrawingChangeEvent",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_roundrectanglefigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.RoundRectangleFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_abstractfigure:category_role_stereotype_structurer",
+          "source": "CH.ifa.draw.standard.AbstractFigure",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_commandmenu:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.CommandMenu",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_lineconnection:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.LineConnection",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_figureattributes:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.FigureAttributes",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_ungroupcommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.UngroupCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_linefigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.LineFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_pastecommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.PasteCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_ellipsefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.EllipseFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_figuretransfercommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.FigureTransferCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_abstracttool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.AbstractTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_chopboxconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ChopBoxConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_palettelayout:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.PaletteLayout",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_compositefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.CompositeFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_figurechangeevent:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.framework.FigureChangeEvent",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_connectiontool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ConnectionTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_cutcommand:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.CutCommand",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_application_drawapplication:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.application.DrawApplication",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_reversevectorenumerator:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.ReverseVectorEnumerator",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_iconkit:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.Iconkit",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_selectiontool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.SelectionTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_bringtofrontcommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.BringToFrontCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_polygontool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.PolygonTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_rectanglefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.RectangleFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_command:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.Command",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_geom:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.Geom",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_abstracthandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.AbstractHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_selectareatracker:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.SelectAreaTracker",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_boxhandlekit:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.BoxHandleKit",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_abstractlocator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.AbstractLocator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_locatorhandle:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.LocatorHandle",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_relativelocator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.RelativeLocator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_gridconstrainer:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.GridConstrainer",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_fontsizehandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.FontSizeHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_dragtracker:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.DragTracker",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_changeconnectionhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ChangeConnectionHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_floatingtextfield:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.FloatingTextField",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_changeconnectionendhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ChangeConnectionEndHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_changeconnectionstarthandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ChangeConnectionStartHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_nullhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.NullHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_simpleupdatestrategy:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.SimpleUpdateStrategy",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_storableinput:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.StorableInput",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_clipboard:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.Clipboard",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_storableoutput:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.StorableOutput",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_figureselection:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.framework.FigureSelection",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_grouphandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.GroupHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_groupfigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.GroupFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_polygonfigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.PolygonFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_choppolygonconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.ChopPolygonConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_handletracker:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.HandleTracker",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_interfacer:dimension_role_stereotype",
+          "source": "category:role_stereotype:interfacer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_javadrawapp:category_role_stereotype_interfacer",
+          "source": "CH.ifa.draw.samples.javadraw.JavaDrawApp",
+          "target": "category:role_stereotype:interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_pert_pertapplication:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.pert.PertApplication",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_offsetlocator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.OffsetLocator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_connectionfigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.ConnectionFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_shortestdistanceconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ShortestDistanceConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_myselectiontool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.MySelectionTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_filler:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.util.Filler",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_drawingchangelistener:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.DrawingChangeListener",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_chopellipseconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ChopEllipseConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_pointconstrainer:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.PointConstrainer",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_trianglefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.TriangleFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_animator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.Animator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_linedecoration:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.LineDecoration",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_polygonhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.PolygonHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_followurltool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.FollowURLTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_applet_drawapplet:category_role_stereotype_interfacer",
+          "source": "CH.ifa.draw.applet.DrawApplet",
+          "target": "category:role_stereotype:interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_connectedtexttool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ConnectedTextTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_figure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Figure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_connectionhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ConnectionHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_scribbletool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ScribbleTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_nothing_nothingapplet:category_role_stereotype_interfacer",
+          "source": "CH.ifa.draw.samples.nothing.NothingApplet",
+          "target": "category:role_stereotype:interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_diamondfigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.DiamondFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_pert_pertfigurecreationtool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.pert.PertFigureCreationTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_commandchoice:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.CommandChoice",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_bouncingdrawing:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.BouncingDrawing",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_insertimagecommand:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.InsertImageCommand",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_handle:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.framework.Handle",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_urltool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.URLTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_locator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Locator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_javadrawapplet:category_role_stereotype_interfacer",
+          "source": "CH.ifa.draw.samples.javadraw.JavaDrawApplet",
+          "target": "category:role_stereotype:interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_textholder:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.TextHolder",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_connector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Connector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_radiushandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.RadiusHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_net_nodefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.net.NodeFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_hjderror:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.framework.HJDError",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_net_netapp:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.net.NetApp",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_imagefigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ImageFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_palettelistener:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.PaletteListener",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_trianglerotationhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.TriangleRotationHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_bordertool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.BorderTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_contrib_polygonscalehandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.contrib.PolygonScaleHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_polylinehandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.PolyLineHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_figurechangelistener:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.FigureChangeListener",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_borderdecorator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.BorderDecorator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_elbowhandle:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.ElbowHandle",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_pert_pertapplet:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.pert.PertApplet",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_painter:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Painter",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_decoratorfigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.standard.DecoratorFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_actiontool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.ActionTool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_storable:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.Storable",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_drawingview:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.DrawingView",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_animationdecorator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.AnimationDecorator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_drawingeditor:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.DrawingEditor",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_animatable:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.Animatable",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_pert_pertdependency:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.pert.PertDependency",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_pert_pertfigure:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.pert.PertFigure",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_javadrawviewer:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.JavaDrawViewer",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_drawing:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Drawing",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_tool:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.Tool",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_polylineconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.PolyLineConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_samples_javadraw_patternpainter:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.samples.javadraw.PatternPainter",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_standard_locatorconnector:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.standard.LocatorConnector",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_polylinelocator:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.figures.PolyLineLocator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_figures_numbertextfigure:category_role_stereotype_information_holder",
+          "source": "CH.ifa.draw.figures.NumberTextFigure",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_util_commandbutton:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.util.CommandButton",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ch_ifa_draw_framework_figureenumeration:category_role_stereotype_service_provider",
+          "source": "CH.ifa.draw.framework.FigureEnumeration",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
         }
       }
     ]
