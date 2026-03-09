@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { deriveColorLegendModel, deriveLayerModel, deriveRelationshipLabels } from '../src/app/pure.js';
+import { deriveColorLegendModel, deriveFeatureList, deriveLayerModel, deriveRelationshipLabels } from '../src/app/pure.js';
 
 test('deriveRelationshipLabels returns unique sorted labels', () => {
 	const labels = deriveRelationshipLabels({
@@ -40,4 +40,16 @@ test('deriveColorLegendModel returns configured legend', () => {
 
 	assert.deepEqual(legend.order, ['A']);
 	assert.ok(legend.colors.A);
+});
+
+test('deriveFeatureList returns unique sorted traces', () => {
+	const features = deriveFeatureList({
+		nodes: [
+			{ data: { properties: { traces: ['Checkout', 'Login'] } } },
+			{ data: { properties: { traces: ['Login', 'Search'] } } },
+		],
+		edges: [],
+	});
+
+	assert.deepEqual(features, ['Checkout', 'Login', 'Search']);
 });

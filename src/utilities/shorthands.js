@@ -1,3 +1,5 @@
+import { pipe } from '../composing.js';
+
 export const $ = s => document.querySelector(s);
 
 export const $all = s => {
@@ -62,8 +64,7 @@ export function off(event, targets, handler) {
 		.forEach(t => t.removeEventListener(event, handler));
 }
 
-export const pipe = (...fns) => input =>
-	fns.reduce((acc, fn) => fn(acc), input);
+export { pipe };
 
 export const pipeAsync = (...fns) => input =>
 	fns.reduce((chain, fn) => chain.then(fn), Promise.resolve(input));

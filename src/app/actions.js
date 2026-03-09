@@ -4,23 +4,45 @@ import { fillFeatureDropdown } from '../uiControls/edgesPanel.js';
 import { highlight, relayout } from '../uiControls/graphPanel.js';
 import { adjustEdgeWidths, liftEdges, lowerEdges, showNeighborhood } from '../graphProcessing/visualTransformations.js';
 import { ft_colors } from '../utilities/colors.js';
-import { arrayIntersection, getScratch, edgeHasLabel, isPureContainer, nodeHasLabel } from '../utilities/utils.js';
+import { arrayIntersection, getScratch, isPureContainer, nodeHasLabel } from '../utilities/utils.js';
 import { deriveColorLegendModel, deriveRelationshipLabels } from './pure.js';
+import { clone, identity, lens, not, over, pipe, tap } from '../composing.js';
+
+const hiddenEdgesLens = lens(
+	(state) => state.hiddenEdges,
+	(value, state) => ({
+		...state,
+		hiddenEdges: value,
+	})
+);
+
+const isEmpty = (arr) => arr.length === 0;
 
 export function createActions({ state, ui }) {
+	const mutateState = (transform) => Object.assign(state, transform(state));
+
 	function colorNodes(event, pCy = state.cy) {
-		const selectedColorMode = event.target.value;
-		pCy.nodes().forEach((n) => {
-			const style = getScratch(n, selectedColorMode) || getScratch(n, 'style_default');
-			n.style(style);
-		});
-		const legend = deriveColorLegendModel(selectedColorMode, state.colorMap, state.colorOrder);
-		displayLegend('#coloring-legend', legend.colors, legend.order);
+		const ctx = { selectedColorMode: event.target.value, pCy, state };
+		return pipe(
+			tap(({ pCy: cy, selectedColorMode }) => {
+				cy.nodes().forEach((n) => {
+					const style = getScratch(n, selectedColorMode) || getScratch(n, 'style_default');
+					n.style(style);
+				});
+			}),
+			(ctxIn) => ({
+				...ctxIn,
+				legend: deriveColorLegendModel(ctxIn.selectedColorMode, ctxIn.state.colorMap, ctxIn.state.colorOrder),
+			}),
+			tap(({ legend }) => {
+				displayLegend('#coloring-legend', legend.colors, legend.order);
+			})
+		)(ctx);
 	}
 
 	function applyInitialColor(pCy = state.cy) {
 		const selectedColorMode = ui.$all('[name = "coloring"]').filter((e) => e.checked)[0];
-		colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } }, pCy);
+		return colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } }, pCy);
 	}
 
 	function toggleVisibility() {
@@ -36,13 +58,20 @@ export function createActions({ state, ui }) {
 
 	function setEdgeVisibility(checkbox) {
 		if (!state.cy) return;
-		if (!checkbox.checked) {
-			state.hiddenEdges[checkbox.value] = state.cy.edges(`[label = "${checkbox.value}"]`);
-			state.hiddenEdges[checkbox.value].remove();
-		} else if (state.hiddenEdges[checkbox.value]) {
-			state.hiddenEdges[checkbox.value].restore();
-			state.hiddenEdges[checkbox.value] = null;
-		}
+		const updateHiddenEdges = (hiddenEdges) => {
+			const next = clone(hiddenEdges || {});
+			if (!checkbox.checked) {
+				next[checkbox.value] = state.cy.edges(`[label = "${checkbox.value}"]`);
+				next[checkbox.value].remove();
+				return next;
+			}
+			if (next[checkbox.value]) {
+				next[checkbox.value].restore();
+				next[checkbox.value] = null;
+			}
+			return next;
+		};
+		mutateState((s) => over(hiddenEdgesLens, updateHiddenEdges, s));
 	}
 
 	function setLineBends({ checked, name, value }) {
@@ -51,95 +80,147 @@ export function createActions({ state, ui }) {
 	}
 
 	function fillRelationshipToggles(pCy = state.cy) {
-		const edgeLabels = deriveRelationshipLabels(pCy.json().elements);
-		ui.renderRelationshipToggles(edgeLabels, {
-			onToggleEdge: setEdgeVisibility,
-			onLineBend: setLineBends,
-			onLift: (label) => liftEdges(state.cy, label),
-			onLower: (label) => lowerEdges(state.cy, label),
-		});
-		ui.$all('input[name="showrels"]').forEach(setEdgeVisibility);
+		const ctx = { pCy };
+		return pipe(
+			(ctxIn) => ({ ...ctxIn, edgeLabels: deriveRelationshipLabels(ctxIn.pCy.json().elements) }),
+			tap(({ edgeLabels }) => {
+				ui.renderRelationshipToggles(edgeLabels, {
+					onToggleEdge: setEdgeVisibility,
+					onLineBend: setLineBends,
+					onLift: (label) => liftEdges(state.cy, label),
+					onLower: (label) => lowerEdges(state.cy, label),
+				});
+			}),
+			tap(() => {
+				ui.$all('input[name="showrels"]').forEach(setEdgeVisibility);
+			})
+		)(ctx);
 	}
 
 	function showTrace(_event, pCy = state.cy) {
-		const traceNames = ui.$all('[name="showfeatures"]').filter((e) => e.checked).map((e) => e.value);
-		ui.$all('.featurelabel').forEach((e) => {
-			e.style.backgroundColor = '';
+		const traceContext = {
+			pCy,
+			traceNames: ui.$all('[name="showfeatures"]').filter((e) => e.checked).map((e) => e.value),
+		};
+
+		const resetStage = tap(({ pCy: cy }) => {
+			ui.$all('.featurelabel').forEach((e) => {
+				e.style.backgroundColor = '';
+			});
+			cy.elements().removeClass('dimmed');
+			cy.elements().removeClass('feature_shown');
+			cy.elements().addClass('feature_reset');
 		});
 
-		pCy.elements().removeClass('dimmed');
-		pCy.elements().removeClass('feature_shown');
-		pCy.elements().addClass('feature_reset');
-
-		if (traceNames.length > 0) {
-			const traceColorMap = {};
-			traceNames.forEach((trace, i) => {
-				const label = ui.$(`label[for="feature-${trace}"]`);
-				if (label) label.style.backgroundColor = ft_colors[i];
-				traceColorMap[trace] = ft_colors[i];
-			});
-
-			const featureNodes = pCy.nodes().filter((node) => traceNames.some((trace) => node.data('properties.traces') && node.data('properties.traces').includes(trace)));
-			const featureEdges = featureNodes.edgesWith(featureNodes).union(featureNodes.ancestors().edgesWith(featureNodes.ancestors()));
-
-			pCy.elements().addClass('dimmed');
-			pCy.elements('.hidden').removeClass('hidden').addClass('hidden');
-			featureNodes.removeClass('dimmed');
-			featureEdges.removeClass('dimmed');
-			pCy.nodes(isPureContainer).removeClass('dimmed');
-
-			featureNodes.forEach((node) => {
-				const trc = arrayIntersection(traceNames, node.data('properties.traces'));
-				node.style({
-					'background-fill': 'linear-gradient',
-					'background-gradient-direction': 'to-right',
-					'background-gradient-stop-positions': null,
-					'background-gradient-stop-colors': trc.map((t) => traceColorMap[t]).join(' '),
+		const applySelectedTraceStage = pipe(
+			(ctx) => ({
+				...ctx,
+				traceColorMap: ctx.traceNames.reduce((acc, trace, i) => {
+					const next = { ...acc, [trace]: ft_colors[i] };
+					const label = ui.$(`label[for="feature-${trace}"]`);
+					if (label) label.style.backgroundColor = ft_colors[i];
+					return next;
+				}, {}),
+			}),
+			(ctx) => ({
+				...ctx,
+				featureNodes: ctx.pCy.nodes().filter((node) => ctx.traceNames.some((trace) => node.data('properties.traces') && node.data('properties.traces').includes(trace))),
+			}),
+			(ctx) => ({
+				...ctx,
+				featureEdges: ctx.featureNodes.edgesWith(ctx.featureNodes).union(ctx.featureNodes.ancestors().edgesWith(ctx.featureNodes.ancestors())),
+			}),
+			tap(({ pCy: cy, featureNodes, featureEdges, traceNames, traceColorMap }) => {
+				cy.elements().addClass('dimmed');
+				cy.elements('.hidden').removeClass('hidden').addClass('hidden');
+				featureNodes.removeClass('dimmed');
+				featureEdges.removeClass('dimmed');
+				cy.nodes(isPureContainer).removeClass('dimmed');
+				featureNodes.forEach((node) => {
+					const trc = arrayIntersection(traceNames, node.data('properties.traces'));
+					node.style({
+						'background-fill': 'linear-gradient',
+						'background-gradient-direction': 'to-right',
+						'background-gradient-stop-positions': null,
+						'background-gradient-stop-colors': trc.map((t) => traceColorMap[t]).join(' '),
+					});
 				});
-			});
-		} else {
-			applyInitialColor(pCy);
-		}
+			})
+		);
 
-		pCy.edges(`[label = "${state.parentRel}"]`).style('display', 'none');
+		const fallbackStage = tap(({ pCy: cy }) => {
+			applyInitialColor(cy);
+		});
+
+		const branchStage = (ctx) => (not(isEmpty)(ctx.traceNames) ? applySelectedTraceStage : pipe(identity, fallbackStage))(ctx);
+
+		pipe(
+			resetStage,
+			branchStage,
+			tap(({ pCy: cy }) => {
+				cy.edges(`[label = "${state.parentRel}"]`).style('display', 'none');
+			})
+		)(traceContext);
 	}
 
 	function showBug(_event, pCy = state.cy) {
-		const bugNames = ui.$all('[name="showbugs"]').filter((e) => e.checked).map((e) => e.value);
-		ui.$all('.buglabel').forEach((e) => {
-			e.style.backgroundColor = '';
+		const bugContext = {
+			pCy,
+			bugNames: ui.$all('[name="showbugs"]').filter((e) => e.checked).map((e) => e.value),
+		};
+
+		const resetLabels = tap(() => {
+			ui.$all('.buglabel').forEach((e) => {
+				e.style.backgroundColor = '';
+			});
 		});
 
-		if (bugNames.length > 0) {
-			const bugColorMap = {};
-			bugNames.forEach((bug, i) => {
-				const labelElement = ui.$(`label[for="bug-${bug}"]`);
-				if (labelElement) labelElement.style.backgroundColor = ft_colors[i];
-				bugColorMap[bug] = ft_colors[i];
-			});
+		const applySelectedBugs = pipe(
+			(ctx) => ({
+				...ctx,
+				bugColorMap: ctx.bugNames.reduce((acc, bug, i) => {
+					const next = { ...acc, [bug]: ft_colors[i] };
+					const label = ui.$(`label[for="bug-${bug}"]`);
+					if (label) label.style.backgroundColor = ft_colors[i];
+					return next;
+				}, {}),
+			}),
+			(ctx) => ({
+				...ctx,
+				bugNodes: ctx.pCy.nodes().filter((node) => ctx.bugNames.some((bug) => {
+					const vulnerabilities = node.data('properties.vulnerabilities');
+					return Array.isArray(vulnerabilities) && vulnerabilities.some((entry) => entry.analysis_name === bug);
+				})),
+			}),
+			tap(({ pCy: cy, bugNodes, bugNames, bugColorMap }) => {
+				cy.elements().addClass('dimmed');
+				cy.elements('.hidden').removeClass('hidden').addClass('hidden');
+				bugNodes.removeClass('dimmed');
+				cy.nodes('[properties.kind = "file"]').removeClass('dimmed');
+				bugNodes.removeClass('bug_reset');
+				bugNodes.addClass('bug_shown');
+				bugNodes.forEach((node) => {
+					const trc = arrayIntersection(bugNames, node.data('properties').vulnerabilities.map((v) => v.analysis_name));
+					node.style('background-gradient-stop-colors', trc.map((t) => bugColorMap[t]).join(' '));
+				});
+			})
+		);
 
-			const bugNodes = pCy.nodes().filter((node) => bugNames.some((bug) => {
-				const vulnerabilities = node.data('properties.vulnerabilities');
-				return Array.isArray(vulnerabilities) && vulnerabilities.some((entry) => entry.analysis_name === bug);
-			}));
+		const clearBugs = tap(({ pCy: cy }) => {
+			cy.elements().removeClass('dimmed');
+			cy.elements().removeClass('bug_shown');
+			cy.elements().addClass('bug_reset');
+		});
 
-			pCy.elements().addClass('dimmed');
-			pCy.elements('.hidden').removeClass('hidden').addClass('hidden');
-			bugNodes.removeClass('dimmed');
-			pCy.nodes('[properties.kind = "file"]').removeClass('dimmed');
-			bugNodes.removeClass('bug_reset');
-			bugNodes.addClass('bug_shown');
+		const branchStage = (ctx) => (not(isEmpty)(ctx.bugNames) ? applySelectedBugs : pipe(identity, clearBugs))(ctx);
 
-			bugNodes.forEach((node) => {
-				const trc = arrayIntersection(bugNames, node.data('properties').vulnerabilities.map((v) => v.analysis_name));
-				node.style('background-gradient-stop-colors', trc.map((t) => bugColorMap[t]).join(' '));
-			});
-		} else {
-			pCy.elements().removeClass('dimmed');
-			pCy.elements().removeClass('bug_shown');
-			pCy.elements().addClass('bug_reset');
-		}
-		pCy.edges(`[label = "${state.parentRel}"]`).style('display', 'none');
+		pipe(
+			resetLabels,
+			branchStage,
+			tap(({ pCy: cy }) => {
+				cy.edges(`[label = "${state.parentRel}"]`).style('display', 'none');
+			})
+		)(bugContext);
 	}
 
 	function bindGraphPanelControls() {

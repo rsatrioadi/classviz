@@ -1,4 +1,5 @@
 import { layerColorsFrom, roleStereotypeColors, roleStereotypeOrder } from '../utilities/colors.js';
+import { composeT, filterT, mapT, reduce } from '../composing.js';
 
 function toSimpleName(nodeData) {
 	return nodeData?.properties?.simpleName || 'Undefined';
@@ -68,10 +69,15 @@ export function deriveLayerModel(elements) {
 }
 
 export function deriveRelationshipLabels(elements) {
-	const labels = new Set();
-	for (const edge of elements.edges || []) {
-		if (edge.data?.label) labels.add(edge.data.label);
-	}
+	const reducer = (acc, label) => {
+		acc.add(label);
+		return acc;
+	};
+	const xf = composeT(
+		mapT((edge) => edge?.data?.label),
+		filterT(Boolean)
+	);
+	const labels = reduce(xf(reducer), new Set())(elements.edges || []);
 	return [...labels].sort((a, b) => a.localeCompare(b));
 }
 
