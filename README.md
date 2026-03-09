@@ -22,7 +22,6 @@ Because browsers block fetches of local files for security reasons, ClassViz mus
 
    Python will host the directory at:
    [http://localhost:8000/](http://localhost:8000/)
-   The original README uses `python -m http.server`; specifying a port is optional.
 
 3. *Open the application* by visiting `http://localhost:8000/` in your browser. You can then either:
 

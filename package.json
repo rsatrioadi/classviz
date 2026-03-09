@@ -1,0 +1,9 @@
+{
+  "name": "classviz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:smoke": "node scripts/smoke-test.mjs"
+  }
+}
