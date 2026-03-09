@@ -6,6 +6,13 @@ export function createAppState() {
 		hcy: null,
 		layers: [],
 		layerColors: {},
+		coloringMeta: { nodes: [], edges: [] },
+		coloringModes: [{
+			id: 'style_default',
+			label: 'None',
+			scratchKey: 'style_default',
+			enabled: true,
+		}],
 		colorMap: { ...DEFAULT_COLOR_MAP },
 		colorOrder: { ...DEFAULT_COLOR_ORDER },
 		hiddenEdges: {},

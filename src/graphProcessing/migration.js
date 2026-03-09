@@ -9,13 +9,15 @@ export const prepareGraph = function (graphData) {
 
 	const schemaVersion = determineSchemaVersion(originalGraph);
 	console.log('schema version', schemaVersion);
+	const normalizedGraph = schemaVersion.startsWith('2.0') ? originalGraph : upgradeV1ToV2(originalGraph);
 	const graph = {
 		original: originalGraph,
 		abstract: schemaVersion.startsWith('2.0') ?
-			abstractizeV2(originalGraph) :
+			abstractizeV2(normalizedGraph) :
 			schemaVersion.startsWith('1.2') ?
-				abstractizeV2(upgradeV1ToV2(originalGraph)) :
-				upgradeV1ToV2(originalGraph)
+				abstractizeV2(normalizedGraph) :
+				normalizedGraph,
+		coloringMeta: buildColoringMeta(normalizedGraph),
 	};
 	// console.log('abstracted', graph);
 
@@ -38,6 +40,35 @@ export const prepareGraph = function (graphData) {
 
 	return graph;
 };
+
+function buildColoringMeta(graphData) {
+	const nodesById = new Map((graphData.elements.nodes || []).map((node) => [node.data.id, node.data]));
+	const relevantEdges = (graphData.elements.edges || [])
+		.map((edge) => edge.data)
+		.filter((edge) => ['composes', 'implements', 'succeeds'].includes(edge.label));
+
+	const includedNodeIds = new Set();
+	for (const edge of relevantEdges) {
+		includedNodeIds.add(edge.source);
+		includedNodeIds.add(edge.target);
+	}
+
+	for (const node of graphData.elements.nodes || []) {
+		const labels = node.data?.labels || [];
+		if (labels.includes('Dimension') || labels.includes('Category')) {
+			includedNodeIds.add(node.data.id);
+		}
+	}
+
+	const nodes = [...includedNodeIds]
+		.map((id) => nodesById.get(id))
+		.filter(Boolean)
+		.map((node) => ({ data: { ...node } }));
+
+	const edges = relevantEdges.map((edge) => ({ data: { ...edge } }));
+
+	return { nodes, edges };
+}
 
 function collectUniqueNodeLabels(nodeList) {
 	return Array.from(

@@ -98,7 +98,9 @@
           "properties": {
             "simpleName": "CreditCard",
             "kind": "class",
-            "traces": ["myTrace"]
+            "traces": [
+              "myTrace"
+            ]
           },
           "labels": [
             "Structure"
@@ -232,6 +234,79 @@
             "Structure"
           ]
         }
+      },
+      {
+        "data": {
+          "id": "dimension:role_stereotype",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Role Stereotype",
+            "dimensionKey": "role_stereotype",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "direct",
+            "appliesTo": [
+              "Type"
+            ],
+            "aggregationPath": [
+              "Type",
+              "Scope"
+            ],
+            "palette": "roles"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:architectural_layer",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Architectural Layer",
+            "dimensionKey": "architectural_layer",
+            "kind": "categorical-ordered",
+            "coloringStrategy": "aggregate",
+            "appliesTo": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:secdfd_type",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "SecDFD Type",
+            "dimensionKey": "secdfd_type",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "hybrid",
+            "appliesTo": [
+              "Variable",
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "categorical"
+          }
+        }
       }
     ],
     "edges": [
@@ -245,7 +320,8 @@
           "target": "refactoring_guru.strategy.example.order.Order",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -258,7 +334,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayByPayPal",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -271,7 +348,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -284,7 +362,8 @@
           "target": "refactoring_guru.strategy.example.strategies.CreditCard",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -297,7 +376,8 @@
           "target": "refactoring_guru.strategy.example.strategies.CreditCard",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -310,7 +390,8 @@
           "target": "refactoring_guru.strategy.example",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -323,7 +404,8 @@
           "target": "java.lang.String",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -336,7 +418,8 @@
           "target": "boolean",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -349,7 +432,8 @@
           "target": "int",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -362,7 +446,8 @@
           "target": "boolean",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -375,7 +460,8 @@
           "target": "java.lang.String",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -388,7 +474,8 @@
           "target": "int",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -401,7 +488,8 @@
           "target": "java.lang.String",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -414,7 +502,8 @@
           "target": "refactoring_guru.strategy.example.order.Order",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -427,7 +516,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayByPayPal",
           "labels": [
             "constructs"
-          ]
+          ],
+          "label": "constructs"
         }
       },
       {
@@ -440,7 +530,8 @@
           "target": "refactoring_guru.strategy.example.order.Order",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -453,7 +544,8 @@
           "target": "int",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -466,7 +558,8 @@
           "target": "refactoring_guru.strategy.example.order",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -479,7 +572,8 @@
           "target": "boolean",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -492,7 +586,8 @@
           "target": "int",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -505,7 +600,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayByCreditCard",
           "labels": [
             "constructs"
-          ]
+          ],
+          "label": "constructs"
         }
       },
       {
@@ -518,7 +614,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -531,7 +628,8 @@
           "target": "int",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -544,7 +642,8 @@
           "target": "refactoring_guru.strategy.example.strategies.CreditCard",
           "labels": [
             "constructs"
-          ]
+          ],
+          "label": "constructs"
         }
       },
       {
@@ -557,7 +656,8 @@
           "target": "boolean",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -570,7 +670,8 @@
           "target": "boolean",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -583,7 +684,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -596,7 +698,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayByCreditCard",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -609,7 +712,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "specializes"
-          ]
+          ],
+          "label": "specializes"
         }
       },
       {
@@ -622,7 +726,8 @@
           "target": "refactoring_guru.strategy.example.order.Order",
           "labels": [
             "constructs"
-          ]
+          ],
+          "label": "constructs"
         }
       },
       {
@@ -635,7 +740,8 @@
           "target": "boolean",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -648,7 +754,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -661,7 +768,8 @@
           "target": "int",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -674,7 +782,8 @@
           "target": "refactoring_guru.strategy.example.Demo",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -687,7 +796,8 @@
           "target": "int",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -700,7 +810,8 @@
           "target": "int",
           "labels": [
             "holds"
-          ]
+          ],
+          "label": "holds"
         }
       },
       {
@@ -713,7 +824,8 @@
           "target": "refactoring_guru.strategy.example.strategies.CreditCard",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -726,7 +838,8 @@
           "target": "java.lang.String",
           "labels": [
             "constructs"
-          ]
+          ],
+          "label": "constructs"
         }
       },
       {
@@ -739,7 +852,8 @@
           "target": "refactoring_guru.strategy.example.strategies",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -752,7 +866,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -765,7 +880,8 @@
           "target": "boolean",
           "labels": [
             "returns"
-          ]
+          ],
+          "label": "returns"
         }
       },
       {
@@ -778,7 +894,8 @@
           "target": "refactoring_guru.strategy",
           "labels": [
             "contains"
-          ]
+          ],
+          "label": "contains"
         }
       },
       {
@@ -791,7 +908,8 @@
           "target": "int",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -804,7 +922,8 @@
           "target": "java.lang.String",
           "labels": [
             "accepts"
-          ]
+          ],
+          "label": "accepts"
         }
       },
       {
@@ -817,7 +936,8 @@
           "target": "java.lang.String",
           "labels": [
             "calls"
-          ]
+          ],
+          "label": "calls"
         }
       },
       {
@@ -830,7 +950,8 @@
           "target": "refactoring_guru.strategy.example.strategies.PayStrategy",
           "labels": [
             "specializes"
-          ]
+          ],
+          "label": "specializes"
         }
       }
     ]

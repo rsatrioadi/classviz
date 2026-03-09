@@ -8398,6 +8398,227 @@
             "layerOrder": 2
           }
         }
+      },
+      {
+        "data": {
+          "id": "dimension:role_stereotype",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Role Stereotype",
+            "dimensionKey": "role_stereotype",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "direct",
+            "appliesTo": [
+              "Type"
+            ],
+            "aggregationPath": [
+              "Type",
+              "Scope"
+            ],
+            "palette": "roles"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:architectural_layer",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Architectural Layer",
+            "dimensionKey": "architectural_layer",
+            "kind": "categorical-ordered",
+            "coloringStrategy": "aggregate",
+            "appliesTo": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:secdfd_type",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "SecDFD Type",
+            "dimensionKey": "secdfd_type",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "hybrid",
+            "appliesTo": [
+              "Variable",
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "categorical"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:controller",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Controller",
+            "kind": "role stereotype",
+            "categoryKey": "controller",
+            "order": 0,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:domain_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Domain Layer",
+            "kind": "architectural layer",
+            "categoryKey": "domain_layer",
+            "order": 2,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:service_provider",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Service Provider",
+            "kind": "role stereotype",
+            "categoryKey": "service_provider",
+            "order": 7,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:presentation_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Presentation Layer",
+            "kind": "architectural layer",
+            "categoryKey": "presentation_layer",
+            "order": 0,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:structurer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Structurer",
+            "kind": "role stereotype",
+            "categoryKey": "structurer",
+            "order": 8,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:user_interfacer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "User Interfacer",
+            "kind": "role stereotype",
+            "categoryKey": "user_interfacer",
+            "order": 4,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:information_holder",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Information Holder",
+            "kind": "role stereotype",
+            "categoryKey": "information_holder",
+            "order": 2,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:coordinator",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Coordinator",
+            "kind": "role stereotype",
+            "categoryKey": "coordinator",
+            "order": 1,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:data_source_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Data Source Layer",
+            "kind": "architectural layer",
+            "categoryKey": "data_source_layer",
+            "order": 3,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:domain_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Domain Layer",
+            "kind": "role stereotype",
+            "categoryKey": "domain_layer"
+          }
+        }
       }
     ],
     "edges": [
@@ -21797,6 +22018,1334 @@
           "properties": {
             "description": "The `ca.mcgill.cs.stg.solitaire.model` package contains the core logic for managing the state and rules of a solitaire game, including handling moves and determining legal actions. The `ca.mcgill.cs.stg.solitaire.ai` package provides an interface (`PlayingStrategy`) and concrete implementations (like `GreedyPlayingStrategy`) that define how to determine legal moves based on the current game state. The interaction between these packages is primarily through the `GameModel` class invoking methods from the `PlayingStrategy` interface to automatically play moves, demonstrating a clear separation of concerns where the model handles game logic and AI strategies handle decision-making based on that logic."
           }
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_controller:dimension_role_stereotype",
+          "source": "category:role_stereotype:controller",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel:category_role_stereotype_controller",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel",
+          "target": "category:role_stereotype:controller",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_domain_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:domain_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_gettableaupile_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.getTableauPile(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_clear:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.clear()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_crashtest_playgame_ca_mcgill_cs_stg_solitaire_model_gamemodel:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.CrashTest.playGame(ca.mcgill.cs.stg.solitaire.model.GameModel)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_peek:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.peek()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_getscore:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.getScore()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_solitaire:category_role_stereotype_controller",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.Solitaire",
+          "target": "category:role_stereotype:controller",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_suit_samecoloras_ca_mcgill_cs_stg_solitaire_cards_suit:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Suit.sameColorAs(ca.mcgill.cs.stg.solitaire.cards.Suit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck_shuffle:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck.shuffle()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_greedyplayingstrategy_substrategydiscard_ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.GreedyPlayingStrategy.substrategyDiscard(ca.mcgill.cs.stg.solitaire.model.GameModelView)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_service_provider:dimension_role_stereotype",
+          "source": "category:role_stereotype:service_provider",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_revealtopmove:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$RevealTopMove",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_presentation_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:presentation_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_createdragdetectedhandler_javafx_scene_image_imageview_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.createDragDetectedHandler(javafx.scene.image.ImageView,ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_move_undo:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Move.undo()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_getimage_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.getImage(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_getcardmove_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_location:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.getCardMove(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.Location)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_createdragenteredhandler_javafx_scene_image_imageview_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.createDragEnteredHandler(javafx.scene.image.ImageView,ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_move_isnull:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Move.isNull()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_contains_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.contains(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack_createondragdroppedhandler:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack.createOnDragDroppedHandler()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_pop_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.pop(ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_structurer:dimension_role_stereotype",
+          "source": "category:role_stereotype:structurer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_crashtest_main_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.CrashTest.main(java.lang.String[])",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardtransfer_size:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardTransfer.size()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_showtop_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.showTop(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_driver_main_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.Driver.main(java.lang.String[])",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_ca_mcgill_cs_stg_solitaire_model_gamemodel_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView(ca.mcgill.cs.stg.solitaire.model.GameModel,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_movewithin_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_tableaupile_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.moveWithin(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.TableauPile,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card_get_ca_mcgill_cs_stg_solitaire_cards_rank_ca_mcgill_cs_stg_solitaire_cards_suit:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card.get(ca.mcgill.cs.stg.solitaire.cards.Rank,ca.mcgill.cs.stg.solitaire.cards.Suit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_addlistener_ca_mcgill_cs_stg_solitaire_model_gamemodellistener:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.addListener(ca.mcgill.cs.stg.solitaire.model.GameModelListener)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_hidetop_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.hideTop(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_createdragoverhandler_javafx_scene_image_imageview_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.createDragOverHandler(javafx.scene.image.ImageView,ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_user_interfacer:dimension_role_stereotype",
+          "source": "category:role_stereotype:user_interfacer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack:category_role_stereotype_user_interfacer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_cardmove_undo:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$CardMove.undo()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_isvisibleintableau_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isVisibleInTableau(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck_isempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck.isEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_information_holder:dimension_role_stereotype",
+          "source": "category:role_stereotype:information_holder",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardtransfer:category_role_stereotype_information_holder",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardTransfer",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_islowestvisible_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.isLowestVisible(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack_createondragenteredhandler:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack.createOnDragEnteredHandler()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card_getrank:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card.getRank()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card_getsuit:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card.getSuit()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_rank:category_role_stereotype_information_holder",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Rank",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_size:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.size()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_push_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.push(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_deckview:category_role_stereotype_user_interfacer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DeckView",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_gamestatechanged:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.gameStateChanged()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_greedyplayingstrategy_substrategydiscardifdiscardpileisempty_ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.GreedyPlayingStrategy.substrategyDiscardIfDiscardPileIsEmpty(ca.mcgill.cs.stg.solitaire.model.GameModelView)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_deckview_createnewgameimage:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DeckView.createNewGameImage()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodellistener_gamestatechanged:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelListener.gameStateChanged()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_createdragexitedhandler_javafx_scene_image_imageview_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.createDragExitedHandler(javafx.scene.image.ImageView,ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardtransfer_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardTransfer(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_cardmove_perform:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$CardMove.perform()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardimages_getcode_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardImages.getCode(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_isdeckempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.isDeckEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_gettotalsize:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.getTotalSize()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck_push_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck.push(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_canmoveto_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.canMoveTo(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_initialize:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.initialize()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_isdiscardpileempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.isDiscardPileEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview:category_role_stereotype_user_interfacer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_isbottomking_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.isBottomKing(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_carddraghandler_setcard_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardDragHandler.setCard(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_discardpileview_gamestatechanged:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DiscardPileView.gameStateChanged()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack_gamestatechanged:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack.gameStateChanged()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_suit:category_role_stereotype_information_holder",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Suit",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableaupile:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.TableauPile",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_driver:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.Driver",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_isempty_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.isEmpty(ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_peeksuitstack_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.peekSuitStack(ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack_createondragoverhandler_javafx_scene_image_imageview:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack.createOnDragOverHandler(javafx.scene.image.ImageView)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_suitstack_createondragexitedhandler:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.SuitStack.createOnDragExitedHandler()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_isbottomking_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isBottomKing(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_discardpileview:category_role_stereotype_user_interfacer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DiscardPileView",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_pop:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.pop()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_coordinator:dimension_role_stereotype",
+          "source": "category:role_stereotype:coordinator",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_compositemove:category_role_stereotype_coordinator",
+          "source": "ca.mcgill.cs.stg.solitaire.model.CompositeMove",
+          "target": "category:role_stereotype:coordinator",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_ca_mcgill_cs_stg_solitaire_ai_playingstrategy:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel(ca.mcgill.cs.stg.solitaire.ai.PlayingStrategy)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_islegalmove_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_location:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isLegalMove(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.Location)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_revealtopmove_undo:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$RevealTopMove.undo()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_getsubstack_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.getSubStack(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_push_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.push(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_isdeckempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isDeckEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_carddraghandler_handle_javafx_scene_input_mouseevent:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardDragHandler.handle(javafx.scene.input.MouseEvent)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_move:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Move",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardimages:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardImages",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card_get_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card.get(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundationpile:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.FoundationPile",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_isdiscardpileempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isDiscardPileEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_getdiscardmove:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.getDiscardMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_peek_int:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.peek(int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_getnullmove:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.getNullMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_getpile_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.getPile(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_driver_playgame_ca_mcgill_cs_stg_solitaire_model_gamemodel:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.Driver.playGame(ca.mcgill.cs.stg.solitaire.model.GameModel)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_notifylisteners:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.notifyListeners()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardpileview_createdragdroppedhandler_javafx_scene_image_imageview_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardPileView.createDragDroppedHandler(javafx.scene.image.ImageView,ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_java_lang_iterable:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack(java.lang.Iterable)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card_getidstring:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card.getIDString()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_cardmove:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$CardMove",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_getpreviouscard_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.getPreviousCard(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_playingstrategy_getlegalmove_ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.PlayingStrategy.getLegalMove(ca.mcgill.cs.stg.solitaire.model.GameModelView)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_isvisible_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.isVisible(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_deck_draw:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Deck.draw()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_isbottomking_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.isBottomKing(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_trytoautoplay:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.tryToAutoPlay()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_data_source_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:data_source_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardimages_getcard_java_lang_string:category_architectural_layer_data_source_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardImages.getCard(java.lang.String)",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardtransfer_gettop:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardTransfer.getTop()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_carddraghandler:category_role_stereotype_user_interfacer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardDragHandler",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardimages_getcard_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardImages.getCard(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_getcardmove_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_location:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.getCardMove(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.Location)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_deckview_gamestatechanged:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DeckView.gameStateChanged()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_compositemove_perform:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.CompositeMove.perform()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardimages_getback:category_architectural_layer_data_source_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardImages.getBack()",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_undolast:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.undoLast()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_nullplayingstrategy_getlegalmove_ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.NullPlayingStrategy.getLegalMove(ca.mcgill.cs.stg.solitaire.model.GameModelView)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_compositemove_undo:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.CompositeMove.undo()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_pop_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.pop(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_reset:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.reset()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_peekdiscardpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.peekDiscardPile()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_card:category_role_stereotype_information_holder",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.Card",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations_peek_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations.peek(ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_cardmove_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_location:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$CardMove(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.Location)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_isempty:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.isEmpty()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_gettableaupile_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.getTableauPile(ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_domain_layer:dimension_role_stereotype",
+          "source": "category:role_stereotype:domain_layer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau:category_role_stereotype_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau",
+          "target": "category:role_stereotype:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_nullplayingstrategy:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.NullPlayingStrategy",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_greedyplayingstrategy:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.GreedyPlayingStrategy",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_peekdiscardpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.peekDiscardPile()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_crashtest:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.CrashTest",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_otherlocation:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.OtherLocation",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodellistener:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelListener",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_getdiscardmove:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.getDiscardMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_getsequence_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.getSequence(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_iscompleted:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isCompleted()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_foundations:category_role_stereotype_structurer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Foundations",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_canundo:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.canUndo()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_cards_cardstack_push_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.cards.CardStack.push(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_cardtransfer_serialize_ca_mcgill_cs_stg_solitaire_cards_cardstack:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.CardTransfer.serialize(ca.mcgill.cs.stg.solitaire.cards.CardStack)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_move_perform:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Move.perform()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_islegalmove_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_location:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.isLegalMove(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.Location)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_initialize_ca_mcgill_cs_stg_solitaire_cards_deck:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.initialize(ca.mcgill.cs.stg.solitaire.cards.Deck)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_getpile_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.getPile(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_greedyplayingstrategy_getlegalmove_ca_mcgill_cs_stg_solitaire_model_gamemodelview:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.GreedyPlayingStrategy.getLegalMove(ca.mcgill.cs.stg.solitaire.model.GameModelView)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodelview_islowestvisibleintableau_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModelView.isLowestVisibleInTableau(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_isfoundationpileempty_ca_mcgill_cs_stg_solitaire_model_foundationpile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isFoundationPileEmpty(ca.mcgill.cs.stg.solitaire.model.FoundationPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_ai_playingstrategy:category_role_stereotype_service_provider",
+          "source": "ca.mcgill.cs.stg.solitaire.ai.PlayingStrategy",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_contains_ca_mcgill_cs_stg_solitaire_cards_card_ca_mcgill_cs_stg_solitaire_model_tableaupile:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.contains(ca.mcgill.cs.stg.solitaire.cards.Card,ca.mcgill.cs.stg.solitaire.model.TableauPile)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_tableau_revealstop_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.Tableau.revealsTop(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_revealtopmove_perform:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel$RevealTopMove.perform()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_model_gamemodel_islowestvisibleintableau_ca_mcgill_cs_stg_solitaire_cards_card:category_architectural_layer_domain_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.model.GameModel.isLowestVisibleInTableau(ca.mcgill.cs.stg.solitaire.cards.Card)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:ca_mcgill_cs_stg_solitaire_gui_discardpileview_ca_mcgill_cs_stg_solitaire_model_gamemodel:category_architectural_layer_presentation_layer",
+          "source": "ca.mcgill.cs.stg.solitaire.gui.DiscardPileView(ca.mcgill.cs.stg.solitaire.model.GameModel)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:succeeds:category_architectural_layer_domain_layer:category_architectural_layer_data_source_layer",
+          "source": "category:architectural_layer:domain_layer",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "succeeds"
         }
       }
     ]

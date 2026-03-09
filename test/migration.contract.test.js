@@ -22,5 +22,7 @@ for (const fixturePath of FIXTURES) {
 
 		assert.ok(prepared.abstract.elements.nodes.length > 0);
 		assert.ok(prepared.abstract.elements.edges.length > 0);
+		assert.ok(Array.isArray(prepared.coloringMeta.nodes));
+		assert.ok(Array.isArray(prepared.coloringMeta.edges));
 	});
 }

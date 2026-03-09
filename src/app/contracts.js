@@ -2,6 +2,56 @@ function isObject(value) {
 	return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
+function hasLabel(nodeData, label) {
+	return Array.isArray(nodeData?.labels) && nodeData.labels.includes(label);
+}
+
+function assertDimensionContracts(elements, source) {
+	const nodesById = new Map();
+	for (const node of elements.nodes) {
+		nodesById.set(node.data.id, node.data);
+	}
+	const hasDimensionNodes = [...nodesById.values()].some((nodeData) => hasLabel(nodeData, 'Dimension'));
+	if (!hasDimensionNodes) return;
+
+	const categoryToDimension = new Map();
+	for (const edge of elements.edges) {
+		if (edge.data.label !== 'composes') continue;
+		const sourceNode = nodesById.get(edge.data.source);
+		const targetNode = nodesById.get(edge.data.target);
+		if (!hasLabel(sourceNode, 'Category') || !hasLabel(targetNode, 'Dimension')) continue;
+		if (!categoryToDimension.has(sourceNode.id)) {
+			categoryToDimension.set(sourceNode.id, new Set());
+		}
+		categoryToDimension.get(sourceNode.id).add(targetNode.id);
+	}
+
+	for (const edge of elements.edges) {
+		if (edge.data.label !== 'implements') continue;
+		const targetNode = nodesById.get(edge.data.target);
+		if (!hasLabel(targetNode, 'Category')) continue;
+		const dimensions = categoryToDimension.get(targetNode.id);
+		if (dimensions && dimensions.size > 1) {
+			throw new Error(`[contract] ${source}: category ${targetNode.id} composes to multiple Dimensions`);
+		}
+	}
+
+	for (const edge of elements.edges) {
+		if (edge.data.label !== 'succeeds') continue;
+		const sourceNode = nodesById.get(edge.data.source);
+		const targetNode = nodesById.get(edge.data.target);
+		if (!hasLabel(sourceNode, 'Category') || !hasLabel(targetNode, 'Category')) continue;
+		const sourceDims = categoryToDimension.get(sourceNode.id);
+		const targetDims = categoryToDimension.get(targetNode.id);
+		if (!sourceDims || !targetDims || sourceDims.size !== 1 || targetDims.size !== 1) continue;
+		const sourceDim = [...sourceDims][0];
+		const targetDim = [...targetDims][0];
+		if (sourceDim !== targetDim) {
+			throw new Error(`[contract] ${source}: succeeds edge ${sourceNode.id} -> ${targetNode.id} crosses dimensions`);
+		}
+	}
+}
+
 export function assertRawGraphContract(rawGraph, source = 'graph input') {
 	if (!isObject(rawGraph)) {
 		throw new Error(`[contract] ${source}: expected object graph payload`);
@@ -21,10 +71,18 @@ export function assertPreparedGraphContract(graph, source = 'prepared graph') {
 	if (!isObject(graph) || !isObject(graph.abstract) || !isObject(graph.abstract.elements)) {
 		throw new Error(`[contract] ${source}: expected graph.abstract.elements`);
 	}
+	if (!isObject(graph.coloringMeta)) {
+		throw new Error(`[contract] ${source}: expected graph.coloringMeta object`);
+	}
 
 	const { nodes, edges } = graph.abstract.elements;
+	const metaNodes = graph.coloringMeta.nodes;
+	const metaEdges = graph.coloringMeta.edges;
 	if (!Array.isArray(nodes) || !Array.isArray(edges)) {
 		throw new Error(`[contract] ${source}: graph.abstract.elements requires nodes and edges arrays`);
+	}
+	if (!Array.isArray(metaNodes) || !Array.isArray(metaEdges)) {
+		throw new Error(`[contract] ${source}: graph.coloringMeta requires nodes and edges arrays`);
 	}
 
 	for (const node of nodes) {
@@ -47,4 +105,6 @@ export function assertPreparedGraphContract(graph, source = 'prepared graph') {
 			throw new Error(`[contract] ${source}: edge ${edge.data.source}->${edge.data.target} missing label`);
 		}
 	}
+
+	assertDimensionContracts(graph.coloringMeta, source);
 }

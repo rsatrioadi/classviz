@@ -43,14 +43,16 @@ export function h(tag, attrs = {}, children = [], on = {}, ready) {
 
 export function r(sel, children = [], replace = true) {
 	const el = $(sel);
-	if (replace) el.textContent = '';
-	if (children.length) {
-		const frag = document.createDocumentFragment();
-		for (let i = 0, len = children.length; i < len; i++) {
-			const child = children[i];
-			frag.appendChild(child instanceof Node ? child : document.createTextNode(child));
+	if (el) {
+		if (replace) el.textContent = '';
+		if (children && children.length) {
+			const frag = document.createDocumentFragment();
+			for (let i = 0, len = children.length; i < len; i++) {
+				const child = children[i];
+				frag.appendChild(child instanceof Node ? child : document.createTextNode(child));
+			}
+			el.appendChild(frag);
 		}
-		el.appendChild(frag);
 	}
 }
 

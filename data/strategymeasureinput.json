@@ -132,6 +132,79 @@
             "shortname": "Abstract common services"
           }
         }
+      },
+      {
+        "data": {
+          "id": "dimension:role_stereotype",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Role Stereotype",
+            "dimensionKey": "role_stereotype",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "direct",
+            "appliesTo": [
+              "Type"
+            ],
+            "aggregationPath": [
+              "Type",
+              "Scope"
+            ],
+            "palette": "roles"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:architectural_layer",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Architectural Layer",
+            "dimensionKey": "architectural_layer",
+            "kind": "categorical-ordered",
+            "coloringStrategy": "aggregate",
+            "appliesTo": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:secdfd_type",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "SecDFD Type",
+            "dimensionKey": "secdfd_type",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "hybrid",
+            "appliesTo": [
+              "Variable",
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "categorical"
+          }
+        }
       }
     ],
     "edges": [
@@ -411,9 +484,7 @@
           "source": 736,
           "target": 767,
           "label": "HINDERS",
-          "properties": {
-            
-          }
+          "properties": {}
         }
       }
     ]

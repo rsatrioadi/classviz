@@ -24,7 +24,7 @@ export function createUiAdapter() {
 				$(`[id="${selectedTab}"]`).style.display = 'block';
 			});
 		},
-		renderRelationshipToggles(edgeLabels, handlers) {
+			renderRelationshipToggles(edgeLabels, handlers) {
 			r('#reltab', [
 				h('thead', {}, [
 					h('tr', {}, [
@@ -95,7 +95,23 @@ export function createUiAdapter() {
 						}),
 					]),
 				])),
-			]);
-		},
-	};
-}
+				]);
+			},
+			renderColoringModes(modes) {
+				r('#coloring-options', modes.map((mode, idx) => h('div', {}, [
+					h('label', { for: `coloring-${mode.id}`, class: 'coloringlabel' }, [
+						h('input', {
+							type: 'radio',
+							id: `coloring-${mode.id}`,
+							name: 'coloring',
+							value: mode.scratchKey || mode.id,
+							class: 'coloring-input',
+						}, [], {}, (input) => {
+							input.checked = idx === 0;
+						}),
+						mode.label,
+					]),
+				])));
+			},
+		};
+	}

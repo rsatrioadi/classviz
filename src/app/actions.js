@@ -41,8 +41,9 @@ export function createActions({ state, ui }) {
 	}
 
 	function applyInitialColor(pCy = state.cy) {
-		const selectedColorMode = ui.$all('[name = "coloring"]').filter((e) => e.checked)[0];
-		return colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : 'style_default' } }, pCy);
+		const selectedColorMode = ui.$all('[name = "coloring"]').find((e) => e.checked);
+		const fallbackMode = state.coloringModes?.[0]?.scratchKey || 'style_default';
+		return colorNodes({ target: { value: selectedColorMode ? selectedColorMode.value : fallbackMode } }, pCy);
 	}
 
 	function toggleVisibility() {
@@ -227,7 +228,10 @@ export function createActions({ state, ui }) {
 		ui.on('click', ui.$('#btn-reset'), () => highlight(state.cy, ''));
 		ui.on('click', ui.$('#btn-relayout'), () => relayout(state.cy, ui.$('#selectlayout').options[ui.$('#selectlayout').selectedIndex].value));
 		ui.on('click', ui.$('#btn-highlight'), () => highlight(state.cy, ui.$('#highlight').value));
-		ui.on('change', ui.$all('.coloringlabel'), (event) => colorNodes(event));
+		const coloringInputs = ui.$all('input[name="coloring"]');
+		if (coloringInputs.length > 0) {
+			ui.on('change', coloringInputs, (event) => colorNodes(event));
+		}
 	}
 
 	function bindCyInteractions() {
@@ -314,6 +318,7 @@ export function createActions({ state, ui }) {
 	}
 
 	function initializePostRender() {
+		ui.renderColoringModes(state.coloringModes || []);
 		applyInitialColor(state.cy);
 		fillRelationshipToggles(state.cy);
 		fillFeatureDropdown(state.cy, showTrace);

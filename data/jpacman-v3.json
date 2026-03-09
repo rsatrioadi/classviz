@@ -15197,6 +15197,227 @@
             "layerOrder": 2
           }
         }
+      },
+      {
+        "data": {
+          "id": "dimension:role_stereotype",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Role Stereotype",
+            "dimensionKey": "role_stereotype",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "direct",
+            "appliesTo": [
+              "Type"
+            ],
+            "aggregationPath": [
+              "Type",
+              "Scope"
+            ],
+            "palette": "roles"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:architectural_layer",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "Architectural Layer",
+            "dimensionKey": "architectural_layer",
+            "kind": "categorical-ordered",
+            "coloringStrategy": "aggregate",
+            "appliesTo": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "dimension:secdfd_type",
+          "labels": [
+            "Dimension"
+          ],
+          "properties": {
+            "simpleName": "SecDFD Type",
+            "dimensionKey": "secdfd_type",
+            "kind": "categorical-nominal",
+            "coloringStrategy": "hybrid",
+            "appliesTo": [
+              "Variable",
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "aggregationPath": [
+              "Operation",
+              "Type",
+              "Scope"
+            ],
+            "palette": "categorical"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:domain_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Domain Layer",
+            "kind": "architectural layer",
+            "categoryKey": "domain_layer",
+            "order": 2,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:presentation_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Presentation Layer",
+            "kind": "architectural layer",
+            "categoryKey": "presentation_layer",
+            "order": 0,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:information_holder",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Information Holder",
+            "kind": "role stereotype",
+            "categoryKey": "information_holder",
+            "order": 2,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:service_provider",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Service Provider",
+            "kind": "role stereotype",
+            "categoryKey": "service_provider",
+            "order": 7,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:data_source_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Data Source Layer",
+            "kind": "architectural layer",
+            "categoryKey": "data_source_layer",
+            "order": 3,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:structurer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Structurer",
+            "kind": "role stereotype",
+            "categoryKey": "structurer",
+            "order": 8,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:user_interfacer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "User Interfacer",
+            "kind": "role stereotype",
+            "categoryKey": "user_interfacer",
+            "order": 4,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:architectural_layer:application_layer",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Application Layer",
+            "kind": "architectural layer",
+            "categoryKey": "application_layer"
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:controller",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Controller",
+            "kind": "role stereotype",
+            "categoryKey": "controller",
+            "order": 0,
+            "isDefault": false
+          }
+        }
+      },
+      {
+        "data": {
+          "id": "category:role_stereotype:coordinator",
+          "labels": [
+            "Category"
+          ],
+          "properties": {
+            "simpleName": "Coordinator",
+            "kind": "role stereotype",
+            "categoryKey": "coordinator",
+            "order": 1,
+            "isDefault": false
+          }
+        }
       }
     ],
     "edges": [
@@ -37095,6 +37316,2358 @@
           "properties": {
             "description": "The `nl.tudelft.jpacman.npc.ghost` package contains classes that represent and manage the behavior of ghosts in a Pacman game, while the `nl.tudelft.jpacman.npc` package provides a general framework for handling non-player characters (NPCs). The interaction between these packages is primarily through inheritance and composition, where ghost classes like Blinky, Clyde, Inky, and Pinky inherit from a base class in the `nl.tudelft.jpacman.npc` package. This design allows for a structured and reusable approach to managing ghost behavior within the Pacman game."
           }
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_domain_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:domain_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_node_getsquare:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation$Node.getSquare()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getghostfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getGhostFactory()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_move_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.move(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_presentation_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:presentation_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_action_doaction:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.Action.doAction()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite_draw_java_awt_graphics_int_int_int_int:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.Sprite.draw(java.awt.Graphics,int,int,int,int)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_setalive_boolean:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player.setAlive(boolean)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getgamefactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getGameFactory()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel_scoreformatter_format_nl_tudelft_jpacman_level_player:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel$ScoreFormatter.format(nl.tudelft.jpacman.level.Player)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_getinheritance_java_lang_class:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.getInheritance(java.lang.Class)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite_getheight:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.Sprite.getHeight()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_information_holder:dimension_role_stereotype",
+          "source": "category:role_stereotype:information_holder",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostcolor:category_role_stereotype_information_holder",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostColor",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostcolor:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostColor",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_getsquareat_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.getSquareAt(nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_nl_tudelft_jpacman_sprite_sprite_int_boolean:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite(nl.tudelft.jpacman.sprite.Sprite[],int,boolean)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getpacmansprites:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getPacmanSprites()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playerfactory_getsprites:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerFactory.getSprites()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder_addstartbutton_nl_tudelft_jpacman_game_game:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder.addStartButton(nl.tudelft.jpacman.game.Game)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory_createpinky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory.createPinky()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_service_provider:dimension_role_stereotype",
+          "source": "category:role_stereotype:service_provider",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_data_source_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:data_source_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore:category_architectural_layer_data_source_layer",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_invariant_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.invariant(nl.tudelft.jpacman.board.Square)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_pellet:category_role_stereotype_information_holder",
+          "source": "nl.tudelft.jpacman.level.Pellet",
+          "target": "category:role_stereotype:information_holder",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_pellet:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Pellet",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_pinky_java_util_map:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Pinky(java.util.Map)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_createground:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory.createGround()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_levelobserver_levellost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level$LevelObserver.levelLost()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_singleplayergame_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_level_level_nl_tudelft_jpacman_points_pointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.SinglePlayerGame(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.level.Level,nl.tudelft.jpacman.points.PointCalculator)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_getmostspecificclass_java_util_map_java_lang_class:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.getMostSpecificClass(java.util.Map,java.lang.Class)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory_createpellet:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.LevelFactory.createPellet()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_withinborders_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board.withinBorders(int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_oncollision_java_lang_class_java_lang_class_nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.onCollision(java.lang.Class,java.lang.Class,nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_structurer:dimension_role_stereotype",
+          "source": "category:role_stereotype:structurer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.board.Board",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.Launcher",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_imagesprite_split_int_int_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.ImageSprite.split(int,int,int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_gamefactory_createsingleplayergame_nl_tudelft_jpacman_level_level_nl_tudelft_jpacman_points_pointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.GameFactory.createSinglePlayerGame(nl.tudelft.jpacman.level.Level,nl.tudelft.jpacman.points.PointCalculator)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_isanyplayeralive:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.isAnyPlayerAlive()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_start:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.start()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_inky_followpath_java_util_list_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Inky.followPath(java.util.List,nl.tudelft.jpacman.board.Square)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder_addkey_java_lang_integer_nl_tudelft_jpacman_ui_action:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder.addKey(java.lang.Integer,nl.tudelft.jpacman.ui.Action)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_link_nl_tudelft_jpacman_board_square_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.link(nl.tudelft.jpacman.board.Square,nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_invariant:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board.invariant()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_ghostcolliding_nl_tudelft_jpacman_npc_ghost_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.ghostColliding(nl.tudelft.jpacman.npc.Ghost,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board(nl.tudelft.jpacman.board.Square[][])",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisionmap_collide_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionMap.collide(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_imagesprite_newimage_int_int:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.ImageSprite.newImage(int,int)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_buttonpanel_java_util_map_javax_swing_jframe:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ButtonPanel(java.util.Map,javax.swing.JFrame)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_stopnpcs:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.stopNPCs()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_getheight:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.getHeight()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getghostsprite_nl_tudelft_jpacman_npc_ghost_ghostcolor:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getGhostSprite(nl.tudelft.jpacman.npc.ghost.GhostColor)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_npcmovetask:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.Level$NpcMoveTask",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_npcmovetask:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level$NpcMoveTask",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_isinprogress:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.isInProgress()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculator_collidedwithaghost_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_npc_ghost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculator.collidedWithAGhost(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.npc.Ghost)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getpacmandeathanimation:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getPacManDeathAnimation()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_leavesquare:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.leaveSquare()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculator_consumedapellet_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_level_pellet:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculator.consumedAPellet(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.level.Pellet)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_isalive:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player.isAlive()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_playercolliding_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.playerColliding(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_checkmapformat_java_util_list:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.checkMapFormat(java.util.List)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.level.Player",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_makeghostsquare_java_util_list_nl_tudelft_jpacman_npc_ghost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.makeGhostSquare(java.util.List,nl.tudelft.jpacman.npc.Ghost)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_imagesprite_withinimage_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.ImageSprite.withinImage(int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.LevelFactory",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.LevelFactory",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_levelobserver:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.Level$LevelObserver",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_levelobserver:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level$LevelObserver",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_isinprogress:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.isInProgress()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel_setscoreformatter_nl_tudelft_jpacman_ui_scorepanel_scoreformatter:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel.setScoreFormatter(nl.tudelft.jpacman.ui.ScorePanel$ScoreFormatter)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_loadpointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.loadPointCalculator()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_user_interfacer:dimension_role_stereotype",
+          "source": "category:role_stereotype:user_interfacer",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel_scoreformatter:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel$ScoreFormatter",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel_scoreformatter:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel$ScoreFormatter",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_createwall:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory.createWall()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_getboard:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.getBoard()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_getsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost.getSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_blinky:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.Blinky",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_blinky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Blinky",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getlevelmap:category_architectural_layer_data_source_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getLevelMap()",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_node_getpath:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation$Node.getPath()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_levelwon:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.levelWon()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculatorloader_load:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculatorLoader.load()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_parsemap_char:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.parseMap(char[][])",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_nl_tudelft_jpacman_points_pointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game(nl.tudelft.jpacman.points.PointCalculator)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_boardpanel_paint_java_awt_graphics:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.BoardPanel.paint(java.awt.Graphics)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel_refresh:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel.refresh()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_updateobservers:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.updateObservers()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_addpoints_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player.addPoints(int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_setdirection_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.setDirection(nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_playerversuspellet_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_level_pellet:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.playerVersusPellet(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.level.Pellet)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_architectural_layer_application_layer:dimension_architectural_layer",
+          "source": "category:architectural_layer:application_layer",
+          "target": "dimension:architectural_layer",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft:category_architectural_layer_application_layer",
+          "source": "nl.tudelft",
+          "target": "category:architectural_layer:application_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.sprite.Sprite",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.Sprite",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_action:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.Action",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_action:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.Action",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_addsingleplayerkeys_nl_tudelft_jpacman_ui_pacmanuibuilder:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.Launcher.addSinglePlayerKeys(nl.tudelft.jpacman.ui.PacManUiBuilder)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_defaultpointcalculator_consumedapellet_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_level_pellet:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.DefaultPointCalculator.consumedAPellet(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.level.Pellet)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_defaultplayerinteractionmap_collide_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.DefaultPlayerInteractionMap.collide(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_getwidth:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.getWidth()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getpelletsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getPelletSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_addobserver_nl_tudelft_jpacman_level_level_levelobserver:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.addObserver(nl.tudelft.jpacman.level.Level$LevelObserver)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanui_nextframe:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUI.nextFrame()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_controller:dimension_role_stereotype",
+          "source": "category:role_stereotype:controller",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit:category_role_stereotype_controller",
+          "source": "nl.tudelft.jpacman.board.Unit",
+          "target": "category:role_stereotype:controller",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_start:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.start()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getspritestore:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getSpriteStore()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:composes:category_role_stereotype_coordinator:dimension_role_stereotype",
+          "source": "category:role_stereotype:coordinator",
+          "target": "dimension:role_stereotype",
+          "label": "composes"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game:category_role_stereotype_coordinator",
+          "source": "nl.tudelft.jpacman.game.Game",
+          "target": "category:role_stereotype:coordinator",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_collide_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.collide(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculator:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.points.PointCalculator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculator",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_makegame:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.makeGame()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_java_util_map_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost(java.util.Map,int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder_build_nl_tudelft_jpacman_game_game:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder.build(nl.tudelft.jpacman.game.Game)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman:category_architectural_layer_application_layer",
+          "source": "nl.tudelft.jpacman",
+          "target": "category:architectural_layer:application_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculatorloader_loadclassfromfile:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculatorLoader.loadClassFromFile()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore_loadspritefromresource_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore.loadSpriteFromResource(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_getlevel:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.getLevel()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_put_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.put(nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory_createblinky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory.createBlinky()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playerfactory:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.PlayerFactory",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playerfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerFactory",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculatorloader_getcalculatorclassname:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculatorLoader.getCalculatorClassName()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_imagesprite:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.sprite.ImageSprite",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_imagesprite:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.ImageSprite",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_remove_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.remove(nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.MapParser",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_oncollision_java_lang_class_java_lang_class_boolean_nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.onCollision(java.lang.Class,java.lang.Class,boolean,nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_getsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.getSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_playerversusghost_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_npc_ghost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.playerVersusGhost(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.npc.Ghost)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_isaccessibleto_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.isAccessibleTo(nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_getplayers:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.getPlayers()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_clyde_java_util_map:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Clyde(java.util.Map)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions_pelletcolliding_nl_tudelft_jpacman_level_pellet_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions.pelletColliding(nl.tudelft.jpacman.level.Pellet,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_getoccupants:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.getOccupants()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getsingleplayer_nl_tudelft_jpacman_game_game:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getSinglePlayer(nl.tudelft.jpacman.game.Game)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playercollisions:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.PlayerCollisions",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_inky:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.Inky",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_inky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Inky",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_levellost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.levelLost()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_getdirection:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.getDirection()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_direction_getdeltay:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Direction.getDeltaY()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_makegrid_char_int_int_nl_tudelft_jpacman_board_square_java_util_list_java_util_list:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.makeGrid(char[][],int,int,nl.tudelft.jpacman.board.Square[][],java.util.List,java.util.List)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore:category_architectural_layer_data_source_layer_2",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore()",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_clyde:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.Clyde",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_clyde:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Clyde",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level:category_role_stereotype_coordinator",
+          "source": "nl.tudelft.jpacman.level.Level",
+          "target": "category:role_stereotype:coordinator",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getmapparser:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getMapParser()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_direction_getdeltax:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Direction.getDeltaX()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_main_java_lang_string:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.Launcher.main(java.lang.String[])",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler_handlecollision_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler.handleCollision(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_invariant:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.invariant()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_levelobserver_levelwon:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level$LevelObserver.levelWon()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_addnewtargets_nl_tudelft_jpacman_board_unit_java_util_list_java_util_set_nl_tudelft_jpacman_npc_ghost_navigation_node_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation.addNewTargets(nl.tudelft.jpacman.board.Unit,java.util.List,java.util.Set,nl.tudelft.jpacman.npc.ghost.Navigation$Node,nl.tudelft.jpacman.board.Square)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_collide_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.collide(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_parsemap_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.parseMap(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_getsquare:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.getSquare()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder_addstopbutton_nl_tudelft_jpacman_game_game:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder.addStopButton(nl.tudelft.jpacman.game.Game)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_boardpanel:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.BoardPanel",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_boardpanel:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.BoardPanel",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_update:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.update()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_inky_java_util_map:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Inky(java.util.Map)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_startnpcs:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.startNPCs()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_loadsprite_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.loadSprite(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_launch:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.Launcher.launch()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_getheight:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board.getHeight()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_makelevel:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.makeLevel()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square_getsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square.getSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_wall_nl_tudelft_jpacman_sprite_sprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Wall(nl.tudelft.jpacman.sprite.Sprite)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite_getwidth:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.Sprite.getWidth()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore_createanimatedsprite_nl_tudelft_jpacman_sprite_sprite_int_int_boolean:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore.createAnimatedSprite(nl.tudelft.jpacman.sprite.Sprite,int,int,boolean)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_game_stop:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.Game.stop()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_remainingpellets:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.remainingPellets()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_blinky_java_util_map:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Blinky(java.util.Map)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanui:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.PacManUI",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanui:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUI",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_setanimating_boolean:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.setAnimating(boolean)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_node:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation$Node",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_node:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation$Node",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_pinky:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.npc.ghost.Pinky",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_pinky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Pinky",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_getsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player.getSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_findunitinboard_java_lang_class_nl_tudelft_jpacman_board_board:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation.findUnitInBoard(java.lang.Class,nl.tudelft.jpacman.board.Board)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_findunit_java_lang_class_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation.findUnit(java.lang.Class,nl.tudelft.jpacman.board.Square)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_gamefactory:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.game.GameFactory",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_gamefactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.GameFactory",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_nextmove:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost.nextMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_node_getdirection:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation$Node.getDirection()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_currentsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.currentSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getplayerfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getPlayerFactory()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanui_start:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUI.start()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_wall:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Wall",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_wall:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Wall",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_nextaimove:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost.nextAiMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_pellet_int_nl_tudelft_jpacman_sprite_sprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Pellet(int,nl.tudelft.jpacman.sprite.Sprite)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_packeylistener:category_role_stereotype_controller",
+          "source": "nl.tudelft.jpacman.ui.PacKeyListener",
+          "target": "category:role_stereotype:controller",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_packeylistener:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacKeyListener",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_addhandler_java_lang_class_java_lang_class_nl_tudelft_jpacman_level_collisioninteractionmap_collisionhandler:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap.addHandler(java.lang.Class,java.lang.Class,nl.tudelft.jpacman.level.CollisionInteractionMap$CollisionHandler)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_stop:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.stop()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getwallsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getWallSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_pellet_getvalue:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Pellet.getValue()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_navigation_shortestpath_nl_tudelft_jpacman_board_square_nl_tudelft_jpacman_board_square_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.Navigation.shortestPath(nl.tudelft.jpacman.board.Square,nl.tudelft.jpacman.board.Square,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_pacmanconfigurationexception:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.PacmanConfigurationException",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_pacmanconfigurationexception:category_architectural_layer_application_layer",
+          "source": "nl.tudelft.jpacman.PacmanConfigurationException",
+          "target": "category:architectural_layer:application_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory_createclyde:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory.createClyde()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_singleplayergame:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.game.SinglePlayerGame",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_game_singleplayergame:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.game.SinglePlayerGame",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_parsemap_java_io_inputstream:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.parseMap(java.io.InputStream)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_setkiller_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player.setKiller(nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_ghostfactory_createinky:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.ghost.GhostFactory.createInky()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getboardfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getBoardFactory()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_direction:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.board.Direction",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Direction",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_spritestore_loadsprite_java_lang_string:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.SpriteStore.loadSprite(java.lang.String)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getgame:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getGame()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_ground_nl_tudelft_jpacman_sprite_sprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Ground(nl.tudelft.jpacman.sprite.Sprite)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory_randomghost_java_util_map:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.LevelFactory$RandomGhost(java.util.Map)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Square()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_ground:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Ground",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_ground:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory$Ground",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_scorepanel:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ScorePanel",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_inversecollisionhandler:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$InverseCollisionHandler",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_inversecollisionhandler:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$InverseCollisionHandler",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory_randomghost:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.LevelFactory$RandomGhost",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory_randomghost:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.LevelFactory$RandomGhost",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_defaultplayerinteractionmap:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.DefaultPlayerInteractionMap",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_defaultplayerinteractionmap:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.DefaultPlayerInteractionMap",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_packeylistener_keypressed_java_awt_event_keyevent:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacKeyListener.keyPressed(java.awt.event.KeyEvent)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculatorloader:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.points.PointCalculatorLoader",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculatorloader:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculatorLoader",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_npcmovetask_run:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level$NpcMoveTask.run()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_occupy_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.occupy(nl.tudelft.jpacman.board.Square)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_getinterval:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost.getInterval()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_movetowardsdirection_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.moveTowardsDirection(nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl:category_architectural_layer_application_layer",
+          "source": "nl",
+          "target": "category:architectural_layer:application_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost_randommove:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.npc.Ghost.randomMove()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisionmap:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.level.CollisionMap",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisionmap:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionMap",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_boardpanel_nl_tudelft_jpacman_game_game:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.BoardPanel(nl.tudelft.jpacman.game.Game)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_boardfactory_createboard_nl_tudelft_jpacman_board_square:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.BoardFactory.createBoard(nl.tudelft.jpacman.board.Square[][])",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_squareat_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board.squareAt(int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_emptysprite:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.sprite.EmptySprite",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_emptysprite:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.EmptySprite",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_squaresaheadof_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.squaresAheadOf(int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_square:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.board.Square",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_defaultpointcalculator:category_role_stereotype_service_provider",
+          "source": "nl.tudelft.jpacman.points.DefaultPointCalculator",
+          "target": "category:role_stereotype:service_provider",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_defaultpointcalculator:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.DefaultPointCalculator",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_unit_hassquare:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Unit.hasSquare()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_nl_tudelft_jpacman_sprite_sprite_int_boolean_boolean:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite(nl.tudelft.jpacman.sprite.Sprite[],int,boolean,boolean)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_sprite_split_int_int_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.Sprite.split(int,int,int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_board_getwidth:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Board.getWidth()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_buttonpanel:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.ButtonPanel",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_buttonpanel:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.ButtonPanel",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_pacmansprites_getgroundsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.PacManSprites.getGroundSprite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_level_registerplayer_nl_tudelft_jpacman_level_player:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Level.registerPlayer(nl.tudelft.jpacman.level.Player)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanui_nl_tudelft_jpacman_game_game_java_util_map_java_util_map_nl_tudelft_jpacman_ui_scorepanel_scoreformatter:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUI(nl.tudelft.jpacman.game.Game,java.util.Map,java.util.Map,nl.tudelft.jpacman.ui.ScorePanel$ScoreFormatter)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_board_direction_opposite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.board.Direction.opposite()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_collisioninteractionmap_inversecollisionhandler_handlecollision_nl_tudelft_jpacman_board_unit_nl_tudelft_jpacman_board_unit:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.CollisionInteractionMap$InverseCollisionHandler.handleCollision(nl.tudelft.jpacman.board.Unit,nl.tudelft.jpacman.board.Unit)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_playerfactory_createpacman:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.PlayerFactory.createPacMan()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_npc_ghost:category_role_stereotype_structurer",
+          "source": "nl.tudelft.jpacman.npc.Ghost",
+          "target": "category:role_stereotype:structurer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_points_pointcalculator_pacmanmoved_nl_tudelft_jpacman_level_player_nl_tudelft_jpacman_board_direction:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.points.PointCalculator.pacmanMoved(nl.tudelft.jpacman.level.Player,nl.tudelft.jpacman.board.Direction)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_restart:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.restart()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_split_int_int_int_int:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.split(int,int,int,int)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_player_java_util_map_nl_tudelft_jpacman_sprite_animatedsprite:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.Player(java.util.Map,nl.tudelft.jpacman.sprite.AnimatedSprite)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder:category_role_stereotype_user_interfacer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder",
+          "target": "category:role_stereotype:user_interfacer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_mapparser_parsemap_java_util_list:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.MapParser.parseMap(java.util.List)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_launcher_getlevelfactory:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.Launcher.getLevelFactory()",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_ui_pacmanuibuilder_withdefaultbuttons:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.ui.PacManUiBuilder.withDefaultButtons()",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_level_levelfactory_createlevel_nl_tudelft_jpacman_board_board_java_util_list_java_util_list:category_architectural_layer_domain_layer",
+          "source": "nl.tudelft.jpacman.level.LevelFactory.createLevel(nl.tudelft.jpacman.board.Board,java.util.List,java.util.List)",
+          "target": "category:architectural_layer:domain_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:implements:nl_tudelft_jpacman_sprite_animatedsprite_draw_java_awt_graphics_int_int_int_int:category_architectural_layer_presentation_layer",
+          "source": "nl.tudelft.jpacman.sprite.AnimatedSprite.draw(java.awt.Graphics,int,int,int,int)",
+          "target": "category:architectural_layer:presentation_layer",
+          "label": "implements"
+        }
+      },
+      {
+        "data": {
+          "id": "edge:succeeds:category_architectural_layer_domain_layer:category_architectural_layer_data_source_layer",
+          "source": "category:architectural_layer:domain_layer",
+          "target": "category:architectural_layer:data_source_layer",
+          "label": "succeeds"
         }
       }
     ]
