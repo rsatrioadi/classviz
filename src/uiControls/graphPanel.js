@@ -27,7 +27,7 @@ export const highlight = function (pCy, text) {
 		pCy.elements(".hidden").removeClass("hidden").addClass("hidden");
 		pCy.elements().removeClass("highlight");
 
-		const classes = pCy.nodes(node => classNames.some(cn => node.data('name').includes(cn)));
+		const classes = pCy.nodes(node => classNames.some(cn => node.data('name') && node.data('name').includes(cn)));
 		const edges = classes.edgesWith(classes);
 		classes.removeClass("dimmed");
 		edges.removeClass("dimmed");
